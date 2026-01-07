@@ -1,3 +1,12 @@
-{
-
-}
+[
+  {
+    "title": "Pixel 8a (Akita)",
+    "apiUrl": "https://api.boosty.to/v1/target/770791",
+    "webUrl": "https://boosty.to/leegar/target/770791"
+  },
+  {
+    "title": "Another Device",
+    "apiUrl": "https://api.boosty.to/v1/target/XXXXXX",
+    "webUrl": "https://boosty.to/leegar/target/XXXXXX"
+  }
+]
