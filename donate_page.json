@@ -1,70 +1,222 @@
 {
   "main_donate": {
-      "title": {
-        "en": "Support the Project",
-        "ru": "Поддержать проект"
-      },
-      "desc": {
-        "en": "If you like this module...",
-        "ru": "Если вам нравится этот модуль и вы хотите поддержать его дальнейшую разработку, вы можете сделать это на Boosty."
-      },
-      "icon": "volunteer_activism",
-      "buttons": [
-        {
-          "text": { "en": "Go to Boosty", "ru": "Перейти на Boosty" },
-          "url": "https://boosty.to/leegar",
-          "color": "primary"
-        }
-      ]
+  "title": {
+    "ru": "Поддержать проект",
+    "en": "Support the Project",
+    "es": "Apoyar el proyecto",
+    "fr": "Soutenir le projet",
+    "de": "Projekt unterstützen",
+    "it": "Supporta il progetto",
+    "pt": "Apoiar o projeto",
+    "zh": "支持该项目",
+    "ja": "プロジェクトを支援する",
+    "ko": "프로젝트 지원"
   },
-  "urls_header": {
-      "en": "Useful Links",
-      "ru": "Полезные ссылки"
-    },
-  "urls": [
-      {
-        "title": { "en": "Telegram Channel", "ru": "Telegram Канал" },
-        "subtitle": { "en": "@pixel_parts", "ru": "@pixel_parts" },
-        "url": "https://t.me/pixel_parts",
-        "icon": "forum"
+  "desc": {
+    "ru": "Если вам нравится этот модуль или мои билды EvolutionX и вы хотите поддержать его дальнейшую разработку, вы можете сделать это по ссылкам ниже!",
+    "en": "If you like this module or my EvolutionX builds and want to support further development, you can do so using the links below!",
+    "es": "Si te gusta este módulo o mis compilaciones de EvolutionX y quieres apoyar su desarrollo futuro, puedes hacerlo mediante los enlaces a continuación.",
+    "fr": "Si vous aimez ce module ou mes builds EvolutionX et souhaitez soutenir son développement futur, vous pouvez le faire via les liens ci-dessous.",
+    "de": "Wenn Ihnen dieses Modul oder meine EvolutionX-Builds gefallen und Sie die weitere Entwicklung unterstützen möchten, können Sie dies über die untenstehenden Links tun.",
+    "it": "Se ti piace questo modulo o le mie build EvolutionX e vuoi supportarne lo sviluppo futuro, puoi farlo tramite i link qui sotto.",
+    "pt": "Se você gosta deste módulo ou das minhas builds do EvolutionX e deseja apoiar o desenvolvimento futuro, pode fazê-lo pelos links abaixo.",
+    "zh": "如果你喜欢这个模块或我的 EvolutionX 构建，并希望支持其进一步开发，可以通过以下链接进行支持。",
+    "ja": "このモジュールや私の EvolutionX ビルドが気に入った場合、今後の開発を支援するために以下のリンクからサポートできます。",
+    "ko": "이 모듈이나 내 EvolutionX 빌드가 마음에 들고 향후 개발을 지원하고 싶다면 아래 링크를 통해 후원할 수 있습니다."
+  },
+  "icon": "volunteer_activism",
+  "buttons": [
+    {
+      "text": {
+        "ru": "Поддержать через Boosty",
+        "en": "Donate via Boosty",
+        "es": "Donar a través de Boosty",
+        "fr": "Faire un don via Boosty",
+        "de": "Über Boosty spenden",
+        "it": "Dona tramite Boosty",
+        "pt": "Doar via Boosty",
+        "zh": "通过 Boosty 支持",
+        "ja": "Boosty で支援する",
+        "ko": "Boosty로 후원하기"
       },
-      {
-        "title": { "en": "GitHub", "ru": "GitHub" },
-        "subtitle": { "en": "Source Code", "ru": "Исходный код" },
-        "url": "https://github.com/...",
-        "icon": "code"
-      },
-      {
-        "title": { "en": "4PDA Topic", "ru": "Тема на 4PDA" },
-        "subtitle": { "en": "Discussion", "ru": "Обсуждение" },
-        "url": "https://4pda.to/...",
-        "icon": "open_in_new"
-      }
-  ],
-  "progress": [
-    {
-      "title": "Pixel 8a",
-      "apiUrl": "https://api.boosty.to/v1/target/770791",
-      "webUrl": "https://boosty.to/leegar/single-payment/donation/770791/target?from=1",
-      "desc": { 
-        "en": "For build server", 
-        "ru": "Для начала поддержки билдов EvolutionX с моими екстра функциями устрйотва akita" }
-    },
-    {
-      "title": "Pixel 9",
-      "apiUrl": "https://api.boosty.to/v1/target/770795",
-      "webUrl": "https://boosty.to/leegar/single-payment/donation/770795/target?from=1",
-      "desc": { 
-        "en": "For build server", 
-        "ru": "Для начала поддержки билдов EvolutionX с моими екстра функциями устрйотва tokay" }
-    },
-    {
-      "title": "Pixel 9 Pro",
-      "apiUrl": "https://api.boosty.to/v1/target/770796",
-      "webUrl": "https://boosty.to/leegar/single-payment/donation/770796/target?from=1",
-      "desc": { 
-        "en": "For build server", 
-        "ru": "Для начала поддержки билдов EvolutionX с моими екстра функциями устрйотва caiman" }
+      "url": "https://boosty.to/leegar/donate",
+      "color": "primary"
     }
   ]
+},
+  "urls_header": {
+    "ru": "Полезные ссылки",
+    "en": "Useful Links",
+    "es": "Enlaces útiles",
+    "fr": "Liens utiles",
+    "de": "Nützliche Links",
+    "it": "Link utili",
+    "pt": "Links úteis",
+    "zh": "有用的链接",
+    "ja": "便利なリンク",
+    "ko": "유용한 링크"
+  },
+  "urls": [
+    {
+      "title": {
+        "ru": "Telegram Канал",
+        "en": "Telegram Channel",
+        "es": "Canal de Telegram",
+        "fr": "Chaîne Telegram",
+        "de": "Telegram-Kanal",
+        "it": "Canale Telegram",
+        "pt": "Canal do Telegram",
+        "zh": "Telegram 频道",
+        "ja": "Telegram チャンネル",
+        "ko": "텔레그램 채널"
+      },
+      "subtitle": {
+        "en": "@EvoX_LeeGarChat"
+      },
+      "url": "https://t.me/EvoX_LeeGarChat",
+      "icon": "forum"
+    },
+    {
+      "title": {
+        "en": "GitHub"
+      },
+      "subtitle": {
+        "ru": "Исходный код",
+        "en": "Source Code",
+        "es": "Código fuente",
+        "fr": "Code source",
+        "de": "Quellcode",
+        "it": "Codice sorgente",
+        "pt": "Código-fonte",
+        "zh": "源代码",
+        "ja": "ソースコード",
+        "ko": "소스 코드"
+      },
+      "url": "https://github.com/leegarchat",
+      "icon": "code"
+    },
+    {
+      "title": {
+        "en": "4PDA"
+      },
+      "subtitle": {
+        "ru": "Мой профиль на российском девелоперском форуме",
+        "en": "My profile on a Russian developer forum",
+        "es": "Mi perfil en un foro ruso de desarrolladores",
+        "fr": "Mon profil sur un forum russe de développeurs",
+        "de": "Mein Profil in einem russischen Entwicklerforum",
+        "it": "Il mio profilo su un forum russo per sviluppatori",
+        "pt": "Meu perfil em um fórum russo de desenvolvedores",
+        "zh": "我在俄罗斯开发者论坛上的个人资料",
+        "ja": "ロシアの開発者フォーラムでの私のプロフィール",
+        "ko": "러시아 개발자 포럼의 내 프로필"
+      },
+      "url": "https://4pda.to/forum/index.php?showuser=2166027",
+      "icon": "open_in_new"
+    }
+  ],
+  "progress": [
+  {
+    "title": "Pixel 8a",
+    "apiUrl": "https://api.boosty.to/v1/target/770791",
+    "webUrl": "https://boosty.to/leegar/single-payment/donation/770791/target?from=1",
+    "desc": {
+      "ru": "Для начала поддержки билдов EvolutionX с моими экстра-функциями для устройства akita",
+      "en": "To start supporting EvolutionX builds with my extra features for the akita device",
+      "es": "Para iniciar el soporte de compilaciones EvolutionX con mis funciones extra para el dispositivo akita",
+      "fr": "Pour démarrer la prise en charge des builds EvolutionX avec mes fonctionnalités supplémentaires pour l’appareil akita",
+      "de": "Zur Unterstützung von EvolutionX-Builds mit meinen Zusatzfunktionen für das Gerät akita",
+      "it": "Per avviare il supporto alle build EvolutionX con le mie funzionalità extra per il dispositivo akita",
+      "pt": "Para iniciar o suporte às builds do EvolutionX com meus recursos extras para o dispositivo akita",
+      "zh": "用于开始支持带有我额外功能的 EvolutionX 构建，适用于 akita 设备",
+      "ja": "akita デバイス向けに、私の追加機能を含む EvolutionX ビルドのサポートを開始するため",
+      "ko": "akita 기기를 위한 내 추가 기능이 포함된 EvolutionX 빌드 지원을 시작하기 위해"
+    }
+  },
+  {
+    "title": "Pixel 9",
+    "apiUrl": "https://api.boosty.to/v1/target/770795",
+    "webUrl": "https://boosty.to/leegar/single-payment/donation/770795/target?from=1",
+    "desc": {
+      "ru": "Для начала поддержки билдов EvolutionX с моими экстра-функциями для устройства tokay",
+      "en": "To start supporting EvolutionX builds with my extra features for the tokay device",
+      "es": "Para iniciar el soporte de compilaciones EvolutionX con mis funciones extra para el dispositivo tokay",
+      "fr": "Pour démarrer la prise en charge des builds EvolutionX avec mes fonctionnalités supplémentaires pour l’appareil tokay",
+      "de": "Zur Unterstützung von EvolutionX-Builds mit meinen Zusatzfunktionen für das Gerät tokay",
+      "it": "Per avviare il supporto alle build EvolutionX con le mie funzionalità extra per il dispositivo tokay",
+      "pt": "Para iniciar o suporte às builds do EvolutionX com meus recursos extras para o dispositivo tokay",
+      "zh": "用于开始支持带有我额外功能的 EvolutionX 构建，适用于 tokay 设备",
+      "ja": "tokay デバイス向けに、私の追加機能を含む EvolutionX ビルドのサポートを開始するため",
+      "ko": "tokay 기기를 위한 내 추가 기능이 포함된 EvolutionX 빌드 지원을 시작하기 위해"
+    }
+  },
+  {
+    "title": "Pixel 9 Pro",
+    "apiUrl": "https://api.boosty.to/v1/target/770796",
+    "webUrl": "https://boosty.to/leegar/single-payment/donation/770796/target?from=1",
+    "desc": {
+      "ru": "Для начала поддержки билдов EvolutionX с моими экстра-функциями для устройства caiman",
+      "en": "To start supporting EvolutionX builds with my extra features for the caiman device",
+      "es": "Para iniciar el soporte de compilaciones EvolutionX con mis funciones extra para el dispositivo caiman",
+      "fr": "Pour démarrer la prise en charge des builds EvolutionX avec mes fonctionnalités supplémentaires pour l’appareil caiman",
+      "de": "Zur Unterstützung von EvolutionX-Builds mit meinen Zusatzfunktionen für das Gerät caiman",
+      "it": "Per avviare il supporto alle build EvolutionX con le mie funzionalità extra per il dispositivo caiman",
+      "pt": "Para iniciar o suporte às builds do EvolutionX com meus recursos extras para o dispositivo caiman",
+      "zh": "用于开始支持带有我额外功能的 EvolutionX 构建，适用于 caiman 设备",
+      "ja": "caiman デバイス向けに、私の追加機能を含む EvolutionX ビルドのサポートを開始するため",
+      "ko": "caiman 기기를 위한 내 추가 기능이 포함된 EvolutionX 빌드 지원을 시작하기 위해"
+    }
+  },
+  {
+    "title": "Pixel 9 Pro XL",
+    "apiUrl": "https://api.boosty.to/v1/target/770797",
+    "webUrl": "https://boosty.to/leegar/single-payment/donation/770797/target?from=1",
+    "desc": {
+      "ru": "Для начала поддержки билдов EvolutionX с моими экстра-функциями для устройства komodo",
+      "en": "To start supporting EvolutionX builds with my extra features for the komodo device",
+      "es": "Para iniciar el soporte de compilaciones EvolutionX con mis funciones extra para el dispositivo komodo",
+      "fr": "Pour démarrer la prise en charge des builds EvolutionX avec mes fonctionnalités supplémentaires pour l’appareil komodo",
+      "de": "Zur Unterstützung von EvolutionX-Builds mit meinen Zusatzfunktionen für das Gerät komodo",
+      "it": "Per avviare il supporto alle build EvolutionX con le mie funzionalità extra per il dispositivo komodo",
+      "pt": "Para iniciar o suporte às builds do EvolutionX com meus recursos extras para o dispositivo komodo",
+      "zh": "用于开始支持带有我额外功能的 EvolutionX 构建，适用于 komodo 设备",
+      "ja": "komodo デバイス向けに、私の追加機能を含む EvolutionX ビルドのサポートを開始するため",
+      "ko": "komodo 기기를 위한 내 추가 기능이 포함된 EvolutionX 빌드 지원을 시작하기 위해"
+    }
+  },
+  {
+    "title": "Pixel 9 Pro Fold",
+    "apiUrl": "https://api.boosty.to/v1/target/770798",
+    "webUrl": "https://boosty.to/leegar/single-payment/donation/770798/target?from=1",
+    "desc": {
+      "ru": "Для начала поддержки билдов EvolutionX с моими экстра-функциями для устройства comet",
+      "en": "To start supporting EvolutionX builds with my extra features for the comet device",
+      "es": "Para iniciar el soporte de compilaciones EvolutionX con mis funciones extra para el dispositivo comet",
+      "fr": "Pour démarrer la prise en charge des builds EvolutionX avec mes fonctionnalités supplémentaires pour l’appareil comet",
+      "de": "Zur Unterstützung von EvolutionX-Builds mit meinen Zusatzfunktionen für das Gerät comet",
+      "it": "Per avviare il supporto alle build EvolutionX con le mie funzionalità extra per il dispositivo comet",
+      "pt": "Para iniciar o suporte às builds do EvolutionX com meus recursos extras para o dispositivo comet",
+      "zh": "用于开始支持带有我额外功能的 EvolutionX 构建，适用于 comet 设备",
+      "ja": "comet デバイス向けに、私の追加機能を含む EvolutionX ビルドのサポートを開始するため",
+      "ko": "comet 기기를 위한 내 추가 기능이 포함된 EvolutionX 빌드 지원을 시작하기 위해"
+    }
+  },
+  {
+    "title": "Pixel 9a",
+    "apiUrl": "https://api.boosty.to/v1/target/770799",
+    "webUrl": "https://boosty.to/leegar/single-payment/donation/770799/target?from=1",
+    "desc": {
+      "ru": "Для начала поддержки билдов EvolutionX с моими экстра-функциями для устройства tegu",
+      "en": "To start supporting EvolutionX builds with my extra features for the tegu device",
+      "es": "Para iniciar el soporte de compilaciones EvolutionX con mis funciones extra para el dispositivo tegu",
+      "fr": "Pour démarrer la prise en charge des builds EvolutionX avec mes fonctionnalités supplémentaires pour l’appareil tegu",
+      "de": "Zur Unterstützung von EvolutionX-Builds mit meinen Zusatzfunktionen für das Gerät tegu",
+      "it": "Per avviare il supporto alle build EvolutionX con le mie funzionalità extra per il dispositivo tegu",
+      "pt": "Para iniciar o suporte às builds do EvolutionX com meus recursos extras para o dispositivo tegu",
+      "zh": "用于开始支持带有我额外功能的 EvolutionX 构建，适用于 tegu 设备",
+      "ja": "tegu デバイス向けに、私の追加機能を含む EvolutionX ビルドのサポートを開始するため",
+      "ko": "tegu 기기를 위한 내 추가 기능이 포함된 EvolutionX 빌드 지원을 시작하기 위해"
+    }
+  }
+]
 }
