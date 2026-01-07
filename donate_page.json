@@ -1,47 +1,59 @@
 {
   "main_donate": {
-    "title": {
-      "en": "Support the Project",
-      "ru": "Поддержать проект"
-    },
-    "desc": {
-      "en": "If you like this module...",
-      "ru": "Если вам нравится этот модуль и вы хотите поддержать его дальнейшую разработку, вы можете сделать это на Boosty."
-    },
-    "icon": "volunteer_activism",
-    "buttons": [
-      {
-        "text": { "en": "Go to Boosty", "ru": "Перейти на Boosty" },
-        "url": "https://boosty.to/leegar",
-        "color": "primary"
-      }
-    ]
+      "title": {
+        "en": "Support the Project",
+        "ru": "Поддержать проект"
+      },
+      "desc": {
+        "en": "If you like this module...",
+        "ru": "Если вам нравится этот модуль и вы хотите поддержать его дальнейшую разработку, вы можете сделать это на Boosty."
+      },
+      "icon": "volunteer_activism",
+      "buttons": [
+        {
+          "text": { "en": "Go to Boosty", "ru": "Перейти на Boosty" },
+          "url": "https://boosty.to/leegar",
+          "color": "primary"
+        }
+      ]
   },
   "urls_header": {
-    "en": "Useful Links",
-    "ru": "Полезные ссылки"
-  },
+      "en": "Useful Links",
+      "ru": "Полезные ссылки"
+    },
   "urls": [
-    {
-      "title": { "en": "Telegram Channel", "ru": "Telegram Канал" },
-      "subtitle": { "en": "@pixel_parts", "ru": "@pixel_parts" },
-      "url": "https://t.me/pixel_parts",
-      "icon": "forum"
-    },
-    {
-      "title": { "en": "GitHub", "ru": "GitHub" },
-      "subtitle": { "en": "Source Code", "ru": "Исходный код" },
-      "url": "https://github.com/...",
-      "icon": "code"
-    },
-    {
-      "title": { "en": "4PDA Topic", "ru": "Тема на 4PDA" },
-      "subtitle": { "en": "Discussion", "ru": "Обсуждение" },
-      "url": "https://4pda.to/...",
-      "icon": "open_in_new"
-    }
+      {
+        "title": { "en": "Telegram Channel", "ru": "Telegram Канал" },
+        "subtitle": { "en": "@pixel_parts", "ru": "@pixel_parts" },
+        "url": "https://t.me/pixel_parts",
+        "icon": "forum"
+      },
+      {
+        "title": { "en": "GitHub", "ru": "GitHub" },
+        "subtitle": { "en": "Source Code", "ru": "Исходный код" },
+        "url": "https://github.com/...",
+        "icon": "code"
+      },
+      {
+        "title": { "en": "4PDA Topic", "ru": "Тема на 4PDA" },
+        "subtitle": { "en": "Discussion", "ru": "Обсуждение" },
+        "url": "https://4pda.to/...",
+        "icon": "open_in_new"
+      }
   ],
   "progress": [
+    {
+      "title": "Pixel 8a (Akita)",
+      "apiUrl": "https://api.boosty.to/v1/target/770791",
+      "webUrl": "https://boosty.to/leegar/target/770791",
+      "desc": { "en": "For build server", "ru": "На сервер сборки" }
+    },
+    {
+      "title": "Pixel 8a (Akita)",
+      "apiUrl": "https://api.boosty.to/v1/target/770791",
+      "webUrl": "https://boosty.to/leegar/target/770791",
+      "desc": { "en": "For build server", "ru": "На сервер сборки" }
+    },
     {
       "title": "Pixel 8a (Akita)",
       "apiUrl": "https://api.boosty.to/v1/target/770791",
