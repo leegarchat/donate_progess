@@ -23,6 +23,8 @@
   "os_prof_item_active": "Активен",
   "os_prof_item_tap": "Нажмите, чтобы загрузить",
   "error_network": "Ошибка сети",
+  "donate_page_updated": "Страница обновлена",
+  "donate_page_updated_error": "Ошибка загрузки конфига",
   "refresh_strings": "Строки активити обновлены",
   "os_prof_dialog_title": "Новый профиль",
   "os_prof_dialog_hint": "Введите название профиля",
