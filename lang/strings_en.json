@@ -1,0 +1,24 @@
+{
+  "donate_progress_title": "Fundraising Progress",
+  "menu_refresh": "Refresh",
+  "donate_open_target": "Open Fundraising Page",
+  "donate_error_loading": "Failed to Load Data",
+  "donate_retry": "Retry",
+  "donate_title": "Support and Links",
+  "donate_desc_short": "GitHub, Telegram, Boosty",
+  "donate_header": "Support the Project",
+  "donate_desc_long": "If you like this module and want to support its further development, you can do so on Boosty.",
+  "donate_btn_boosty": "Go to Boosty",
+  "donate_links_header": "Useful Links",
+
+  "launcher_clear_all_title": "Clear All Button",
+  "launcher_clear_all_desc": "Adds a button to close all applications in the multitasking menu (Recents).\n\nSupports multiple display modes for integration into the stock interface.",
+
+  "launcher_ca_mode_float": "Bottom Center",
+  "launcher_ca_mode_screenshot": "Replace \"Screenshot\"",
+  "launcher_ca_mode_select": "Replace \"Select\"",
+
+  "launcher_ca_margin": "Position (Bottom Offset)",
+  "launcher_btn_restart": "Restart Launcher",
+  "launcher_ca_margin_desc": "Adjusts the vertical position of the floating button. The value is a multiplier of the standard margin."
+}
