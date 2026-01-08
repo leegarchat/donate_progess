@@ -22,6 +22,8 @@
   "os_prof_header_list": "Сохраненные профили",
   "os_prof_item_active": "Активен",
   "os_prof_item_tap": "Нажмите, чтобы загрузить",
+  "error_network": "Ошибка сети",
+  "refresh_strings": "Строки активити обновлены",
   "os_prof_dialog_title": "Новый профиль",
   "os_prof_dialog_hint": "Введите название профиля",
   "os_prof_btn_save": "Сохранить",
