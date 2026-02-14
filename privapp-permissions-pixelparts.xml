@@ -19,5 +19,7 @@
         <permission name="android.permission.ACCESS_NETWORK_STATE" />
         <permission name="android.permission.INTERNET" />
         <permission name="android.permission.CHANGE_OVERLAY_PACKAGES" />
+        <permission name="android.permission.FORCE_STOP_PACKAGES" />
+        <permission name="android.permission.KILL_BACKGROUND_PROCESSES" />
     </privapp-permissions>
 </permissions>

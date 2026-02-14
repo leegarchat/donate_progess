@@ -1,5 +1,8 @@
 package org.pixel.customparts.ui
 
+import android.app.ActivityManager
+import android.content.Context
+import android.os.PowerManager
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
@@ -20,15 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.IntSize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.pixel.customparts.AppConfig
 import org.pixel.customparts.R
 import org.pixel.customparts.utils.dynamicStringResource
 import java.io.DataOutputStream
-
-
-
-
-
-
 
 @Composable
 fun RebootBubble(modifier: Modifier = Modifier) {
@@ -81,7 +79,7 @@ fun RebootBubble(modifier: Modifier = Modifier) {
                             onClick = {
                                 expanded = false
                                 scope.launch(Dispatchers.IO) {
-                                    runRootCommand("am force-stop com.google.android.apps.nexuslauncher")
+                                    performRebootLauncher(context)
                                 }
                             }
                         )
@@ -114,7 +112,6 @@ fun RebootBubble(modifier: Modifier = Modifier) {
             }
         }
 
-        
         FloatingActionButton(
             onClick = { expanded = !expanded },
             shape = CircleShape,
@@ -129,7 +126,6 @@ fun RebootBubble(modifier: Modifier = Modifier) {
         }
     }
 
-    
     if (confirmAction != null) {
         val action = confirmAction!!
         AlertDialog(
@@ -160,12 +156,13 @@ fun RebootBubble(modifier: Modifier = Modifier) {
             confirmButton = {
                 Button(
                     onClick = {
-                        val cmd = when (action) {
-                            RebootAction.SYSTEM -> "svc power reboot"
-                            RebootAction.SYSTEMUI -> "killall com.android.systemui"
+                        scope.launch(Dispatchers.IO) {
+                            when (action) {
+                                RebootAction.SYSTEM -> performRebootSystem(context)
+                                RebootAction.SYSTEMUI -> performRebootSystemUI(context)
+                            }
                         }
                         confirmAction = null
-                        scope.launch(Dispatchers.IO) { runRootCommand(cmd) }
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error,
@@ -181,6 +178,48 @@ fun RebootBubble(modifier: Modifier = Modifier) {
                 }
             }
         )
+    }
+}
+
+
+private fun performRebootLauncher(context: Context) {
+    if (AppConfig.IS_XPOSED) {
+        runRootCommand("am force-stop com.google.android.apps.nexuslauncher")
+    } else {
+        try {
+            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            am.forceStopPackage("com.google.android.apps.nexuslauncher")
+            am.forceStopPackage("com.android.launcher3")
+            am.forceStopPackage("com.google.android.apps.pixel.launcher")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
+
+private fun performRebootSystemUI(context: Context) {
+    if (AppConfig.IS_XPOSED) {
+        runRootCommand("killall com.android.systemui")
+    } else {
+        try {
+            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            am.forceStopPackage("com.android.systemui")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
+
+private fun performRebootSystem(context: Context) {
+    if (AppConfig.IS_XPOSED) {
+        runRootCommand("svc power reboot")
+    } else {
+        try {
+            val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            pm.reboot(null)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
 
@@ -242,9 +281,14 @@ private fun runRootCommand(command: String) {
         os.writeBytes("$command\n")
         os.writeBytes("exit\n")
         os.flush()
-        os.close()
         process.waitFor()
+        os.close()
     } catch (e: Exception) {
         e.printStackTrace()
+        try {
+            Runtime.getRuntime().exec(arrayOf("sh", "-c", command))
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
     }
 }
