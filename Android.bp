@@ -24,13 +24,14 @@ android_app {
     name: "PixelCustomPartsXposed",
     manifest: "xposed-pine/AndroidManifest.xml",
     resource_dirs: [
-        "common/res",
+        "common/res", 
         "xposed-pine/res"
     ],
     srcs: [
         "common/src/**/*.kt",
         "common/src/**/*.java",
         "xposed-pine/src/org/pixel/customparts/core/**/*.kt",
+        "xposed-pine/src/org/pixel/customparts/core/**/*.java",
         // Общие хуки (код реализации)
         "xposed-pine/src/org/pixel/customparts/hooks/**/*.kt",
         "xposed-pine/src/org/pixel/customparts/hooks/**/*.java",
@@ -152,6 +153,7 @@ java_library {
     srcs: [
         // Общий интерфейс IHookEnvironment
         "xposed-pine/src/org/pixel/customparts/core/**/*.kt",
+        "xposed-pine/src/org/pixel/customparts/core/**/*.java",
         // Общие хуки (код реализации)
         "xposed-pine/src/org/pixel/customparts/hooks/**/*.kt",
         "xposed-pine/src/org/pixel/customparts/hooks/**/*.java",

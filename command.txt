@@ -1,0 +1,1 @@
+umount -fl /system/framework/PineInject.jar ; cp -f /sdcard/PineInject.jar /data/adb/ ; chown 0:0 /data/adb/PineInject.jar ; chcon u:object_r:system_file:s0 /data/adb/PineInject.jar ; chmod 644 /data/adb/PineInject.jar ; mount /data/adb/PineInject.jar /system/framework/PineInject.jar

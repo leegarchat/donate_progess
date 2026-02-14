@@ -43,7 +43,7 @@ fun SearchWidgetSection(
     var hideSearchEnabled by remember { mutableStateOf(SettingsCompat.getInt(context, keyHideSearch, 0) == 1) }
     var hideDockEnabled by remember { mutableStateOf(SettingsCompat.getInt(context, keyHideDock, 0) == 1) }
     
-    val initPaddingHomepage = remember { SettingsCompat.getInt(context, keyPaddingHomepage, 165) }
+    val initPaddingHomepage = remember { SettingsCompat.getInt(context, keyPaddingHomepage, 200) }
     var paddingHomepage by remember { mutableIntStateOf(initPaddingHomepage) }
 
     val initPaddingDock = remember { SettingsCompat.getInt(context, keyPaddingDock, 0) }
@@ -130,9 +130,9 @@ fun SearchWidgetSection(
                 }
             },
             onDefault = {
-                paddingHomepage = 165
+                paddingHomepage = 200
                 scope.launch(Dispatchers.IO) {
-                    SettingsCompat.putInt(context, keyPaddingHomepage, 165)
+                    SettingsCompat.putInt(context, keyPaddingHomepage, 200)
                 }
                 onSettingChanged()
             },
