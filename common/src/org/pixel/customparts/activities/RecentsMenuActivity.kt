@@ -54,7 +54,8 @@ class RecentsMenuActivity : ComponentActivity() {
 fun RecentsMenuScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val useDiscreteScale = !AppConfig.IS_XPOSED
+    // val useDiscreteScale = !AppConfig.IS_XPOSED
+    val useDiscreteScale = false
     
     
     val keyModifyEnable = SettingsCompat.key("launcher_recents_modify_enable")
