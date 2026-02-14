@@ -43,15 +43,11 @@ import org.pixel.customparts.core.BaseHook;
 
 public class UnifiedLauncherHook extends BaseHook {
 
-    // --- KEYS & CONSTANTS ---
-    // Homepage & Grid
     private static final String KEY_HOME_ENABLE = "launcher_homepage_sizer";
     private static final String KEY_HOME_COLS = "launcher_homepage_h";
     private static final String KEY_HOME_ROWS = "launcher_homepage_v";
     private static final String KEY_HOME_ICON_SIZE = "launcher_homepage_icon_size";
     private static final String KEY_HOME_TEXT_MODE = "launcher_homepage_text_mode";
-    
-    // Dock (Hotseat)
     private static final String KEY_DOCK_ENABLE = "launcher_dock_enable";
     private static final String KEY_HOTSEAT_ICONS = "launcher_hotseat_icons";
     private static final String KEY_HOTSEAT_ICON_SIZE = "launcher_hotseat_icon_size";
@@ -59,19 +55,13 @@ public class UnifiedLauncherHook extends BaseHook {
     private static final String KEY_PADDING_DOCK = "launcher_padding_dock";
     private static final String KEY_PADDING_SEARCH = "launcher_padding_search";
     private static final String KEY_HIDE_SEARCH = "launcher_hidden_search";
-
-    // Visuals & Layout
     private static final String KEY_PADDING_HOMEPAGE = "launcher_padding_homepage";
     private static final String KEY_DISABLE_FEED = "launcher_disable_google_feed";
     private static final String KEY_PADDING_DOTS = "launcher_padding_dots";
     private static final String KEY_PADDING_DOTS_X = "launcher_padding_dots_x";
-
-    // Gestures & Logic
     private static final String KEY_DT2S_ENABLED = "launcher_dt2s_enabled";
     private static final String KEY_DT2S_TIMEOUT = "launcher_dt2s_timeout";
     private static final String KEY_TOP_WIDGET_ENABLE = "launcher_disable_top_widget";
-
-    // Internal Constants
     private static final int DEFAULT_PADDING_DOTS = 0;
     private static final int SETTINGS_DEFAULT_PADDING = -45;
     private static final int LAUNCHER_ORIGINAL_BOTTOM_DP = 200;
@@ -81,19 +71,10 @@ public class UnifiedLauncherHook extends BaseHook {
     private static final int CONTAINER_HOTSEAT_PREDICTION = -103;
     private static final int TAG_VIEW_LISTENER = 0x7f010002;
     private static final int TAG_DT2S_LISTENER = 0x7f010004;
-
-    // State Management
     private int lastAppliedPaddingHash = 0;
     private int lastAppliedDockHash = 0;
-    
-    // Gestures Cache
-    // private static final Map<Integer, WeakReference<GestureDetector>> detectors = new HashMap<>();
     private static Field doubleTapTimeoutField = null;
-
-    // Layout Listeners Cache
     private final WeakHashMap<View, View.OnLayoutChangeListener> layoutListeners = new WeakHashMap<>();
-
-    // Top Widget Persistence
     private static final String PREFS_NAME = "top_row_keeper";
     private static final String PREF_GRID_ROWS = "last_grid_rows";
     private static final String PREF_GRID_COLS = "last_grid_cols";
@@ -113,7 +94,7 @@ public class UnifiedLauncherHook extends BaseHook {
 
     @Override
     public int getPriority() {
-        return 50; // Balanced priority
+        return 50;
     }
 
     @Override
@@ -124,27 +105,17 @@ public class UnifiedLauncherHook extends BaseHook {
     @Override
     protected void onInit(ClassLoader classLoader) {
         try {
-            // --- 1. Class Lookups (Do once) ---
             final Class<?> launcherClass = XposedHelpers.findClass("com.android.launcher3.Launcher", classLoader);
             final Class<?> workspaceClass = XposedHelpers.findClass("com.android.launcher3.Workspace", classLoader);
             final Class<?> bubbleTextViewClass = XposedHelpers.findClass("com.android.launcher3.BubbleTextView", classLoader);
             final Class<?> idpClass = XposedHelpers.findClass("com.android.launcher3.InvariantDeviceProfile", classLoader);
             
-            // --- 2. Lifecycle & Global Settings (Resume, Feed, Overlay) ---
             hookLauncherLifecycle(launcherClass, classLoader);
-
-            // --- 3. Grid & IDP Logic (Home Grid, Dock Icons Count) ---
             hookInvariantDeviceProfile(idpClass);
-
-            // --- 4. View Rendering (Icons Size, Text, Visibility) ---
             hookBubbleTextView(bubbleTextViewClass, classLoader);
-            hookFloatingIconView(classLoader); // Animations (Size Correction)
-
-            // --- 5. Workspace Logic (Padding, Dots, Gestures, TopWidget) ---
+            hookFloatingIconView(classLoader);
             hookWorkspace(workspaceClass, classLoader);
-            hookDockAnimationCorrection(classLoader); // Animations (Position Correction)
-            
-            // --- 6. Model & Persistence (TopWidget/Database) ---
+            hookDockAnimationCorrection(classLoader);
             hookPersistenceLogic(classLoader);
 
             log("UnifiedLauncherHook installed successfully");
@@ -175,7 +146,6 @@ public class UnifiedLauncherHook extends BaseHook {
                         applyHomepagePadding(activity);
                         applyDockSettings(activity);
                         forceUpdateDots(activity);
-                        // Apply DT2S Listener
                         applyDT2SListener(activity);
                     }
                 };
@@ -254,14 +224,12 @@ public class UnifiedLauncherHook extends BaseHook {
     // =========================================================================
 
     private void hookBubbleTextView(final Class<?> bubbleTextViewClass, ClassLoader classLoader) {
-        // Ищем класс FolderIcon, как в рабочем коде
         Class<?> tempFolderIconClass = null;
         try {
             tempFolderIconClass = XposedHelpers.findClass("com.android.launcher3.folder.FolderIcon", classLoader);
         } catch (Throwable t) { }
         final Class<?> finalFolderIconClass = tempFolderIconClass;
 
-        // 1. Hook applyIconAndLabel (Рабочая логика с handleWorkspaceView)
         XC_MethodHook applyIconHook = new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) {
@@ -307,8 +275,6 @@ public class UnifiedLauncherHook extends BaseHook {
                 }
             });
 
-            // NEW: Hook FrameLayout.onLayout специально для FolderIcon
-            // Это исправляет "опускание" папки при инициализации, обновляя Pivot моментально
             XposedHelpers.findAndHookMethod(android.widget.FrameLayout.class, "onLayout", boolean.class, int.class, int.class, int.class, int.class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
@@ -323,8 +289,6 @@ public class UnifiedLauncherHook extends BaseHook {
             });
         }
 
-        // 3. onLayout Hook для BubbleTextView (хукаем TextView)
-        // Исправляет позиционирование обычных иконок при старте
         XposedHelpers.findAndHookMethod(TextView.class, "onLayout", boolean.class, int.class, int.class, int.class, int.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) {
@@ -339,7 +303,6 @@ public class UnifiedLauncherHook extends BaseHook {
             }
         });
 
-        // 4. Global Scaling Hook (Рабочая логика с проверкой FolderIcon)
         XC_MethodHook scaleHook = new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) {
@@ -373,7 +336,6 @@ public class UnifiedLauncherHook extends BaseHook {
         XposedHelpers.findAndHookMethod(View.class, "setScaleX", float.class, scaleHook);
         XposedHelpers.findAndHookMethod(View.class, "setScaleY", float.class, scaleHook);
 
-        // 5. Visibility Hook
         XposedHelpers.findAndHookMethod(View.class, "setVisibility", int.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) {
@@ -506,7 +468,6 @@ public class UnifiedLauncherHook extends BaseHook {
         } catch (Throwable e) { /* ignore */ }
     }
     
-    // --- Position Correction (Dock Offset) ---
     private void hookDockAnimationCorrection(ClassLoader classLoader) {
         try {
             Class<?> launcherClass = XposedHelpers.findClass("com.android.launcher3.Launcher", classLoader);
@@ -606,14 +567,6 @@ public class UnifiedLauncherHook extends BaseHook {
             }
         });
 
-        // XposedHelpers.findAndHookMethod(workspaceClass, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
-        //     @SuppressLint("ClickableViewAccessibility")
-        //     @Override
-        //     protected void beforeHookedMethod(MethodHookParam param) {
-        //         handleGestureTouchEvent(param);
-        //     }
-        // });
-
         XposedHelpers.findAndHookMethod(workspaceClass, "bindAndInitFirstWorkspaceScreen", new XC_MethodReplacement() {
             @Override
             protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
@@ -649,7 +602,6 @@ public class UnifiedLauncherHook extends BaseHook {
         } catch (Throwable e) { /* ignore */ }
     }
 
-    // --- DT2S Logic ---
 
     private void applyDT2SListener(Activity activity) {
         if (!isSettingEnabled(activity, KEY_DT2S_ENABLED)) return;
@@ -722,10 +674,9 @@ public class UnifiedLauncherHook extends BaseHook {
             Class<?> logicClass = XposedHelpers.findClass("com.android.launcher3.model.GridSizeMigrationLogic", classLoader);
             final Class<?> itemsToPlaceClass = XposedHelpers.findClass("com.android.launcher3.model.GridSizeMigrationLogic$WorkspaceItemsToPlace", classLoader);
             final Class<?> occupancyClass = XposedHelpers.findClass("com.android.launcher3.util.GridOccupancy", classLoader);
-
             Class<?> dbReaderClass = XposedHelpers.findClass("com.android.launcher3.model.DbReader", classLoader);
             Class<?> dbHelperClass = XposedHelpers.findClass("com.android.launcher3.model.DatabaseHelper", classLoader);
-            
+
             XposedHelpers.findAndHookMethod(logicClass, "migrateHotseat", int.class, int.class, dbReaderClass, dbReaderClass, dbHelperClass, List.class, new XC_MethodReplacement() {
                 @Override
                 protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
@@ -802,24 +753,144 @@ public class UnifiedLauncherHook extends BaseHook {
                 }
             });
 
-            hookModelWriterAndLoader(classLoader);
-            
+            hookLoaderCursor(classLoader);
+            hookModelWriter(classLoader);
             XposedHelpers.findAndHookMethod(occupancyClass, "isRegionVacant", int.class, int.class, int.class, int.class, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) {
+
                     int y = (Integer) param.args[1];
-                    int spanY = (Integer) param.args[3];
-                    if (y > 0 || (y + spanY) > 1) return;
+                    if (y > 0) return; 
+                    
                     if ((Boolean) param.getResult()) return;
 
                     Context context = getCurrentApplication();
-                    if (context != null && getIntSetting(context, KEY_TOP_WIDGET_ENABLE, 0) == 1) param.setResult(true); 
+                    if (context == null || getIntSetting(context, KEY_TOP_WIDGET_ENABLE, 0) != 1) return;
+
+                    try {
+                        int x = (Integer) param.args[0];
+                        int spanX = (Integer) param.args[2];
+                        int spanY = (Integer) param.args[3];
+                        Object gridOccupancy = param.thisObject;
+                        
+                        boolean[][] cells = (boolean[][]) XposedHelpers.getObjectField(gridOccupancy, "cells");
+                        int countX = XposedHelpers.getIntField(gridOccupancy, "mCountX");
+                        int countY = XposedHelpers.getIntField(gridOccupancy, "mCountY");
+                        int endX = x + spanX - 1;
+                        int endY = y + spanY - 1;
+
+                        if (x < 0 || y < 0 || endX >= countX || endY >= countY) return;
+
+                        boolean wouldBeVacant = true;
+                        for (int cx = x; cx <= endX; cx++) {
+                            for (int cy = y; cy <= endY; cy++) {
+                                if (cy > 0 && cells[cx][cy]) {
+                                    wouldBeVacant = false;
+                                    break;
+                                }
+                            }
+                            if (!wouldBeVacant) break;
+                        }
+
+                        if (wouldBeVacant) {
+                            param.setResult(true);
+                        }
+                    } catch (Throwable t) {
+                        param.setResult(true);
+                    }
                 }
             });
 
         } catch (Throwable e) {
             logError("Failed to hook Persistence Logic", e);
         }
+    }
+
+    private void hookLoaderCursor(ClassLoader classLoader) {
+        try {
+            Class<?> loaderCursorClass = XposedHelpers.findClass("com.android.launcher3.model.LoaderCursor", classLoader);
+            Class<?> itemInfoClass = XposedHelpers.findClass("com.android.launcher3.model.data.ItemInfo", classLoader);
+            Class<?> intSparseArrayMapClass = XposedHelpers.findClass("com.android.launcher3.util.IntSparseArrayMap", classLoader);
+            Class<?> loaderMemoryLoggerClass = XposedHelpers.findClass("com.android.launcher3.model.LoaderMemoryLogger", classLoader);
+
+            XposedHelpers.findAndHookMethod(loaderCursorClass, "checkAndAddItem",
+                itemInfoClass, intSparseArrayMapClass, loaderMemoryLoggerClass,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) {
+                        try {
+                            Object cursor = param.thisObject;
+                            Object item = param.args[0];
+                            Context context = (Context) XposedHelpers.getObjectField(cursor, "mContext");
+
+                            if (getIntSetting(context, KEY_TOP_WIDGET_ENABLE, 0) != 1) return;
+
+                            int container = XposedHelpers.getIntField(item, "container");
+                            if (container != -100) return; // Desktop
+
+                            int screenId = XposedHelpers.getIntField(item, "screenId");
+                            if (screenId != 0) return;
+
+                            int cellY = XposedHelpers.getIntField(item, "cellY");
+                            if (cellY != 0) return;
+
+                            Object mOccupied = XposedHelpers.getObjectField(cursor, "mOccupied");
+                            Object gridOccupancy = XposedHelpers.callMethod(mOccupied, "get", screenId);
+
+                            if (gridOccupancy != null) {
+                                int cellX = XposedHelpers.getIntField(item, "cellX");
+                                int spanX = XposedHelpers.getIntField(item, "spanX");
+                                int spanY = XposedHelpers.getIntField(item, "spanY");
+
+                                XposedHelpers.callMethod(gridOccupancy, "markCells", false, cellX, cellY, spanX, spanY);
+
+                                param.setObjectExtra("gridOccupancy", gridOccupancy);
+                                param.setObjectExtra("cellX", cellX);
+                                param.setObjectExtra("cellY", cellY);
+                                param.setObjectExtra("spanX", spanX);
+                                param.setObjectExtra("spanY", spanY);
+                            }
+                        } catch (Throwable e) { }
+                    }
+
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        try {
+                            Object gridOccupancy = param.getObjectExtra("gridOccupancy");
+                            if (gridOccupancy != null) {
+                                int cellX = (Integer) param.getObjectExtra("cellX");
+                                int cellY = (Integer) param.getObjectExtra("cellY");
+                                int spanX = (Integer) param.getObjectExtra("spanX");
+                                int spanY = (Integer) param.getObjectExtra("spanY");
+
+                                XposedHelpers.callMethod(gridOccupancy, "markCells", true, cellX, cellY, spanX, spanY);
+                            }
+                        } catch (Throwable e) { }
+                    }
+                }
+            );
+        } catch (Throwable e) {
+            logError("Failed to hook LoaderCursor", e);
+        }
+    }
+
+    private void hookModelWriter(ClassLoader classLoader) {
+        try {
+             Class<?> modelWriterClass = XposedHelpers.findClass("com.android.launcher3.model.ModelWriter", classLoader);
+             Class<?> itemInfoClass = XposedHelpers.findClass("com.android.launcher3.model.data.ItemInfo", classLoader);
+             
+             XposedHelpers.findAndHookMethod(modelWriterClass, "addItemToDatabase", itemInfoClass, int.class, int.class, int.class, int.class, new XC_MethodHook() {
+                 @Override protected void afterHookedMethod(MethodHookParam param) { 
+                     saveWorkspaceItem((Context) XposedHelpers.getObjectField(param.thisObject, "mContext"), param.args[0]); 
+                 }
+             });
+             
+             XposedHelpers.findAndHookMethod(modelWriterClass, "modifyItemInDatabase", itemInfoClass, int.class, int.class, int.class, int.class, int.class, int.class, new XC_MethodHook() {
+                 @Override protected void afterHookedMethod(MethodHookParam param) {
+                     saveWorkspaceItem((Context) XposedHelpers.getObjectField(param.thisObject, "mContext"), param.args[0]);
+                 }
+             });
+        } catch (Throwable e) {}
     }
 
     // =========================================================================
@@ -919,13 +990,11 @@ public class UnifiedLauncherHook extends BaseHook {
 
     private void handleWorkspaceView(TextView view, Object itemInfo) {
         try {
-            // Проверка mDisplay обязательна, как в GridSizeHomePageHook
             int mDisplay = XposedHelpers.getIntField(view, "mDisplay");
             if (mDisplay != DISPLAY_WORKSPACE && mDisplay != DISPLAY_FOLDER) return;
             
             if (itemInfo != null) {
                 int container = XposedHelpers.getIntField(itemInfo, "container");
-                // Исключаем Hotseat и другие контейнеры
                 if (container == CONTAINER_HOTSEAT || container == CONTAINER_HOTSEAT_PREDICTION || container == -104) return;
             }
             applyWorkspaceIconSize(view, view.getContext());
@@ -937,11 +1006,9 @@ public class UnifiedLauncherHook extends BaseHook {
         int sizePercent = getIntSetting(context, KEY_HOME_ICON_SIZE, 100);
         if (sizePercent <= 0) return;
         
-        // Сброс масштаба обязателен для срабатывания scaleHook
-        view.setScaleX(1f); 
+        view.setScaleX(1f);
         view.setScaleY(1f);
 
-        // Если ширина уже известна, обновляем Pivot сразу (фикс позиции)
         if (view.getWidth() > 0) {
             updatePivot(view);
         }
@@ -1141,7 +1208,6 @@ public class UnifiedLauncherHook extends BaseHook {
 
     private TextView resolveBubbleTextView(View view) {
         if (view instanceof TextView && view.getClass().getName().contains("BubbleTextView")) return (TextView) view;
-        // Fix: Support BubbleTextHolder (for proper icon resolution in Hotseat)
         if (view.getClass().getName().contains("BubbleTextHolder")) {
             try { return (TextView) XposedHelpers.callMethod(view, "getBubbleText"); } catch (Throwable e) { return null; }
         }
@@ -1228,12 +1294,7 @@ public class UnifiedLauncherHook extends BaseHook {
     
     @Override
     public void onActivityDestroyed(Activity activity) {
-        // try {
-        //     Iterator<Map.Entry<Integer, WeakReference<GestureDetector>>> it = detectors.entrySet().iterator();
-        //     while (it.hasNext()) {
-        //         if (it.next().getValue().get() == null) it.remove();
-        //     }
-        // } catch (Throwable t) {}
+
     }
     
     private boolean isDescendantOf(View child, View parent) {
