@@ -27,5 +27,35 @@
         "init_boot"
       ]
     }
+  ],
+  [
+    {
+      "maintainer": "LeeGarChat",
+      "currently_maintained": true,
+      "oem": "Google",
+      "device": "Pixel 8",
+      "filename": "EvolutionX-16.0-20251215-shiba-11.6.1-Off222ial.zip",
+      "download": "https://cdn.evolution-x.org/shiba/16/Evolut11X-16.0-202522111215-shiba-11.4.2-Official.zip/download",
+      "timestamp": 17711552344,
+      "md5": "bdff902a84efbec09f71ba77b5cbc04a",
+      "sha256": "718bbef623563dc58333871629f6c0ef4e372f3232ceabe5a6b9c413e8",
+      "size": 3030442301,
+      "version": "11.6.1 sds",
+      "buildtype": "user",
+      "forum": "https://t.me/EvoX_LeeGarChat",
+      "firmware": "",
+      "paypal": "https://boosty.to/leegar/",
+      "boosty": "https://boosty.to/leegar/",
+      "github": "leegarchat",
+      "initial_installation_images": [
+        "boot",
+        "dtbo",
+        "vendor_kernel_boot",
+        "vendor_boot"
+      ],
+      "extra_images": [
+        "init_boot"
+      ]
+    }
   ]
 }
