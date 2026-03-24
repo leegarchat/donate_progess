@@ -1,36 +1,109 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <!-- General / Navigation -->
     <string name="os_title_activity">Fisika Gulir</string>
-    <string name="os_title_playground">Playground (Tes)</string>
+    <string name="os_title_playground">Playground (Uji)</string>
     <string name="os_btn_back">Kembali</string>
     <string name="btn_back">Kembali</string>
-    <string name="os_btn_reset">Reset Pengaturan</string>
-    <string name="os_msg_reset_done">Pengaturan dikembalikan ke default</string>
+    <string name="os_btn_reset">Atur ulang pengaturan</string>
+    <string name="os_msg_reset_done">Dikembalikan ke pengaturan default</string>
     <string name="os_msg_import_success">Pengaturan berhasil diimpor</string>
-    <string name="os_msg_app_exists">Aplikasi ini sudah ada dalam daftar</string>
+    <string name="os_msg_app_exists">Aplikasi ini sudah ada di daftar</string>
 
     <!-- Master Switch (Dynamic) -->
     <!-- Xposed Mode -->
     <string name="os_label_master_xposed">Modul Xposed</string>
-    <string name="os_desc_master_xposed">Menggunakan Xposed Framework untuk memodifikasi kelas sistem EdgeEffect.\n\nMemungkinkan penerapan fisika di semua aplikasi tanpa memodifikasi sistem. Jika modul tidak aktif di LSPosed, efek hanya akan bekerja di aplikasi ini (mode demo).</string>
+    <string name="os_desc_master_xposed">Menggunakan framework Xposed untuk menghook kelas sistem EdgeEffect.\n\nMemungkinkan injeksi fisika ke semua aplikasi tanpa memodifikasi sistem. Jika modul tidak aktif di LSPosed, efek hanya akan bekerja di aplikasi ini (mode demo).</string>
     
     <!-- Native Mode -->
     <string name="os_label_master_native">Integrasi Sistem</string>
-    <string name="os_desc_master_native">Mengaktifkan implementasi fisika bawaan firmware (Native).\n\nBekerja langsung melalui kelas sistem Pixel Parts tanpa hook, memastikan kinerja dan kompatibilitas maksimal.</string>
+    <string name="os_desc_master_native">Mengaktifkan implementasi fisika bawaan firmware (Native).\n\nBekerja langsung melalui kelas sistem Pixel Parts tanpa hook, menjamin performa dan kompatibilitas maksimal.</string>
+
+    <!-- SystemUI Settings -->
+    <string name="sysui_settings_title">Pengaturan SystemUI</string>
+    <string name="sysui_lockscreen_title">Pengaturan Layar Kunci</string>
+    <string name="sysui_lockscreen_subtitle">Konfigurasi informasi pengisian daya dan gestur di layar kunci</string>
+
+    <string name="sysui_shade_title">Panel Notifikasi</string>
+    <string name="sysui_shade_subtitle">Pemutar kompak dan scrim</string>
+
+    <!-- Magnifier (text loupe) -->
+    <string name="magnifier_section_title">Kaca Pembesar Teks</string>
+    <string name="magnifier_enable_title">Zoom Kustom</string>
+    <string name="magnifier_enable_summary">Ubah tingkat pembesaran kaca pembesar teks</string>
+    <string name="magnifier_zoom_title">Tingkat Pembesaran</string>
+    <string name="magnifier_size_title">Ukuran Jendela</string>
+    <string name="magnifier_shape_title">Bentuk Jendela</string>
+    <string name="magnifier_shape_default">Default</string>
+    <string name="magnifier_shape_square">Persegi</string>
+    <string name="magnifier_shape_circle">Lingkaran</string>
+    <string name="magnifier_offset_y_title">Offset Vertikal</string>
+    <string name="magnifier_xposed_warning_title">Modul Xposed Diperlukan</string>
+    <string name="magnifier_xposed_warning_desc">Modifikasi kaca pembesar bekerja per-aplikasi. Aktifkan modul Xposed untuk setiap aplikasi tempat kaca pembesar yang dimodifikasi harus muncul.</string>
+    <string name="overscroll_xposed_warning_title">Modul Xposed Diperlukan</string>
+    <string name="overscroll_xposed_warning_desc">Modifikasi overscroll bekerja per-aplikasi. Aktifkan modul Xposed untuk setiap aplikasi tempat efek tepi yang dimodifikasi harus muncul.</string>
+
+    <string name="sysui_media_player_title">Pemutar Media</string>
+    <string name="sysui_media_compact_mode_title">Mode Kompak</string>
+    <string name="sysui_media_compact_mode_off">Nonaktif</string>
+    <string name="sysui_media_compact_mode_small">Kompak</string>
+    <string name="sysui_media_compact_mode_header">Hanya Header</string>
+    <string name="sysui_media_compact_mode_very_small">Sangat Kompak</string>
+
+    <string name="sysui_media_bg_alpha_title">Opasitas latar pemutar</string>
+
+    <string name="sysui_media_hide_title">Sembunyikan pemutar media</string>
+    <string name="sysui_media_hide_qs">Sembunyikan di Pengaturan Cepat</string>
+    <string name="sysui_media_hide_notifications">Sembunyikan di notifikasi</string>
+    <string name="sysui_media_hide_lockscreen">Sembunyikan di layar kunci</string>
+
+    <string name="sysui_shade_surface_title">Latar panel</string>
+    <string name="sysui_shade_surface_solid">Panel solid (tanpa scrim)</string>
+    <string name="sysui_shade_blur_title">Blur latar belakang</string>
+    <string name="sysui_shade_zoom_title">Zoom latar belakang</string>
+    <string name="sysui_shade_disable_scale_threshold_title">Nonaktifkan ambang batas skala</string>
+    <string name="sysui_shade_scrim_title">Kustomisasi scrim</string>
+    <string name="sysui_shade_notif_scrim_alpha_title">Alpha scrim notifikasi</string>
+    <string name="sysui_shade_main_scrim_alpha_title">Alpha scrim utama</string>
+    <string name="sysui_shade_notif_scrim_tint_title">Warna scrim notifikasi</string>
+    <string name="sysui_shade_notif_scrim_tint_color">Warna tint</string>
+    <string name="sysui_shade_main_scrim_tint_title">Warna scrim utama</string>
+    <string name="sysui_shade_main_scrim_tint_color">Warna tint</string>
+    <string name="sysui_shade_override_enable">Pengali alpha relatif</string>
+
+    <string name="sysui_charging_info_title">Informasi Pengisian Daya</string>
+    <string name="sysui_charging_info_enable">Aktifkan informasi pengisian daya kustom</string>
+    <string name="sysui_show_wattage">Tampilkan daya</string>
+    <string name="sysui_show_voltage">Tampilkan tegangan</string>
+    <string name="sysui_show_current">Tampilkan arus (mA)</string>
+    <string name="sysui_show_temp">Tampilkan suhu baterai</string>
+    <string name="sysui_show_percent">Tampilkan level baterai</string>
+    <string name="sysui_show_standard">Tampilkan teks standar (Cepat/Lambat)</string>
+    <string name="sysui_show_custom_symbol">Tampilkan simbol kustom</string>
+    <string name="sysui_custom_symbol">Simbol kustom (mis: ⚡)</string>
+    <string name="sysui_sensor_interval_title">Interval pembaruan sensor</string>
+    <string name="sysui_average_mode_title">Tampilkan nilai rata-rata pengisian daya</string>
+
 
     <string name="os_status_active">Aktif</string>
     <string name="os_status_disabled">Nonaktif</string>
     
     <!-- Xposed Dialogs -->
     <string name="os_dialog_xposed_title">Xposed tidak aktif</string>
-    <string name="os_dialog_xposed_msg">Hook tidak dapat dipasang.\n\nAplikasi tidak mendeteksi framework LSPosed yang aktif. Tanpa itu, intersepsi panggilan sistem tidak mungkin dilakukan; pengaturan hanya akan berfungsi di dalam aplikasi ini.</string>
+    <string name="os_dialog_xposed_msg">Tidak dapat memasang hook.\n\nAplikasi tidak mendeteksi framework LSPosed yang aktif. Tanpa itu, intersepsi panggilan sistem tidak mungkin; pengaturan hanya akan bekerja di dalam aplikasi ini.</string>
 
     <!-- Profiles UI -->
     <string name="os_group_profiles">Profil</string>
-    <string name="os_prof_btn_export">Ekspor ke File</string>
-    <string name="os_prof_btn_import">Impor dari File</string>
-    <string name="os_prof_btn_create">Simpan Profil Baru</string>
-    <string name="os_prof_header_list">Profil Tersimpan</string>
+    <string name="os_prof_btn_export">Ekspor</string>
+    <string name="os_prof_btn_import">Impor</string>
+    <string name="os_prof_btn_network">Konfigurasi Online</string>
+    <string name="os_prof_btn_create">Simpan profil baru</string>
+    <string name="os_prof_header_list">Profil tersimpan</string>
+    <string name="os_net_dialog_title">Konfigurasi Online</string>
+    <string name="os_net_loading">Memuat…</string>
+    <string name="os_net_empty">Konfigurasi tidak ditemukan</string>
+    <string name="os_net_error">Gagal memuat</string>
+    <string name="os_net_applied">Konfigurasi diterapkan: %s</string>
     <string name="os_prof_item_active">Aktif</string>
     <string name="os_prof_item_tap">Ketuk untuk memuat</string>
     <string name="os_prof_dialog_title">Profil Baru</string>
@@ -42,138 +115,153 @@
     <!-- Physics Group -->
     <string name="os_group_physics">Fisika Pegas</string>
 
-    <string name="os_lbl_physics_pull">Tarikan</string>
-    <string name="os_desc_physics_pull">Pengali jarak saat penarikan manual (onPull).\n\n• Nilai &gt;= 1.0: Mengikuti jari secara linear.\n• Nilai &lt; 1.0: Mengaktifkan resistansi non-linear (karet) — semakin jauh ditarik, semakin kuat resistansinya.</string>
+    <string name="os_lbl_physics_pull">Faktor tarik</string>
+    <string name="os_desc_physics_pull">Pengali jarak saat menarik manual (onPull).\n\n• Nilai &gt;= 1.0: mengikuti jari secara linear.\n• Nilai &lt; 1.0: mengaktifkan resistensi nonlinear (karet gelang) — semakin jauh ditarik, semakin kuat resistensinya.</string>
 
     <string name="os_lbl_physics_stiffness">Kekakuan</string>
-    <string name="os_desc_physics_stiffness">Konstanta pegas (k).\n\nMenentukan kekuatan yang mengembalikan daftar ke posisi semula. Mempengaruhi frekuensi osilasi saat memantul.</string>
+    <string name="os_desc_physics_stiffness">Konstanta pegas (k).\n\nMenentukan kekuatan yang mengembalikan daftar ke posisi awal. Mempengaruhi frekuensi osilasi saat memantul.</string>
 
-    <string name="os_lbl_physics_damping">Redaman</string>
-    <string name="os_desc_physics_damping">Koefisien redaman (ζ).\n\nMenghilangkan energi pegas. Menentukan seberapa cepat osilasi berhenti setelah melepas jari atau membentur batas.</string>
+    <string name="os_lbl_physics_damping">Peredaman</string>
+    <string name="os_desc_physics_damping">Rasio peredaman (ζ).\n\nMenyerap energi pegas. Menentukan seberapa cepat osilasi mereda setelah dilepas atau menabrak tepi.</string>
 
-    <string name="os_lbl_physics_fling">Impuls</string>
-    <string name="os_desc_physics_fling">Pengali kecepatan masuk saat dampak inersia (onAbsorb).\n\nMeningkatkan amplitudo pantulan saat gulir cepat.\nCatatan: Pada nilai tinggi (&gt;1.0), kode secara dinamis mengurangi kekakuan pegas agar benturan terasa lebih "lembut".</string>
+    <string name="os_lbl_physics_fling">Impuls lemparan</string>
+    <string name="os_desc_physics_fling">Pengali kecepatan masuk pada onAbsorb (benturan inersia).\n\nMeningkatkan amplitudo pantulan saat pengguliran cepat.\nCatatan: untuk nilai tinggi (&gt;1.0), kode secara dinamis mengurangi kekakuan pegas agar benturan terasa lebih "lembut".</string>
 
-    <string name="os_lbl_physics_res_exp">Kurva Resistansi</string>
-    <string name="os_desc_physics_res_exp">Pangkat eksponen untuk rumus resistansi.\n\nHanya berfungsi jika Tarikan &lt; 1.0. Menentukan kecuraman peningkatan tenaga saat menarik tepi.</string>
+    <string name="os_lbl_physics_res_exp">Kurva resistensi</string>
+    <string name="os_desc_physics_res_exp">Nilai eksponen rumus resistensi.\n\nHanya bekerja jika faktor tarik &lt; 1.0. Menentukan kecuraman pertumbuhan gaya saat menarik di tepi.</string>
 
     <!-- Visual Scales -->
-    <string name="os_mode_off">Mati (Off)</string>
-    <string name="os_mode_shrink">Menyusut</string>
-    <string name="os_mode_grow">Melebar</string>
-    <string name="os_lbl_scale_mode">Mode Deformasi</string>
+    <string name="os_mode_off">Nonaktif</string>
+    <string name="os_mode_shrink">Kompres</string>
+    <string name="os_mode_grow">Renggang</string>
+    <string name="os_lbl_scale_mode">Mode deformasi</string>
     <string name="os_lbl_scale_int">Intensitas</string>
     <string name="os_lbl_scale_limit">Batas</string>
-    <string name="os_lbl_anchor_x">Titik Tumpu X</string>
-    <string name="os_lbl_anchor_y">Titik Tumpu Y</string>
+    <string name="os_lbl_anchor_x">Titik jangkar X</string>
+    <string name="os_lbl_anchor_y">Titik jangkar Y</string>
 
-    <string name="os_group_visual_vert">Deformasi Vertikal</string>
-    <string name="os_desc_visual_vert">Mengubah skala (ScaleY) konten RenderNode secara vertikal.\n\n• Menyusut: memipihkan konten saat benturan.\n• Melebar: memanjangkan konten (efek karet).</string>
+    <string name="os_group_visual_vert">Deformasi vertikal</string>
+    <string name="os_desc_visual_vert">Mengubah skala (ScaleY) konten RenderNode secara vertikal.\n\n• Kompres: meratakan konten saat benturan.\n• Renggang: memanjangkan konten (efek karet).</string>
 
-    <string name="os_group_visual_zoom">Zoom (Skala XY)</string>
-    <string name="os_desc_visual_zoom">Mengubah skala keseluruhan (ScaleX dan ScaleY) dari seluruh kontainer.\n\nMenciptakan efek mendekat/menjauh saat berinteraksi dengan batas.</string>
+    <string name="os_group_visual_zoom">Zoom (skala XY)</string>
+    <string name="os_desc_visual_zoom">Mengubah skala keseluruhan (ScaleX dan ScaleY) dari seluruh kontainer.\n\nMenciptakan efek zoom saat berinteraksi dengan tepi.</string>
 
-    <string name="os_group_visual_horz">Deformasi Horizontal</string>
-    <string name="os_desc_visual_horz">Mengubah skala (ScaleX) sepanjang lebar.\n\nMemungkinkan efek "tong" atau penyempitan daftar saat ditarik.</string>
+    <string name="os_group_visual_horz">Deformasi horizontal</string>
+    <string name="os_desc_visual_horz">Mengubah skala (ScaleX) sepanjang lebar.\n\nMemungkinkan "efek barel" atau penyempitan daftar saat menarik.</string>
 
-    <string name="os_desc_scale_intensity">Koefisien pengaruh perpindahan terhadap skala. Semakin tinggi nilainya, semakin kuat distorsi pada pergeseran yang sama.</string>
-    <string name="os_desc_scale_limit">Batas keras distorsi (skala min/maks) untuk mencegah artefak visual saat tarikan kuat.</string>
-    <string name="os_desc_scale_anchor">Koordinat titik pusat penskalaan (0.0 - 1.0). 0.5 adalah tengah.</string>
+    <string name="misc_group_title">Lain-lain</string>
 
-    <string name="os_lbl_min_vel">Batas Kecepatan</string>
-    <string name="os_desc_min_vel">Ambang batas kecepatan untuk mematikan pegas.\n\nMenentukan kapan perhitungan fisika dihentikan secara paksa. Jika kecepatan pegas turun di bawah nilai ini, animasi berakhir. Memantu menghilangkan getaran mikro di akhir.</string>
+    <string name="os_desc_scale_intensity">Koefisien pengaruh perpindahan terhadap skala. Semakin tinggi nilainya, semakin kuat distorsi pada perpindahan yang sama.</string>
+    <string name="os_desc_scale_limit">Batas keras distorsi (min/maks skala) untuk mencegah artefak visual saat tarikan kuat.</string>
+    <string name="os_desc_scale_anchor">Koordinat titik di mana penskalaan dilakukan (0.0 - 1.0). 0.5 adalah pusat.</string>
 
-    <string name="os_lbl_min_val">Batas Amplitudo</string>
-    <string name="os_desc_min_val">Ambang batas amplitudo untuk berhenti.\n\nJika sisa perpindahan (dalam piksel) menjadi kurang dari nilai ini, animasi dianggap selesai. Meningkatkan nilai ini membuat pengembalian ke posisi awal terlihat lebih tajam dan cepat.</string>
+    <string name="os_lbl_min_vel">Cutoff kecepatan</string>
+    <string name="os_desc_min_vel">Ambang batas peluruhan kecepatan pegas.\n\nMenentukan kapan perhitungan fisika dihentikan paksa. Jika kecepatan pegas turun di bawah nilai ini, animasi berakhir. Membantu menghindari getaran mikro di akhir.</string>
+
+    <string name="os_lbl_min_val">Cutoff amplitudo</string>
+    <string name="os_desc_min_val">Ambang batas peluruhan amplitudo.\n\nJika perpindahan yang tersisa (dalam piksel) menjadi lebih kecil dari nilai ini, animasi dianggap selesai. Meningkatkan membuat kembalinya ke keadaan awal terlihat lebih tajam dan lebih cepat.</string>
 
     <!-- Anchor Logic -->
-    <string name="os_lbl_invert_anchor">Pivot Cerdas</string>
-    <string name="os_desc_invert_anchor">Secara otomatis mencerminkan koordinat jangkar saat berinteraksi dengan tepi kanan atau bawah.\n\n• ON: Koordinat 0.0 selalu berarti "tepi yang ditarik".\n• OFF: Koordinat absolut (0.0 selalu kiri/atas, 1.0 selalu kanan/bawah), terlepas dari arah gesekan.</string>
+    <string name="os_lbl_invert_anchor">Jangkar pintar</string>
+    <string name="os_desc_invert_anchor">Secara otomatis membalikkan koordinat jangkar saat berinteraksi dengan tepi kanan atau bawah.\n\n• AKTIF: koordinat 0.0 selalu berarti "tepi yang ditarik".\n• NONAKTIF: koordinat bersifat absolut (0.0 selalu kiri/atas, 1.0 selalu kanan/bawah), terlepas dari arah swipe.</string>
 
     <!-- Horizontal Specific Anchors -->
     <string name="os_lbl_anchor_x_horiz">Jangkar X (Horizontal)</string>
-    <string name="os_desc_anchor_x_horiz">Titik penskalaan pada sumbu utama (arah gulir) untuk daftar horizontal.\n\nMenentukan bagian lebar layar mana yang terutama terdistorsi saat ditarik.</string>
+    <string name="os_desc_anchor_x_horiz">Titik skala sepanjang sumbu utama (arah gulir) untuk daftar horizontal.\n\nMenentukan bagian mana dari lebar layar yang terutama terdistorsi saat menarik.</string>
 
     <string name="os_lbl_anchor_y_horiz">Jangkar Y (Horizontal)</string>
-    <string name="os_desc_anchor_y_horiz">Titik penskalaan pada sumbu silang (tinggi) untuk daftar horizontal.\n\nMemungkinkan penggeseran pusat efek ke atas atau bawah relatif terhadap tengah daftar.</string>
+    <string name="os_desc_anchor_y_horiz">Titik skala sepanjang sumbu melintang (tinggi) untuk daftar horizontal.\n\nMemungkinkan menggeser pusat efek ke atas atau bawah relatif terhadap pusat daftar.</string>
     <string name="os_lbl_scale_int_horiz">Intensitas (Horizontal)</string>
-    <string name="os_desc_scale_int_horiz">Menentukan kekuatan efek khusus untuk daftar horizontal (LazyRow, ViewPager). Memungkinkan pengaturan perilaku secara terpisah dari gulir vertikal.</string>
+    <string name="os_desc_scale_int_horiz">Menentukan kekuatan efek khusus untuk daftar horizontal (LazyRow, ViewPager). Memungkinkan pengaturan terpisah dari pengguliran vertikal.</string>
 
 
     <!-- Advanced -->
-    <string name="os_group_advanced">Parameter Sistem</string>
+    <string name="os_group_advanced">Parameter sistem</string>
     
-    <string name="os_lbl_input_smooth">Filter Input</string>
-    <string name="os_desc_input_smooth">Filter low-pass untuk koordinat jari.\n\nMemperhalus noise sensor sebelum mengirimkan data ke model fisika. Nilai tinggi membuat reaksi terasa "kental".</string>
+    <string name="os_lbl_input_smooth">Filter masukan</string>
+    <string name="os_desc_input_smooth">Filter low-pass untuk koordinat jari pada onPull.\n\nMenghaluskan noise sensor sebelum dikirim ke model fisika. Nilai tinggi membuat respons terasa "kental".</string>
+    <string name="os_lbl_anim_speed">Kecepatan animasi (%)</string>
+    <string name="os_desc_anim_speed">Pengali global kecepatan animasi.\n\nDiterapkan pada semua pengaturan fisika dan visual.\n100%% = kecepatan standar, di bawah 100%% memperlambat, di atas 100%% mempercepat.</string>
     <string name="os_lbl_lerp_idle">Penghalusan: JARI</string>
-    <string name="os_desc_lerp_idle">Kecepatan interpolasi (LERP) saat interaksi langsung.\n\nMenentukan seberapa cepat visual mengejar jari selama pegas TIDAK berjalan (nonaktif). Lebih rendah = lebih halus, tetapi ada jeda.</string>
+    <string name="os_desc_lerp_idle">Kecepatan interpolasi (LERP) saat interaksi langsung (onPull).\n\nMenentukan seberapa cepat grafik mengikuti jari saat pegas TIDAK berjalan (nonaktif). Lebih rendah = lebih halus, tetapi dengan jeda.</string>
 
     <string name="os_lbl_lerp_run">Penghalusan: PEGAS</string>
-    <string name="os_desc_lerp_run">Kecepatan interpolasi (LERP) selama animasi aktif.\n\nMenentukan kehalusan gerakan saat model fisika sedang berjalan (pegas aktif).</string>
+    <string name="os_desc_lerp_run">Kecepatan interpolasi (LERP) selama animasi aktif (onRelease/onAbsorb).\n\nMenentukan kehalusan gerakan saat model fisika berjalan (pegas aktif).</string>
 
     <string name="os_lbl_compose_scale">Pembagi Compose</string>
-    <string name="os_desc_compose_scale">Koefisien normalisasi untuk Jetpack Compose.\n\nCompose mengirimkan delta gulir dalam satuan berbeda atau menjumlahkannya secara berbeda. Pembagi ini mengurangi nilai input untuk menyelaraskan fisika dengan sistem View klasik.</string>
+    <string name="os_desc_compose_scale">Koefisien normalisasi untuk Jetpack Compose.\n\nCompose mengirimkan delta gulir dalam satuan lain atau mengakumulasinya secara berbeda. Pembagi ini mengurangi nilai onPull yang masuk untuk menyelaraskan fisika dengan sistem View.</string>
 
     <!-- Apps -->
     <string name="os_group_apps">Konfigurasi Aplikasi</string>
-    <string name="os_btn_add_app">Tambah Aplikasi</string>
+    <string name="os_btn_add_app">Tambah aplikasi</string>
     <string name="os_btn_cancel">Batal</string>
     <string name="btn_cancel">Batal</string>
+    <string name="btn_restart_launcher">Terapkan dan mulai ulang launcher</string>
     
     <!-- App Config Items -->
     <string name="os_app_filter">Penghalusan</string>
     <string name="os_app_ignore">Nonaktifkan</string>
-    <string name="os_app_scale">Pengali Individu</string>
-    <string name="os_app_select_title">Pilih Aplikasi</string>
+    <string name="os_app_scale">Pengali individual</string>
+    <string name="os_app_select_title">Pilih aplikasi</string>
     <string name="os_app_search_hint">Cari berdasarkan nama atau paket...</string>
     
     <!-- Other -->
-    <string name="os_card_example_text">Contoh konten untuk tes fisika.</string>
+    <string name="os_card_example_text">Konten contoh untuk pengujian fisika.</string>
 
     <!-- THERMAL MANAGER -->
     <string name="thermal_title">Profil Termal</string>
     
     <!-- Info Header -->
-    <string name="thermal_info_title">Cara Kerja</string>
-    <string name="thermal_info_summary">Berbeda dengan chip Qualcomm, manajemen panas pada Google Tensor tidak dilakukan melalui parameter kernel langsung, melainkan melalui file konfigurasi (thermal_info_config.json).\n\nModul ini bekerja di tingkat sistem: modul mengubah properti khusus (prop) yang memaksa layanan Thermal HAL memuat file konfigurasi alternatif dengan ambang batas throttling yang berbeda.\n\nIni adalah metode penyesuaian yang aman dan "native", yang disediakan oleh arsitektur Pixel. Reboot diperlukan untuk menerapkan perubahan.</string>
+    <string name="thermal_info_title">Cara Kerja (Tensor)</string>
+    <string name="thermal_info_summary">Berbeda dengan chip Qualcomm, manajemen panas Google Tensor tidak melalui parameter kernel langsung, melainkan melalui file konfigurasi (thermal_info_config.json).\n\nModul ini bekerja di level sistem: mengubah properti khusus (prop) yang memaksa layanan Thermal HAL memuat file konfigurasi alternatif dengan ambang batas throttling yang berbeda.\n\nIni adalah metode penyesuaian yang aman dan "native" yang dirancang oleh arsitektur Pixel. Diperlukan restart untuk menerapkan perubahan.</string>
 
     <!-- Sections -->
     <string name="thermal_sec_battery">Baterai</string>
-    <string name="thermal_sec_soc">Prosesor</string>
+    <string name="thermal_sec_soc">Prosesor (SoC)</string>
 
     <!-- Modes -->
-    <string name="thermal_mode_stock">Pabrikan</string>
-    <string name="thermal_mode_soft">Halus (+5°C)</string>
+    <string name="thermal_mode_stock">Bawaan</string>
+    <string name="thermal_mode_soft">Ringan (+5°C)</string>
     <string name="thermal_mode_medium">Sedang (+9°C)</string>
     <string name="thermal_mode_hard">Agresif (+15°C)</string>
-    <string name="thermal_mode_off">Ekstrem (Off)</string>
+    <string name="thermal_mode_off">Ekstrem (Nonaktif)</string>
 
     <!-- Battery Descriptions -->
-    <string name="thermal_desc_bat_stock">Batas standar pabrik. Memastikan keamanan maksimal dan masa pakai baterai.</string>
-    <string name="thermal_desc_bat_soft">Sedikit peningkatan ambang batas (+5°C). Membantu menghindari perlambatan pengisian daya saat panas sedang.</string>
-    <string name="thermal_desc_bat_medium">Profil seimbang (+9°C). Kompromi antara kecepatan pengisian dan panas bodi.</string>
-    <string name="thermal_desc_bat_hard">PERINGATAN: Batas tinggi (+15°C). Pemanasan yang nyata mungkin terjadi saat pengisian cepat. Mempercepat keausan kimia baterai.</string>
-    <string name="thermal_desc_bat_off">BAHAYA: Penonaktifan perlindungan termal hampir total (+90°C). Risiko tinggi baterai menggembung dan kerusakan perangkat.</string>
+    <string name="thermal_desc_bat_stock">Batas pabrik default. Memastikan keamanan dan masa pakai baterai maksimal.</string>
+    <string name="thermal_desc_bat_soft">Sedikit menaikkan ambang batas (+5°C). Membantu menghindari perlambatan pengisian daya saat pemanasan moderat.</string>
+    <string name="thermal_desc_bat_medium">Profil seimbang (+9°C). Kompromi antara kecepatan pengisian daya dan panas bodi.</string>
+    <string name="thermal_desc_bat_hard">PERINGATAN: Batas tinggi (+15°C). Pemanasan yang terasa saat pengisian cepat mungkin terjadi. Mempercepat degradasi kimia baterai.</string>
+    <string name="thermal_desc_bat_off">BAHAYA: Perlindungan panas hampir sepenuhnya dinonaktifkan (+90°C). Risiko tinggi pembengkakan baterai dan kerusakan perangkat.</string>
 
     <!-- SoC Descriptions -->
-    <string name="thermal_desc_soc_stock">Algoritma standar. Penurunan frekuensi agresif (throttling) untuk menjaga suhu bodi tetap rendah.</string>
-    <string name="thermal_desc_soc_soft">Profil halus (+5°C). Memungkinkan prosesor mempertahankan frekuensi tinggi lebih lama di bawah beban.</string>
-    <string name="thermal_desc_soc_medium">Optimal untuk game (+9°C). Secara signifikan mengurangi penurunan FPS, bodi akan terasa hangat.</string>
-    <string name="thermal_desc_soc_hard">Performa maksimal (+15°C). Perangkat mungkin terasa panas saat disentuh. Disarankan hanya untuk tugas singkat.</string>
-    <string name="thermal_desc_soc_off">EKSTREM: Throttling dinonaktifkan. Prosesor akan memanas hingga pemadaman darurat. Hanya untuk benchmark.</string>
+    <string name="thermal_desc_soc_stock">Algoritma default. Penurunan frekuensi agresif (throttling) untuk menjaga suhu bodi tetap rendah.</string>
+    <string name="thermal_desc_soc_soft">Profil ringan (+5°C). Mengizinkan prosesor mempertahankan frekuensi tinggi lebih lama di bawah beban.</string>
+    <string name="thermal_desc_soc_medium">Optimal untuk gaming (+9°C). Secara signifikan mengurangi penurunan FPS, bodi akan hangat.</string>
+    <string name="thermal_desc_soc_hard">Performa maksimal (+15°C). Perangkat bisa menjadi sangat panas. Disarankan hanya untuk tugas singkat.</string>
+    <string name="thermal_desc_soc_off">EKSTREM: Throttling dinonaktifkan. Prosesor akan panas hingga shutdown darurat. Hanya untuk benchmark.</string>
 
     <!-- Dialogs -->
-    <string name="thermal_dialog_reboot_title">Perlu Reboot</string>
-    <string name="thermal_dialog_safe_msg">Profil termal baru dipilih.\n\nLayanan Thermal HAL hanya akan membaca pengaturan baru pada boot sistem berikutnya. Reboot perangkat sekarang?</string>
-    <string name="thermal_dialog_risk_msg">PERHATIAN: Anda memilih mode termal agresif!\n\nIni dapat menyebabkan pemanasan bodi yang parah dan degradasi komponen yang dipercepat.\n\nReboot diperlukan untuk menerapkan pengaturan.</string>
+    <string name="thermal_dialog_reboot_title">Perlu restart</string>
+    <string name="thermal_dialog_safe_msg">Profil termal baru dipilih.\n\nLayanan Thermal HAL akan membaca pengaturan baru saat startup sistem berikutnya. Restart perangkat sekarang?</string>
+    <string name="thermal_dialog_risk_msg">PERHATIAN: Anda telah memilih mode suhu agresif!\n\nIni dapat menyebabkan pemanasan bodi yang kuat dan degradasi komponen yang dipercepat.\n\nDiperlukan restart untuk menerapkan pengaturan.</string>
     
     <string name="btn_ok">Mengerti</string>
-    <string name="btn_reboot">Reboot</string>
+    <string name="btn_reboot">Restart</string>
+    <string name="btn_confirm">Konfirmasi</string>
+
+    <!-- Reboot Bubble -->
+    <string name="reboot_launcher">Restart Launcher</string>
+    <string name="reboot_systemui">Restart SystemUI</string>
+    <string name="reboot_system">Restart Sistem</string>
+    <string name="reboot_confirm_system_title">Restart perangkat?</string>
+    <string name="reboot_confirm_system_msg">Perangkat akan segera di-restart. Simpan pekerjaan Anda sebelum melanjutkan.</string>
+    <string name="reboot_confirm_sysui_title">Restart SystemUI?</string>
+    <string name="reboot_confirm_sysui_msg">SystemUI akan di-restart. Bilah navigasi, bilah status, dan notifikasi akan menghilang sebentar.</string>
 
     <!-- IMS MANAGER -->
     <string name="ims_category_title">Konfigurasi IMS</string>
-    <string name="warning_info">Pengaturan ini secara paksa mengaktifkan kemampuan Carrier Config. Secara default, sebagian besar fitur ini disembunyikan atau dinonaktifkan untuk wilayah yang tidak bersertifikat.\n\nUntuk menerapkan perubahan, perlu mengaktifkan lalu mematikan "Mode Pesawat".</string>
-    <string name="ims_footer_info">Pengaturan ini secara paksa mengaktifkan kemampuan Carrier Config. Secara default, sebagian besar fitur ini disembunyikan atau dinonaktifkan untuk wilayah yang tidak bersertifikat.\n\nUntuk menerapkan perubahan, perlu mengaktifkan lalu mematikan "Mode Pesawat".</string>
+    <string name="warning_info">Pengaturan ini memaksa aktivasi fungsi konfigurasi operator. Secara default, sebagian besar fungsi ini disembunyikan atau dinonaktifkan untuk wilayah yang tidak tersertifikasi.\n\nUntuk menerapkan perubahan, mode pesawat harus diaktifkan lalu dinonaktifkan.</string>
+    <string name="ims_footer_info">Pengaturan ini memaksa aktivasi fungsi konfigurasi operator. Secara default, sebagian besar fungsi ini disembunyikan atau dinonaktifkan untuk wilayah yang tidak tersertifikasi.\n\nUntuk menerapkan perubahan, mode pesawat harus diaktifkan lalu dinonaktifkan.</string>
 
     <!-- Section Headers -->
     <string name="ims_sec_voice">Layanan Suara</string>
@@ -182,99 +270,160 @@
 
     <!-- VoLTE -->
     <string name="ims_lbl_volte">VoLTE</string>
-    <string name="ims_desc_volte">Secara paksa mengaktifkan dukungan VoLTE dalam konfigurasi operator.\n\nMemungkinkan panggilan suara melalui jaringan 4G/LTE tanpa beralih ke 3G/2G. Menjamin koneksi cepat, kualitas suara HD, dan penggunaan internet simultan selama panggilan. Memperbaiki hilangnya sakelar VoLTE di pengaturan.</string>
+    <string name="ims_desc_volte">Memaksa dukungan VoLTE di konfigurasi operator.\n\nMemungkinkan panggilan suara melalui jaringan 4G/LTE tanpa beralih ke 3G/2G. Memastikan koneksi cepat, kualitas audio HD, dan penggunaan internet simultan selama panggilan. Memperbaiki tombol VoLTE yang hilang di pengaturan.</string>
 
     <!-- VoWiFi -->
     <string name="ims_lbl_vowifi">Panggilan Wi-Fi</string>
-    <string name="ims_desc_vowifi">Secara paksa mengaktifkan dukungan Panggilan Wi-Fi (VoWiFi).\n\nMemungkinkan ponsel mendaftar di jaringan IMS operator melalui Wi-Fi apa pun yang tersedia. Sangat diperlukan di tempat dengan penerimaan seluler buruk (ruang bawah tanah, dinding tebal) tetapi ada akses internet. Mengaktifkan menu tersembunyi "Panggilan Wi-Fi".</string>
+    <string name="ims_desc_vowifi">Memaksa dukungan Panggilan Wi-Fi (Wi-Fi Calling).\n\nMengizinkan telepon mendaftar di jaringan IMS operator melalui Wi-Fi yang tersedia. Sangat penting di lokasi dengan sinyal seluler lemah (basement, dinding tebal) tetapi internet tersedia. Mengaktifkan menu tersembunyi "Panggilan Wi-Fi".</string>
 
     <!-- Video Calling (ViLTE) -->
     <string name="ims_lbl_vt">Panggilan Video</string>
-    <string name="ims_desc_vt">Mengaktifkan dukungan asli untuk panggilan video melalui operator.\n\nIni adalah fungsi video bawaan dialer (bukan melalui messenger, tetapi melalui protokol standar IR.94). Berfungsi jika operator mendukung Video over LTE.</string>
+    <string name="ims_desc_vt">Mengaktifkan dukungan panggilan video native melalui operator.\n\nIni adalah fitur video yang terintegrasi dalam aplikasi Telepon (bukan melalui messenger, tetapi melalui protokol standar IR.94). Berfungsi jika operator mendukung Video over LTE.</string>
 
     <!-- Cross-SIM -->
     <string name="ims_lbl_cross_sim">Panggilan Cadangan</string>
-    <string name="ims_desc_cross_sim">Teknologi panggilan cadangan melalui kartu SIM lain.\n\nMemungkinkan penggunaan lalu lintas internet kartu SIM kedua untuk pendaftaran IMS kartu SIM pertama. Berguna ketika SIM utama kehilangan jaringan (misalnya roaming atau area blank spot), tetapi SIM kedua memiliki akses internet.</string>
+    <string name="ims_desc_cross_sim">Teknologi panggilan cadangan melalui kartu SIM lain.\n\nMengizinkan penggunaan lalu lintas data SIM kedua untuk registrasi IMS SIM pertama. Berguna ketika SIM utama kehilangan jaringan (roaming atau area mati) tetapi SIM kedua memiliki akses internet.</string>
 
     <!-- VoNR -->
-    <string name="ims_lbl_vonr">VoNR (Panggilan via 5G)</string>
-    <string name="ims_desc_vonr">Voice over New Radio. Panggilan suara di jaringan 5G murni (Standalone).\n\nStandar transmisi suara paling modern. Menjamin latensi ultra-rendah dan kualitas lebih baik daripada VoLTE. Hanya berfungsi di jaringan 5G SA dan memerlukan Android 14+.</string>
+    <string name="ims_lbl_vonr">VoNR (Panggilan 5G)</string>
+    <string name="ims_desc_vonr">Voice over New Radio. Panggilan suara di jaringan 5G murni (Standalone).\n\nStandar paling modern untuk transmisi suara. Memastikan latensi sangat rendah dan kualitas lebih baik dari VoLTE. Hanya bekerja di jaringan 5G SA dan membutuhkan Android 14+.</string>
 
     <!-- 5G Enable -->
     <string name="ims_lbl_5g">Buka Kunci 5G</string>
-    <string name="ims_desc_5g">Menghapus blokir 5G perangkat lunak dari sisi konfigurasi.\n\nBanyak operator memblokir akses 5G untuk perangkat Pixel yang tidak ada dalam "daftar putih" mereka, meskipun dukungan perangkat keras ada. Sakelar ini secara paksa menambahkan band NR NSA dan SA ke daftar yang diizinkan.</string>
+    <string name="ims_desc_5g">Menghapus pemblokiran 5G software di konfigurasi.\n\nBanyak operator memblokir akses 5G untuk perangkat Pixel yang tidak ada di "whitelist" mereka, meskipun ada dukungan hardware. Tombol ini memaksa menambahkan band NR NSA dan SA ke daftar yang diizinkan.</string>
 
     <!-- 5G Thresholds -->
     <string name="ims_lbl_5g_thresh">Sinyal 5G Agresif</string>
-    <string name="ims_desc_5g_thresh">Mengubah ambang batas level sinyal untuk peralihan jaringan.\n\nMenurunkan persyaratan kualitas sinyal untuk menampilkan ikon 5G dan tetap di jaringan 5G. Berguna jika ponsel terlalu mudah turun ke 4G/LTE bahkan ketika 5G tersedia.</string>
+    <string name="ims_desc_5g_thresh">Mengubah ambang batas sinyal untuk pergantian jaringan.\n\nMenurunkan persyaratan kualitas sinyal untuk menampilkan ikon 5G dan tetap di jaringan 5G. Membantu ketika telepon terlalu cepat kembali ke 4G/LTE padahal 5G tersedia.</string>
 
     <!-- UT Interface -->
     <string name="ims_lbl_ut">Antarmuka UT</string>
-    <string name="ims_desc_ut">Manajemen layanan tambahan melalui IMS.\n\nMemungkinkan konfigurasi penerusan panggilan, panggilan tunggu, dan ID penelepon melalui menu pengaturan ponsel menggunakan saluran IP alih-alih kode USSD usang. Memperbaiki kesalahan seperti "Kesalahan jaringan atau kartu SIM" saat mencoba mengakses pengaturan panggilan di jaringan LTE-only.</string>
+    <string name="ims_desc_ut">Manajemen layanan tambahan melalui IMS.\n\nMemungkinkan pengaturan penerusan panggilan, panggilan tunggu, dan identifikasi pemanggil melalui menu pengaturan telepon menggunakan saluran IP alih-alih kode USSD lawas. Memperbaiki kesalahan seperti "Kesalahan jaringan atau kartu SIM" saat mencoba mengakses pengaturan panggilan di mode LTE-only.</string>
 
     <!-- LAUNCHER SETTINGS -->
     <string name="launcher_settings_title">Pengaturan Launcher</string>
     <string name="launcher_search_section">Pencarian &amp; Navigasi</string>
+
+    <!-- Launcher Navigation Items -->
+    <string name="launcher_group_general">Umum</string>
+    <string name="launcher_search_feed_title">Pencarian &amp; Feed</string>
+    <string name="launcher_search_feed_subtitle">Konfigurasi pencarian native dan Google Feed</string>
+    <string name="launcher_group_appearance">Tampilan</string>
+    <string name="launcher_grid_title">Pengaturan Grid</string>
+    <string name="launcher_grid_subtitle">Sesuaikan baris dan kolom</string>
+    <string name="launcher_group_recents_features">Fitur Recents</string>
+    <string name="launcher_clear_all_nav_title">Tombol Hapus Semua</string>
+    <string name="launcher_clear_all_nav_subtitle">Sesuaikan perilaku tombol Hapus Semua</string>
+    <string name="launcher_group_gestures">Gestur</string>
+    <string name="launcher_gestures_title">Gestur</string>
+    <string name="launcher_gestures_subtitle">Ketuk ganda untuk tidur dan lainnya</string>
+    <string name="launcher_group_recents_customization">Kustomisasi Recents</string>
+    <string name="launcher_recents_menu_title">Menu Recents</string>
+    <string name="launcher_recents_menu_subtitle">Konfigurasi carousel, skala, blur, dan lainnya</string>
     
     <string name="launcher_search_title">Pencarian Native</string>
-    <string name="launcher_search_desc">Secara paksa mengaktifkan antarmuka pencarian bawaan di Pixel Launcher.\n\nGoogle sering mengubah perilaku pencarian di "sisi server", mengganti pencarian lokal cepat dengan peluncuran lambat aplikasi Google. Opsi ini mengunci flag \'device_config\', mengembalikan pencarian cepat aplikasi dan kontak.</string>
+    <string name="launcher_search_desc">Memaksa aktivasi antarmuka pencarian bawaan di Pixel Launcher.\n\nGoogle sering mengubah perilaku pencarian "server-side" dengan mengganti pencarian lokal cepat dengan peluncuran lambat aplikasi Google. Opsi ini memperbaiki flag \'device_config\' dan memulihkan pencarian cepat aplikasi dan kontak.</string>
 
+
+    <!-- //// -->
+    <string name="donate_progress_title">Progres donasi</string>
+    <string name="menu_refresh">Segarkan</string>
+    <string name="donate_open_target">Buka halaman donasi</string>
+    <string name="donate_error_loading">Gagal memuat data</string>
+    <string name="donate_retry">Coba lagi</string>
+    <string name="donate_title">Dukungan dan Tautan</string>
+    <string name="donate_desc_short">GitHub, Telegram, Boosty</string>
+    <string name="donate_header">Dukung proyek</string>
+    <string name="donate_desc_long">Jika Anda menyukai modul ini dan ingin mendukung pengembangannya, Anda bisa melakukannya melalui Boosty.</string>
+    <string name="donate_btn_boosty">Ke Boosty</string>
+    <string name="donate_links_header">Tautan berguna</string>
+    <string name="error_network">Kesalahan jaringan</string>
+    <string name="refresh_strings">String halaman diperbarui</string>
+    <string name="donate_page_updated">Halaman diperbarui</string>
+    <string name="donate_page_updated_error">Gagal memuat data</string>
+
+    <string name="launcher_clear_all_title">Tombol Hapus Semua</string>
+    <string name="launcher_clear_all_desc">Menambahkan tombol untuk menutup semua aplikasi di menu Recents.\n\nMendukung beberapa mode tampilan untuk integrasi ke antarmuka standar.</string>
+    <string name="launcher_clear_all_enable_title">Aktifkan tombol Hapus Semua</string>
+    <string name="launcher_ca_hide_actions_row_title">Sembunyikan tombol aksi default</string>
+
+    <string name="launcher_ca_mode_float">Tengah bawah</string>
+    <string name="launcher_ca_mode_screenshot">Ganti "Screenshot"</string>
+    <string name="launcher_ca_mode_select">Ganti "Pilih"</string>
+
+    <string name="launcher_ca_margin">Posisi (jarak bawah)</string>
+    <string name="launcher_btn_restart">Restart launcher</string>
+    <string name="launcher_ca_margin_desc">Mengatur posisi vertikal tombol mengambang. Nilainya adalah pengali dari jarak default.</string>
+    <string name="launcher_ca_hide_actions_row_desc">Menyembunyikan tombol sistem "Screenshot" dan "Pilih" di Recents sambil mempertahankan logika kontainer dan tombol Hapus Semua kustom Anda.</string>
+    <!-- ///// -->
     <!-- DOUBLE TAP (DT) SETTINGS -->
-    <string name="dt_category_title">Gestur Ketuk Ganda</string>
-    <string name="dt_sec_wake">Bangun</string>
-    <string name="dt_sec_sleep">Tidur</string>
+    <string name="dt_category_title">Gestur ketuk ganda</string>
+    <string name="dt_sec_wake">Bangunkan</string>
+    <string name="dt_sec_sleep">Tidurkan</string>
 
     <!-- DT2W (Wake) -->
-    <string name="dt2w_title">Ketuk untuk Bangun</string>
+    <string name="dt2w_title">Ketuk ganda untuk bangun</string>
     
-    <string name="dt2w_desc_xposed">Hook Xposed untuk SystemUI.\n\nMencegat peristiwa sensor di kelas DozeTriggers dan mengemulasi bangun, karena dukungan perangkat keras pada Pixel sering dinonaktifkan atau terbatas.</string>
-    <string name="dt2w_desc_native">Integrasi Sistem (Native).\n\nMenggunakan kode bawaan firmware untuk memproses peristiwa sentuhan dalam mode Doze, memastikan bangun tanpa hook pihak ketiga.</string>
+    <string name="dt2w_desc_xposed">Hook Xposed untuk SystemUI.\n\nMengintersep event sensor di kelas DozeTriggers dan mengemulasi bangun, karena dukungan hardware sering dinonaktifkan atau dibatasi di perangkat Pixel.</string>
+    <string name="dt2w_desc_native">Integrasi sistem (Native).\n\nMenggunakan kode bawaan firmware untuk memproses event sentuh dalam mode Doze, memastikan bangun tanpa hook pihak ketiga.</string>
     
-    <string name="dt2w_info_title">Cara Kerja</string>
-    <string name="dt2w_info_desc">Ini adalah Emulasi Perangkat Lunak, bukan fitur kernel perangkat keras.\n\n<b>Prinsip:</b>\nSistem menjaga digitizer tetap aktif dalam mode AOD/Doze dan menganalisis sentuhan.\n\n<b>Penting:</b>\n• Penundaan kecil mungkin terjadi karena pemrosesan perangkat lunak.\n• Dapat sedikit mempengaruhi penggunaan baterai (Deep Sleep).</string>
+    <string name="dt2w_info_title">Cara kerja</string>
+    <string name="dt2w_info_desc">Ini adalah emulasi software, bukan fungsi hardware kernel.\n\n<b>Prinsip:</b>\nSistem menjaga digitizer tetap aktif di mode AOD/Doze dan menganalisis sentuhan.\n\n<b>Penting:</b>\n• Sedikit jeda mungkin terjadi karena pemrosesan software.\n• Dapat sedikit mempengaruhi konsumsi baterai (Deep Sleep).</string>
 
-    <string name="dt2w_timeout_title">Interval Ketukan</string>
-    <string name="dt2w_timeout_desc">Waktu maksimum antara dua sentuhan (dalam ms) agar dianggap sebagai ketukan ganda.</string>
+    <string name="dt2w_timeout_title">Interval ketuk</string>
+    <string name="dt2w_timeout_desc">Waktu maksimum antara dua sentuhan (dalam ms) agar dianggap sebagai ketuk ganda.</string>
 
     <!-- DT2S (Sleep) -->
-    <string name="dt2s_title">Tidur di Desktop</string>
+    <string name="dt2s_title">Ketuk ganda untuk tidur</string>
     
-    <string name="dt2s_desc_xposed">Hook Xposed untuk Pixel Launcher.\n\nMencegat metode \'onTouchEvent\' di kelas Workspace launcher, memungkinkan penguncian layar dengan mengetuk ruang kosong.</string>
-    <string name="dt2s_desc_native">Injeksi Kode Native.\n\nMenggunakan framework yang dimodifikasi untuk mendaftarkan \'ActivityLifecycleCallbacks\' dalam proses Launcher3. Saat aktivitas dimulai, tampilan root desktop (Workspace) ditemukan secara otomatis dan \'OnTouchListener\' kustom dipasang padanya. Ini bekerja tanpa Xposed dan tidak memerlukan root untuk launcher itu sendiri.</string>
+    <string name="dt2s_desc_xposed">Hook Xposed untuk Pixel Launcher.\n\nMengintersep method \'onTouchEvent\' di kelas Workspace launcher dan memungkinkan mengunci layar dengan mengetuk area kosong.</string>
+    <string name="dt2s_desc_native">Injeksi kode native.\n\nMenggunakan framework yang dimodifikasi untuk mendaftarkan \'ActivityLifecycleCallbacks\' di proses Launcher3. Saat Activity dimulai, root Workspace View secara otomatis ditemukan dan \'OnTouchListener\' kustom dipasang. Bekerja tanpa Xposed dan tidak memerlukan hak root untuk launcher itu sendiri.</string>
 
     <string name="dt2s_info_title">Kekhususan DT2S</string>
-    <string name="dt2s_info_desc">Memungkinkan mematikan layar dengan mengetuk dua kali pada area kosong desktop.\n\n<b>Batasan:</b>\n• Hanya bekerja di Pixel Launcher.\n• Tidak memicu pada widget atau ikon.\n• Dapat konflik dengan gesekan jika "Toleransi Geser" diatur terlalu agresif.</string>
+    <string name="dt2s_info_desc">Memungkinkan mematikan layar dengan mengetuk ganda pada area kosong desktop.\n\n<b>Keterbatasan:</b>\n• Hanya bekerja di Pixel Launcher.\n• Tidak merespons widget atau ikon.\n• Dapat konflik dengan gestur swipe jika "toleransi perpindahan" diatur terlalu agresif.</string>
 
-    <string name="dt2s_timeout_title">Interval Ketukan</string>
-    <string name="dt2s_slop_title">Toleransi Geser</string>
-    <string name="dt2s_slop_desc">Jarak maksimum (dalam piksel) jari dapat bergerak di antara ketukan. Kurangi jika ketukan sering dikenali sebagai gesekan (swipe).</string>
+    <string name="dt2s_timeout_title">Interval ketuk</string>
+    <string name="dt2s_slop_title">Toleransi perpindahan</string>
+    <string name="dt2s_slop_desc">Jarak maksimum (dalam piksel) yang dapat ditempuh jari antara dua sentuhan. Kurangi nilainya jika ketukan sering terdeteksi sebagai swipe.</string>
 
     <!-- COMPONENTS UI -->
     <string name="common_range_format">Rentang: %1$d - %2$d</string>
     <string name="common_input_label">Masukkan nilai</string>
-    <string name="common_video_placeholder">Demonstrasi Video</string>
+    <string name="common_video_placeholder">Demonstrasi video</string>
 
     <!-- GLOBAL COMMON -->
+    <string name="app_name">Pixel Extra Parts</string>
     <string name="btn_apply">Terapkan</string>
     <string name="btn_default">Default</string>
     <string name="btn_close">Tutup</string>
     <string name="btn_exit">Keluar</string>
+    <string name="btn_restart">Restart</string>
+    <string name="nav_back">Kembali</string>
+
+    <!-- Shared Dialogs -->
+    <string name="xposed_required_title">Xposed diperlukan</string>
+    <string name="xposed_required_message">Fitur ini memerlukan modul Xposed aktif.</string>
     
     <string name="status_active">Aktif</string>
     <string name="status_disabled">Nonaktif</string>
-    <string name="status_error">Kesalahan</string>
+    <string name="status_error">Error</string>
 
     <!-- MAIN ACTIVITY -->
+    <string name="main_title">Pixel Extra Parts</string>
     <string name="main_desc">Modul dan tweak kustom</string>
     
     <string name="main_header_gesture">Gestur &amp; Input</string>
     <string name="main_header_system">Sistem</string>
     <string name="main_header_network">Jaringan &amp; Konektivitas</string>
-    
-    <string name="main_root_title">Tidak Ada Akses Root</string>
-    <string name="main_root_desc">Aplikasi memerlukan hak Superuser (Root) dan Framework Xposed yang aktif.\n\nHarap instal Magisk/KernelSU dan berikan izin.</string>
 
-    <string name="dt_desc_activity">Kelola gestur bangun dan tidur</string>
+    <!-- Test things (debug section, hidden by default) -->
+    <string name="test_things_title">Fitur pengujian</string>
+    <string name="test_things_desc">Fitur eksperimental dalam pengembangan</string>
+    
+    <string name="main_root_title">Tidak ada akses Root</string>
+    <string name="main_root_desc">Aplikasi memerlukan hak superuser (Root) dan framework Xposed aktif.\n\nSilakan instal Magisk/KernelSU dan berikan izin.</string>
+
+    <string name="dt_desc_activity">Manajemen gestur bangun dan tidur</string>
     <string name="launcher_title_activity">Launcher</string>
     <string name="os_desc_activity">Pengaturan elastisitas dan inersia gulir</string>
     
@@ -284,10 +433,326 @@
     
     <string name="thermal_title_activity">Profil Termal</string>
     
-    <string name="thermal_desc_activity">Manajemen Throttling</string>
+    <string name="thermal_desc_activity">Manajemen throttling (Tensor)</string>
 
     <string name="os_desc_anchor">Titik jangkar transformasi.</string>
 
+    <!-- Delta Normalization (Compose Smoothing) -->
+    <string name="os_group_norm">Penghalusan delta Compose</string>
+    <string name="os_desc_norm_group">Sistem normalisasi cerdas untuk implementasi gulir Jetpack Compose.\n\nCompose mengirimkan delta yang diperkuat dibandingkan gulir View klasik. Modul ini secara otomatis mendeteksi instance Compose dan secara halus mengurangi delta mereka ke level View standar.\n\nDikalibrasi secara empiris: delta Compose ~5× lebih besar dari delta View untuk gestur identik.</string>
+    <string name="os_lbl_norm_enabled">Aktifkan normalisasi</string>
+    <string name="os_desc_norm_enabled">Tombol utama normalisasi delta cerdas.\n\nSaat diaktifkan, sistem menganalisis setiap instance EdgeEffect dan menerapkan faktor koreksi pada delta Compose yang diperkuat.\n\nDapat dibiarkan aktif dengan aman — tidak mempengaruhi aplikasi dengan delta normal.</string>
+    <string name="os_lbl_norm_ref_delta">Delta referensi</string>
+    <string name="os_desc_norm_ref_delta">Nilai delta "normal" baseline (fraksi dari effectiveSize).\n\nDitentukan secara empiris dari aplikasi berbasis View. Jika rata-rata bergerak melebihi ini × pengali deteksi, instance dianggap diperkuat.\n\nDefault: 0.00001 (sangat sensitif). Naikkan jika ada deteksi palsu pada aplikasi normal.</string>
+    <string name="os_lbl_norm_detect_mul">Pengali deteksi</string>
+    <string name="os_desc_norm_detect_mul">Pengali ambang batas untuk deteksi amplifikasi.\n\nAktivasi: rata-rata_bergerak &gt; referensi × nilai ini.\n3.3 = mendeteksi Compose dengan andal (~5× dari View), tidak terpicu pada aplikasi View.\n\nNaikkan jika ada deteksi palsu, turunkan jika Compose tidak terdeteksi.</string>
+    <string name="os_lbl_norm_factor">Faktor koreksi</string>
+    <string name="os_desc_norm_factor">Pengali untuk delta yang diperkuat.\n\n0.2 = membawa ke level View (dari analisis: ref/compose ≈ 0.195).\n0.5 = bagi dua. 1.0 = tanpa perubahan.\n\nLebih kecil = pantulan lebih lemah, lebih besar = lebih kuat.</string>
+    <string name="os_lbl_norm_window">Ukuran jendela</string>
+    <string name="os_desc_norm_window">Jumlah sampel |delta| terakhir untuk analisis.\n\nLebih kecil = deteksi lebih cepat, tetapi lebih sensitif terhadap noise.\nLebih besar = lebih stabil, tetapi adaptasi lebih lambat.\n\nRentang: 2–64.</string>
+    <string name="os_lbl_norm_ramp">Event ramp-up</string>
+    <string name="os_desc_norm_ramp">Berapa event untuk transisi dari 1.0 ke faktor.\n\n1–4 = hampir instan. 8–12 = transisi halus.\n\nMencegah lompatan visual saat normalisasi diaktifkan.</string>
+    <string name="os_lbl_norm_detect_mode">Mode deteksi</string>
+    <string name="os_desc_norm_detect_mode">Bagaimana instance Compose diidentifikasi.\n\n0 = Hanya perilaku (jendela bergerak dari delta)\n1 = Hibrid: stack trace memberikan ID instan, jendela mengonfirmasi\n2 = Hanya stack trace (tanpa analisis jendela)\n\nHibrid (1) direkomendasikan untuk akurasi + kecepatan terbaik.</string>
+    <string name="os_norm_mode_behavior">Hanya perilaku</string>
+    <string name="os_norm_mode_hybrid">Hibrid (direkomendasikan)</string>
+    <string name="os_norm_mode_stacktrace">Hanya stack trace</string>
+
     <string name="ims_desc_activity">VoLTE, VoWiFi, 5G</string>
     <string name="ims_title_activity">Konfigurasi IMS</string>
+
+
+    <!-- Grid Sizer / App Drawer Customization -->
+    <string name="grid_group_homepage">Kustomisasi layar utama</string>
+    <string name="grid_lbl_home_enable">Sesuaikan grid layar utama</string>
+    <string name="grid_desc_home_enable">Mengaktifkan kustomisasi kolom dan baris grid layar utama.</string>
+    
+    <string name="grid_lbl_columns">Kolom</string>
+    <string name="grid_desc_home_cols">Jumlah kolom di layar utama.</string>
+    
+    <string name="grid_lbl_rows">Baris</string>
+    <string name="grid_desc_home_rows">Jumlah baris di layar utama.</string>
+    
+    <string name="grid_lbl_hide_text">Sembunyikan label</string>
+    <string name="grid_desc_home_hide_text">Menyembunyikan label ikon di layar utama.</string>
+
+    <string name="grid_lbl_icon_size">Ukuran ikon</string>
+    <string name="grid_desc_home_icon_size">Menyesuaikan ukuran ikon di layar utama (100%% adalah default).</string>
+    <string name="grid_desc_drawer_icon_size">Menyesuaikan ukuran ikon di drawer aplikasi (100%% adalah default).</string>
+    <string name="grid_desc_dock_icon_size">Menyesuaikan ukuran ikon di dock (100%% adalah default).</string>
+
+    <string name="grid_lbl_text_mode">Mode tampilan teks</string>
+    <string name="grid_desc_text_mode">Bagaimana label ikon ditampilkan saat teks terlihat.</string>
+    <string name="grid_text_mode_default">Potong</string>
+    <string name="grid_text_mode_two_line">Dua baris</string>
+    <string name="grid_text_mode_marquee">Berjalan</string>
+
+    <string name="grid_group_drawer">Kustomisasi drawer aplikasi</string>
+    <string name="grid_lbl_drawer_enable">Sesuaikan drawer aplikasi</string>
+    <string name="grid_desc_drawer_enable">Mengaktifkan kustomisasi grid dan tata letak drawer aplikasi.</string>
+    
+    <string name="grid_lbl_drawer_cols">Kolom menu</string>
+    <string name="grid_desc_drawer_cols">Jumlah kolom di drawer aplikasi.</string>
+    
+    <string name="grid_lbl_row_height">Tinggi baris</string>
+    <string name="grid_desc_row_height">Menyesuaikan jarak vertikal antar baris di drawer aplikasi (100% adalah default).</string>
+    
+    <string name="grid_lbl_drawer_hide_text">Sembunyikan teks menu</string>
+    <string name="grid_desc_drawer_hide_text">Menyembunyikan label ikon di drawer aplikasi.</string>
+
+    <!-- Dock Grid Section -->
+    <string name="grid_group_dock">Kustomisasi dock</string>
+    <string name="grid_lbl_dock_icons">Jumlah ikon dock</string>
+    <string name="grid_desc_dock_icons">Jumlah ikon di bar dock.</string>
+    <string name="grid_lbl_dock_hide_text">Sembunyikan teks dock</string>
+    <string name="grid_desc_dock_hide_text">Menyembunyikan label ikon di dock.</string>
+
+    <string name="grid_lbl_search_cols">Kolom pencarian</string>
+    <string name="grid_desc_search_cols">Jumlah kolom untuk hasil dan saran pencarian di drawer aplikasi.</string>
+    <!-- Search Widget & Dock Section -->
+    <string name="search_widget_group_title">Widget Pencarian dan Dock</string>
+    
+    <string name="search_widget_enable_dock">Aktifkan kustomisasi dock</string>
+    <string name="search_widget_desc_dock">Tombol utama untuk semua modifikasi dock dan bilah pencarian di bawah.</string>
+    
+    <string name="search_widget_hide_search">Sembunyikan bilah pencarian</string>
+    <string name="search_widget_desc_hide_search">Menyembunyikan widget pencarian di bawah.</string>
+    
+    <string name="search_widget_hide_dock">Sembunyikan ikon dock</string>
+    <string name="search_widget_desc_hide_dock">Menyembunyikan area ikon dock bawah (Hotseat).</string>
+    <string name="pref_recents_size_summary">pref_recents_size_summary</string>
+    <string name="info_recents_size">info_recents_size</string>
+    
+    <string name="search_widget_padding_home">Padding atas layar utama</string>
+    <string name="search_widget_desc_padding_home">Menyesuaikan padding atas untuk ikon workspace (meregangkan dari atas).</string>
+    
+    <string name="search_widget_padding_home_bottom">Padding bawah layar utama</string>
+    <string name="search_widget_desc_padding_home_bottom">Menyesuaikan padding bawah untuk ikon workspace (meregangkan dari bawah).</string>
+    
+    <string name="search_widget_padding_dock">Padding ikon dock</string>
+    <string name="search_widget_desc_padding_dock">Menyesuaikan posisi vertikal ikon dock (+/-).</string>
+    
+    <string name="search_widget_padding_search">Padding widget pencarian</string>
+    <string name="search_widget_desc_padding_search">Menyesuaikan posisi vertikal widget pencarian (+/-).</string>
+
+    <string name="search_widget_padding_dots">Padding titik</string>
+    <string name="search_widget_desc_padding_dots">Menyesuaikan posisi vertikal titik indikator halaman.</string>
+    <string name="search_widget_padding_dots_x">Offset horizontal titik</string>
+    <string name="search_widget_desc_padding_dots_x">Menyesuaikan posisi horizontal titik indikator halaman.</string>
+
+    <!-- Recents Size -->
+    <string name="title_recents_size">Ukuran Kartu Recents</string>
+    <string name="desc_recents_size">Menyesuaikan ukuran kartu tugas di overview</string>
+    <string name="pref_recents_size_enable">Aktifkan ukuran kustom</string>
+    <string name="pref_recents_size_scale">Skala (%)</string>
+    <string name="pref_recents_carousel_enable">Efek carousel (gaya OnePlus)</string>
+    <string name="pref_recents_icons_enable">Baris ikon aplikasi</string>
+
+    <!-- Recents Menu Screen -->
+    <string name="recents_menu_screen_title">Menu Recents</string>
+    <string name="recents_group_general">Manajemen umum</string>
+    <string name="recents_enable_modding">Aktifkan modding Recents</string>
+    <string name="recents_disable_live_tile">Nonaktifkan live tile</string>
+    <string name="recents_disable_live_tile_desc">Menampilkan snapshot alih-alih preview langsung</string>
+    <string name="recents_group_scaling">Skalasi kartu dasar</string>
+    <string name="recents_enable_static_scale">Aktifkan skala statis</string>
+    <string name="recents_scale_percent">Skala (%)</string>
+    <string name="recents_group_carousel_geometry">Carousel: Geometri</string>
+    <string name="recents_carousel_min_scale">Skala min (tepi)</string>
+    <string name="recents_carousel_spacing">Jarak / Tumpang tindih</string>
+    <string name="recents_carousel_min_alpha">Alpha min (tepi)</string>
+    <string name="recents_group_carousel_blur">Carousel: Blur</string>
+    <string name="recents_carousel_blur_radius">Radius blur maks</string>
+    <string name="recents_blur_overflow">Blur seluruh kartu</string>
+    <string name="recents_blur_overflow_desc">Terapkan ke seluruh kartu, bukan hanya thumbnail</string>
+    <string name="recents_group_carousel_tint">Carousel: Tint</string>
+    <string name="recents_tint_intensity">Intensitas tint</string>
+    <string name="recents_select_tint_color">Pilih warna tint</string>
+    <string name="recents_group_icon_offset">Carousel: Offset ikon</string>
+    <string name="recents_icon_offset_x">Offset ikon X</string>
+    <string name="recents_icon_offset_y">Offset ikon Y</string>
+
+    <!-- Gestures Screen -->
+    <string name="gestures_screen_title">Gestur</string>
+
+    <!-- Clear All Screen-->
+    <string name="clear_all_screen_title">Tombol Hapus Semua</string>
+
+    <!-- Grid Settings Screen -->
+    <string name="grid_screen_title">Pengaturan Grid</string>
+    <string name="grid_homepage_title">Pengaturan Layar Utama</string>
+    <string name="grid_homepage_dock_title">Bar Dock</string>
+    <string name="grid_menupage_title">Halaman Menu</string>
+    <string name="grid_menupage_enable">Sesuaikan halaman menu</string>
+    <string name="grid_menupage_search_title">Hasil pencarian</string>
+    <string name="grid_menupage_suggestions_title">Daftar saran</string>
+    <string name="grid_menupage_apps_title">Daftar aplikasi</string>
+    <string name="grid_menupage_suggestions_disable">Nonaktifkan daftar saran</string>
+    <string name="grid_text_mode_hide">Sembunyikan teks</string>
+
+    <!-- Search &amp; Feed Screen -->
+    <string name="search_feed_screen_title">Pencarian &amp; Feed</string>
+
+    <!-- Quickstep Section -->
+    <string name="quickstep_warning_title">Fitur eksperimental</string>
+    <string name="quickstep_warning_text">Fitur ini sepenuhnya menggantikan tampilan Quickstep native dengan implementasi kustom. Gangguan visual atau crash mungkin terjadi. Gunakan dengan risiko Anda sendiri. Nonaktifkan opsi ini jika bermasalah.</string>
+    <string name="quickstep_engine_title">Engine Quickstep Kustom</string>
+    <string name="quickstep_engine_summary">Ganti Recents native dengan implementasi kustom</string>
+    <string name="quickstep_engine_info">Mengaktifkan tampilan Recents yang sepenuhnya kustom dengan berbagai gaya visual dan animasi. Menggantikan Recents default Pixel Launcher sepenuhnya.</string>
+    <string name="quickstep_style_title">Gaya Recents</string>
+    <string name="quickstep_style_stock">Standar</string>
+    <string name="quickstep_style_stock_desc">Tata letak kartu horizontal bersih</string>
+    <string name="quickstep_style_ios">Gaya iOS</string>
+    <string name="quickstep_style_ios_desc">Kartu bertumpuk vertikal dengan efek 3D</string>
+    <string name="quickstep_style_oneplus">Gaya OnePlus</string>
+    <string name="quickstep_style_oneplus_desc">Carousel dengan kartu tengah yang difokuskan</string>
+    <string name="quickstep_style_minimal">Minimal</string>
+    <string name="quickstep_style_minimal_desc">Kartu kecil dengan ikon saja</string>
+    <string name="content_desc_selected">Dipilih</string>
+
+    
+    <string name="launcher_feed_title">Nonaktifkan Google Feed</string>
+    <string name="launcher_feed_desc">Menonaktifkan layar -1 (Google Discover/Feed) di layar utama.</string>
+
+    <string name="launcher_top_widget_title">Nonaktifkan widget atas</string>
+    <string name="launcher_top_widget_desc">Menghapus widget "At a Glance" permanen dari layar utama, memungkinkan penempatan ikon di sana.</string>
+
+    <!-- Animation Theme Manager -->
+    <string name="anim_theme_create_title">Buat tema animasi</string>
+    <string name="anim_theme_style_name">Nama gaya</string>
+    <string name="anim_theme_open_enter">Buka — Masuk</string>
+    <string name="anim_theme_open_exit">Buka — Keluar</string>
+    <string name="anim_theme_close_enter">Tutup — Masuk</string>
+    <string name="anim_theme_close_exit">Tutup — Keluar</string>
+    <string name="anim_theme_tap_to_select">Ketuk untuk memilih file XML</string>
+    <string name="anim_theme_compile_btn">Kompilasi &amp; Instal</string>
+    <string name="anim_theme_log_title">Log build</string>
+    <string name="anim_theme_installed_title">Tema terinstal</string>
+    <string name="anim_theme_none_installed">Tidak ada tema animasi terinstal</string>
+    <string name="anim_theme_paste_xml">Tempel XML</string>
+    <string name="anim_theme_xml_hint">Tempel XML animasi di sini…</string>
+    <string name="anim_theme_input_mode_file">File</string>
+    <string name="anim_theme_input_mode_xml">Teks XML</string>
+
+    <!-- Built-in Animations -->
+    <string name="anim_builtin_title">Animasi bawaan</string>
+    <string name="anim_builtin_disabled">Nonaktif</string>
+    <string name="anim_builtin_custom">Tema kustom</string>
+    <string name="anim_preview_open">Buka</string>
+    <string name="anim_preview_close">Tutup</string>
+    <string name="anim_apply_both">Terapkan keduanya</string>
+    <string name="anim_apply_open">Terapkan buka</string>
+    <string name="anim_apply_close">Terapkan tutup</string>
+    <string name="anim_current_open">Buka saat ini: %s</string>
+    <string name="anim_current_close">Tutup saat ini: %s</string>
+
+    <!-- Animation type names -->
+    <string name="anim_group_slide">Geser</string>
+    <string name="anim_group_card_stack">Tumpukan kartu</string>
+    <string name="anim_group_train">Kereta</string>
+    <string name="anim_group_ios">Paralaks iOS</string>
+    <string name="anim_group_fade">Pudar</string>
+    <string name="anim_group_zoom">Zoom</string>
+    <string name="anim_group_modal">Modal</string>
+    <string name="anim_group_depth">Kedalaman</string>
+    <string name="anim_group_pivot">Pivot</string>
+
+    <!-- Direction names -->
+    <string name="anim_dir_right">Kanan</string>
+    <string name="anim_dir_left">Kiri</string>
+    <string name="anim_dir_top">Atas</string>
+    <string name="anim_dir_bottom">Bawah</string>
+
+    <!-- Activity Transition Settings -->
+    <string name="anim_transition_title">Transisi aktivitas</string>
+    <string name="anim_transition_subtitle">Tema kustom dan transisi bawaan</string>
+    <string name="anim_predictive_back_title">Nonaktifkan gestur kembali prediktif</string>
+    <string name="anim_predictive_back_desc">Menghapus animasi kembali swipe sistem</string>
+    <string name="anim_no_animation_title">Tanpa animasi</string>
+    <string name="anim_no_animation_desc">Menonaktifkan animasi transisi sepenuhnya</string>
+    <string name="anim_constructor_title">Konstruktor Animasi</string>
+    <string name="anim_constructor_preview">Pratinjau</string>
+    <string name="anim_constructor_style_name">Nama gaya</string>
+    <string name="anim_constructor_build_theme">Bangun tema</string>
+    <string name="anim_constructor_hide">Sembunyikan</string>
+    <string name="anim_constructor_show_xml">Tampilkan XML</string>
+    <string name="anim_constructor_hide_xml">Sembunyikan XML</string>
+    <string name="anim_dialog_cancel">Batal</string>
+    <string name="anim_active_open_close">Buka + Tutup</string>
+    <string name="anim_installing">Menginstal…</string>
+    <string name="anim_install_success">✓ Tema berhasil diinstal!</string>
+    <string name="anim_install_failed">Instalasi gagal</string>
+    <string name="anim_install_failed_log">✗ Instalasi gagal</string>
+    <string name="anim_compile_failed">Kompilasi gagal</string>
+    <string name="anim_cd_delete">Hapus</string>
+    <string name="anim_cd_confirm_delete">Konfirmasi hapus</string>
+    <string name="anim_cd_reset">Reset</string>
+    <string name="anim_cd_copy">Salin</string>
+    <string name="anim_param_translate">Terjemahan</string>
+    <string name="anim_param_scale">Skala</string>
+    <string name="anim_param_alpha">Alpha</string>
+    <string name="anim_param_rotate">Rotasi</string>
+    <string name="anim_param_pivot">Pivot</string>
+    <string name="anim_param_timing">Waktu</string>
+    <string name="anim_param_interpolator">Interpolator</string>
+
+    <!-- Addon Manager -->
+    <string name="addon_title">Addon Pine</string>
+    <string name="addon_desc">Kelola modul hook eksternal</string>
+    <string name="addon_count">%d modul terinstal</string>
+    <string name="addon_active_count">Aktif: %1$d dari %2$d</string>
+    <string name="addon_safe_mode_title">Mode aman aktif</string>
+    <string name="addon_safe_mode_desc">Addon telah dinonaktifkan karena crash berulang. Jika masalah disebabkan oleh addon yang bermasalah, Anda dapat menonaktifkannya sebelum keluar dari mode aman.</string>
+    <string name="addon_safe_mode_exit">Keluar dari mode aman</string>
+    <string name="addon_section_system">Modul sistem</string>
+    <string name="addon_section_user">Modul terinstal</string>
+    <string name="addon_system_empty_title">Tidak ada modul sistem</string>
+    <string name="addon_system_empty_desc">Modul sistem sudah terinstal bersama firmware</string>
+    <string name="addon_user_empty_title">Tidak ada modul pengguna terinstal</string>
+    <string name="addon_user_empty_desc">Impor addon .jar untuk memulai</string>
+    <string name="addon_import">Impor addon</string>
+    <string name="addon_import_desc">Pilih file addon .jar</string>
+    <string name="addon_import_success">Addon diimpor</string>
+    <string name="addon_import_failed">Impor gagal</string>
+    <string name="addon_empty_title">Tidak ada addon terinstal</string>
+    <string name="addon_empty_desc">Impor addon .jar untuk memulai</string>
+    <string name="addon_delete_title">Hapus addon</string>
+    <string name="addon_delete_confirm">Hapus "%s"?\n\nFile JAR akan dihapus dan semua pengaturan direset.</string>
+    <string name="addon_scope_default">Target default</string>
+    <string name="addon_scope_custom">Kustom saja</string>
+    <string name="addon_scope_merge">Gabungkan keduanya</string>
+    <string name="addon_scope_label_default">Cakupan default</string>
+    <string name="addon_scope_label_custom">Cakupan kustom</string>
+    <string name="addon_scope_label_merge">Cakupan gabungan</string>
+    <string name="addon_target_scope">Cakupan target</string>
+    <string name="addon_targets_default">Target default</string>
+    <string name="addon_targets_custom">Target kustom</string>
+    <string name="addon_builtin_badge">bawaan</string>
+    <string name="addon_builtin_plus_addon">Bawaan + Addon</string>
+    <string name="addon_enabled">Aktif</string>
+    <string name="addon_btn_save">Simpan</string>
+    <string name="addon_btn_cancel">Batal</string>
+    <string name="addon_btn_remove">Hapus</string>
+    <string name="addon_settings_title">Pengaturan modul</string>
+    <string name="addon_range_format">Rentang: %1$s — %2$s</string>
+    <string name="addon_file_not_set">Belum diatur</string>
+    <string name="addon_file_saved">File disimpan</string>
+    <string name="addon_file_copy_failed">Gagal menyalin</string>
+    <string name="addon_apps_selected">%d aplikasi dipilih</string>
+    <string name="addon_select_apps">Pilih aplikasi</string>
+    <string name="addon_selected_count">%d dipilih</string>
+    <string name="addon_confirm_count">Konfirmasi (%d)</string>
+    <string name="addon_search_apps">Cari aplikasi\u2026</string>
+    <string name="addon_show_system">Tampilkan aplikasi sistem</string>
+    <string name="addon_hide_system">Sembunyikan aplikasi sistem</string>
+    <string name="addon_no_apps_match">Tidak ada aplikasi untuk "%s"</string>
+    <string name="addon_no_apps_available">Tidak ada aplikasi tersedia</string>
+    <string name="addon_default_target_badge">Target default</string>
+    <string name="addon_author_unknown">Tidak diketahui</string>
+
+    <!-- Addon Manager: Active Apps -->
+    <string name="addon_active_apps_title">Aplikasi Aktif</string>
+    <string name="addon_active_apps_desc">%d aplikasi dengan hook aktif</string>
+    <string name="addon_active_apps_empty">Tidak ada hook aktif</string>
+    <string name="addon_active_apps_modules">%d modul</string>
 </resources>

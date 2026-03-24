@@ -1,12 +1,10 @@
 package org.pixel.customparts.ui.launcher
 
 import android.content.Context
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.material3.HorizontalDivider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.pixel.customparts.AppConfig
@@ -34,12 +32,6 @@ fun Dt2sUiSection(
     }
 
     SettingsGroupCard(title = dynamicStringResource(R.string.dt_sec_sleep)) {
-        ExpandableWarningCard(
-            title = dynamicStringResource(R.string.dt2s_info_title),
-            text = dynamicStringResource(R.string.dt2s_info_desc),
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-
         val dt2sDesc = if (AppConfig.IS_XPOSED) dynamicStringResource(R.string.dt2s_desc_xposed) else dynamicStringResource(R.string.dt2s_desc_native)
 
         GenericSwitchRow(
@@ -60,7 +52,7 @@ fun Dt2sUiSection(
             onInfoClick = onInfoClick
         )
 
-        Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
 
         SliderSetting(
             title = dynamicStringResource(R.string.dt2s_timeout_title),
@@ -93,12 +85,6 @@ fun Dt2wUiSection(
     var dt2wTimeout by remember { mutableIntStateOf(DoubleTapManager.getDt2wTimeout(context)) }
 
     SettingsGroupCard(title = dynamicStringResource(R.string.dt_sec_wake)) {
-        ExpandableWarningCard(
-            title = dynamicStringResource(R.string.dt2w_info_title),
-            text = dynamicStringResource(R.string.dt2w_info_desc),
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-
         val dt2wDesc = if (AppConfig.IS_XPOSED) {
             dynamicStringResource(R.string.dt2w_desc_xposed)
         } else {
@@ -123,7 +109,7 @@ fun Dt2wUiSection(
             onInfoClick = onInfoClick
         )
 
-        Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
 
         SliderSetting(
             title = dynamicStringResource(R.string.dt2w_timeout_title),

@@ -33,17 +33,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.pixel.customparts.AppConfig
+import org.pixel.customparts.ui.ExpandableWarningCard
+import org.pixel.customparts.ui.InfoDialog
+import org.pixel.customparts.ui.RadioSelectionGroup
 import org.pixel.customparts.ui.RebootBubble
+import org.pixel.customparts.ui.SliderSettingFloat
 import org.pixel.customparts.R
 import org.pixel.customparts.dynamicDarkColorScheme
 import org.pixel.customparts.dynamicLightColorScheme
-import org.pixel.customparts.ui.*
 import org.pixel.customparts.ui.ModuleStatus
+import org.pixel.customparts.ui.TopBarBlurOverlay
+import org.pixel.customparts.ui.recordLayer
+import org.pixel.customparts.ui.rememberGraphicsLayerRecordingState
 import org.pixel.customparts.utils.dynamicStringResource
 import org.pixel.customparts.utils.RemoteStringsManager
 
@@ -93,6 +100,7 @@ private fun OverscrollScreen(onBack: () -> Unit) {
             "vis_zoom" to false,
             "vis_horz" to false,
             "advanced" to false,
+            "norm" to false,
             "apps" to false
         ) 
     }
@@ -121,6 +129,10 @@ private fun OverscrollScreen(onBack: () -> Unit) {
             }
         }
     }
+    
+    val blurState = rememberGraphicsLayerRecordingState()
+    val lazyListState = androidx.compose.foundation.lazy.rememberLazyListState()
+    val isScrolled by remember { derivedStateOf { lazyListState.canScrollBackward } }
 
     if (showXposedInactiveDialog) {
         AlertDialog(
@@ -148,18 +160,35 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                     IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
                 )
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .recordLayer(blurState)
+                    .background(MaterialTheme.colorScheme.surfaceContainer),
+                contentPadding = PaddingValues(
+                    top = innerPadding.calculateTopPadding() + 16.dp,
+                    bottom = innerPadding.calculateBottomPadding() + 16.dp,
+                    start = 16.dp,
+                    end = 16.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+            if (AppConfig.IS_XPOSED) {
+                item {
+                    ExpandableWarningCard(
+                        title = dynamicStringResource(R.string.overscroll_xposed_warning_title),
+                        text = dynamicStringResource(R.string.overscroll_xposed_warning_desc)
+                    )
+                }
+            }
             item(key = "master_switch", contentType = "switch_card") {
                 val titleStr = dynamicStringResource(
                     if (AppConfig.IS_XPOSED) R.string.os_label_master_xposed else R.string.os_label_master_native
@@ -240,7 +269,7 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         title = dynamicStringResource(R.string.os_lbl_physics_pull),
                         key = OverscrollManager.KEY_PULL_COEFF,
                         range = 0.1f..3.0f,
-                        defVal = 0.5f,
+                        defVal = 1.5141f,
                         infoText = dynamicStringResource(R.string.os_desc_physics_pull),
                         video = "overscroll_pull",
                         onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
@@ -255,7 +284,7 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         title = dynamicStringResource(R.string.os_lbl_physics_stiffness),
                         key = OverscrollManager.KEY_STIFFNESS,
                         range = 10f..1000f,
-                        defVal = 450f,
+                        defVal = 148.6191f,
                         infoText = dynamicStringResource(R.string.os_desc_physics_stiffness),
                         video = "overscroll_stiffness",
                         onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
@@ -270,7 +299,7 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         title = dynamicStringResource(R.string.os_lbl_physics_damping),
                         key = OverscrollManager.KEY_DAMPING,
                         range = 0.1f..2.0f,
-                        defVal = 0.7f,
+                        defVal = 0.9976f,
                         infoText = dynamicStringResource(R.string.os_desc_physics_damping),
                         video = "overscroll_damping",
                         onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
@@ -285,7 +314,7 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         title = dynamicStringResource(R.string.os_lbl_physics_fling),
                         key = OverscrollManager.KEY_FLING,
                         range = 0.1f..3.0f,
-                        defVal = 0.6f,
+                        defVal = 1.3679f,
                         infoText = dynamicStringResource(R.string.os_desc_physics_fling),
                         video = "overscroll_fling",
                         onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
@@ -313,7 +342,7 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         title = dynamicStringResource(R.string.os_lbl_anim_speed),
                         key = OverscrollManager.KEY_ANIMATION_SPEED,
                         range = 1f..300f,
-                        defVal = 100.0f,
+                        defVal = 168.5232f,
                         infoText = dynamicStringResource(R.string.os_desc_anim_speed),
                         video = "overscroll_anim_speed",
                         onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
@@ -337,7 +366,10 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         isMasterEnabled = isMasterEnabled,
                         expanded = expandedStates["vis_vert"] ?: false,
                         onExpandChange = { expandedStates["vis_vert"] = it },
-                        onChange = onSettingChanged
+                        onChange = onSettingChanged,
+                        defIntensity = 0.31f,
+                        defIntensityHoriz = 0.3786f,
+                        defLimitMin = 0.1f
                     )
 
                     ScaleGroup(
@@ -350,7 +382,10 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         isMasterEnabled = isMasterEnabled,
                         expanded = expandedStates["vis_zoom"] ?: false,
                         onExpandChange = { expandedStates["vis_zoom"] = it },
-                        onChange = onSettingChanged
+                        onChange = onSettingChanged,
+                        defIntensity = 0.2f,
+                        defIntensityHoriz = 0.2f,
+                        defLimitMin = 0.1f
                     )
 
                     ScaleGroup(
@@ -363,7 +398,10 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         isMasterEnabled = isMasterEnabled,
                         expanded = expandedStates["vis_horz"] ?: false,
                         onExpandChange = { expandedStates["vis_horz"] = it },
-                        onChange = onSettingChanged
+                        onChange = onSettingChanged,
+                        defIntensity = 0.2f,
+                        defIntensityHoriz = 0.0f,
+                        defLimitMin = 0.1f
                     )
                 }
             }
@@ -440,7 +478,7 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         title = dynamicStringResource(R.string.os_lbl_lerp_run),
                         key = OverscrollManager.KEY_LERP_MAIN_RUN,
                         range = 0f..1f,
-                        defVal = 0.7f,
+                        defVal = 0.6999f,
                         infoText = dynamicStringResource(R.string.os_desc_lerp_run),
                         video = "overscroll_lerp_main_run",
                         onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
@@ -454,7 +492,7 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                         title = dynamicStringResource(R.string.os_lbl_compose_scale),
                         key = OverscrollManager.KEY_COMPOSE_SCALE,
                         range = 0.01f..10.0f,
-                        defVal = 3.33f,
+                        defVal = 3.3299f,
                         infoText = dynamicStringResource(R.string.os_desc_compose_scale),
                         video = "overscroll_compose_scale",
                         onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
@@ -480,6 +518,8 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                                 text = invertTitle,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                         IconButton(onClick = { 
@@ -500,6 +540,167 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                             }
                         )
                     }
+                }
+            }
+
+            item(key = "settings_norm", contentType = "settings_norm") {
+                val expanded = expandedStates["norm"] ?: false
+                ExpandableSettingsGroupCard(
+                    title = dynamicStringResource(R.string.os_group_norm),
+                    enabled = isMasterEnabled,
+                    expanded = expanded,
+                    onExpandChange = { expandedStates["norm"] = it },
+                    containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = if (isMasterEnabled) 0.2f else 0.1f),
+                    contentColor = MaterialTheme.colorScheme.error
+                ) {
+                    // Master switch — styled card (mini version of MasterSwitchCard)
+                    val normEnabledKey = OverscrollManager.KEY_NORM_ENABLED
+                    var normEnabled by remember(refreshKey) { mutableStateOf(Settings.Global.getInt(context.contentResolver, normEnabledKey, 1) == 1) }
+                    val normEnabledTitle = dynamicStringResource(R.string.os_lbl_norm_enabled)
+                    val normEnabledDesc = dynamicStringResource(R.string.os_desc_norm_enabled)
+
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.35f)
+                        ),
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = normEnabledTitle,
+                                    style = MaterialTheme.typography.titleSmall,
+                                    color = MaterialTheme.colorScheme.onErrorContainer,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = if (normEnabled) dynamicStringResource(R.string.os_status_active) else dynamicStringResource(R.string.os_status_disabled),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.7f)
+                                )
+                            }
+                            IconButton(onClick = {
+                                infoDialogTitle = normEnabledTitle
+                                infoDialogText = normEnabledDesc
+                                infoDialogVideo = null
+                            }) {
+                                Icon(Icons.Outlined.Info, "Info", tint = MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.7f))
+                            }
+                            Switch(
+                                checked = normEnabled,
+                                onCheckedChange = {
+                                    normEnabled = it
+                                    scope.launch(Dispatchers.IO) {
+                                        Settings.Global.putInt(context.contentResolver, normEnabledKey, if (it) 1 else 0)
+                                        launch(Dispatchers.Main) { onSettingChanged() }
+                                    }
+                                }
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Detection mode radio group
+                    val detectModeKey = OverscrollManager.KEY_NORM_DETECT_MODE
+                    var detectMode by remember(refreshKey) { mutableIntStateOf(Settings.Global.getInt(context.contentResolver, detectModeKey, 1)) }
+                    val detectModes = listOf(
+                        dynamicStringResource(R.string.os_norm_mode_behavior),
+                        dynamicStringResource(R.string.os_norm_mode_hybrid),
+                        dynamicStringResource(R.string.os_norm_mode_stacktrace)
+                    )
+
+                    RadioSelectionGroup(
+                        title = dynamicStringResource(R.string.os_lbl_norm_detect_mode),
+                        options = detectModes,
+                        selectedIndex = detectMode,
+                        enabled = isMasterEnabled && normEnabled,
+                        onSelect = {
+                            detectMode = it
+                            scope.launch(Dispatchers.IO) {
+                                Settings.Global.putInt(context.contentResolver, detectModeKey, it)
+                                launch(Dispatchers.Main) { onSettingChanged() }
+                            }
+                        },
+                        infoText = dynamicStringResource(R.string.os_desc_norm_detect_mode),
+                        videoResName = null,
+                        onInfoClick = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v }
+                    )
+
+                    val normSlidersEnabled = isMasterEnabled && normEnabled
+
+                    OverscrollFloatSlider(
+                        context = context,
+                        title = dynamicStringResource(R.string.os_lbl_norm_ref_delta),
+                        key = OverscrollManager.KEY_NORM_REF_DELTA,
+                        range = 0.000001f..100f,
+                        defVal = 9.9999f,
+                        infoText = dynamicStringResource(R.string.os_desc_norm_ref_delta),
+                        video = "overscroll_norm_ref_delta",
+                        onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
+                        refreshKey = refreshKey,
+                        enabled = normSlidersEnabled,
+                        onChange = onSettingChanged
+                    )
+
+                    OverscrollFloatSlider(
+                        context = context,
+                        title = dynamicStringResource(R.string.os_lbl_norm_detect_mul),
+                        key = OverscrollManager.KEY_NORM_DETECT_MUL,
+                        range = 0f..10.0f,
+                        defVal = 0f,
+                        infoText = dynamicStringResource(R.string.os_desc_norm_detect_mul),
+                        video = "overscroll_norm_detect_mul",
+                        onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
+                        refreshKey = refreshKey,
+                        enabled = normSlidersEnabled,
+                        onChange = onSettingChanged
+                    )
+
+                    OverscrollFloatSlider(
+                        context = context,
+                        title = dynamicStringResource(R.string.os_lbl_norm_factor),
+                        key = OverscrollManager.KEY_NORM_FACTOR,
+                        range = 0.01f..1.0f,
+                        defVal = 0.33f,
+                        infoText = dynamicStringResource(R.string.os_desc_norm_factor),
+                        video = "overscroll_norm_factor",
+                        onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
+                        refreshKey = refreshKey,
+                        enabled = normSlidersEnabled,
+                        onChange = onSettingChanged
+                    )
+
+                    OverscrollFloatSlider(
+                        context = context,
+                        title = dynamicStringResource(R.string.os_lbl_norm_window),
+                        key = OverscrollManager.KEY_NORM_WINDOW,
+                        range = 2f..64f,
+                        defVal = 2f,
+                        infoText = dynamicStringResource(R.string.os_desc_norm_window),
+                        video = "overscroll_norm_window",
+                        onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
+                        refreshKey = refreshKey,
+                        enabled = normSlidersEnabled,
+                        onChange = onSettingChanged
+                    )
+
+                    OverscrollFloatSlider(
+                        context = context,
+                        title = dynamicStringResource(R.string.os_lbl_norm_ramp),
+                        key = OverscrollManager.KEY_NORM_RAMP,
+                        range = 1f..20f,
+                        defVal = 1f,
+                        infoText = dynamicStringResource(R.string.os_desc_norm_ramp),
+                        video = "overscroll_norm_ramp",
+                        onInfo = { t, s, v -> infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v },
+                        refreshKey = refreshKey,
+                        enabled = normSlidersEnabled,
+                        onChange = onSettingChanged
+                    )
                 }
             }
 
@@ -601,6 +802,16 @@ private fun OverscrollScreen(onBack: () -> Unit) {
                 }
             }
         }
+
+        TopBarBlurOverlay(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter),
+            topBarHeight = innerPadding.calculateTopPadding(),
+            blurState = blurState,
+            isScrolled = isScrolled
+        )
+    }
     }
 
     if (infoDialogTitle != null && infoDialogText != null) {
@@ -671,7 +882,10 @@ private fun ExpandableSettingsGroupCard(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = if (enabled) contentColor else contentColor.copy(alpha = 0.5f)
+                    color = if (enabled) contentColor else contentColor.copy(alpha = 0.5f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
                 )
                 
                 Icon(
@@ -714,8 +928,8 @@ private fun MasterSwitchCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer, fontWeight = FontWeight.Bold)
-                Text(if (isChecked) dynamicStringResource(R.string.os_status_active) else dynamicStringResource(R.string.os_status_disabled), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f))
+                Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(if (isChecked) dynamicStringResource(R.string.os_status_active) else dynamicStringResource(R.string.os_status_disabled), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             IconButton(onClick = onInfoClick, modifier = Modifier.padding(start = 8.dp)) {
                 Icon(Icons.Outlined.Info, "Info", tint = MaterialTheme.colorScheme.onSecondaryContainer)
@@ -815,7 +1029,10 @@ private fun ScaleGroup(
     isMasterEnabled: Boolean,
     expanded: Boolean,
     onExpandChange: (Boolean) -> Unit,
-    onChange: () -> Unit
+    onChange: () -> Unit,
+    defIntensity: Float = 0f,
+    defIntensityHoriz: Float = 0f,
+    defLimitMin: Float = 0.1f
 ) {
     ExpandableSettingsGroupCard(
         title = title,
@@ -856,13 +1073,13 @@ private fun ScaleGroup(
             onInfoClick = onInfo
         )
 
-        OverscrollFloatSlider(context, dynamicStringResource(R.string.os_lbl_scale_int), "${prefix}_intensity$suffix", 0f..10f, 0f, 
+        OverscrollFloatSlider(context, dynamicStringResource(R.string.os_lbl_scale_int), "${prefix}_intensity$suffix", 0f..10f, defIntensity, 
             infoText = dynamicStringResource(R.string.os_desc_scale_intensity), video = "${prefix}_intensity", onInfo = onInfo, refreshKey = refreshKey, enabled = areSlidersActive, onChange = onChange)
         
-        OverscrollFloatSlider(context, dynamicStringResource(R.string.os_lbl_scale_int_horiz), "${prefix}_intensity_horiz$suffix", 0f..10f, 0f, 
+        OverscrollFloatSlider(context, dynamicStringResource(R.string.os_lbl_scale_int_horiz), "${prefix}_intensity_horiz$suffix", 0f..10f, defIntensityHoriz, 
             infoText = dynamicStringResource(R.string.os_desc_scale_int_horiz), video = "${prefix}_intensity_horiz", onInfo = onInfo, refreshKey = refreshKey, enabled = areSlidersActive, onChange = onChange)
 
-        OverscrollFloatSlider(context, dynamicStringResource(R.string.os_lbl_scale_limit), "${prefix}_limit_min$suffix", 0.1f..10f, 0.3f, 
+        OverscrollFloatSlider(context, dynamicStringResource(R.string.os_lbl_scale_limit), "${prefix}_limit_min$suffix", 0.1f..10f, defLimitMin, 
             infoText = dynamicStringResource(R.string.os_desc_scale_limit), video = "${prefix}_intensity_horiz", onInfo = onInfo, refreshKey = refreshKey, enabled = areSlidersActive, onChange = onChange)
         
         val anchorTitle = dynamicStringResource(R.string.os_desc_anchor)

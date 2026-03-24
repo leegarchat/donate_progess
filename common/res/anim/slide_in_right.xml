@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Enter animation: new activity slides in from the right edge.
+    Material-style decelerate — arrives naturally as if it was already waiting off-screen.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/linear_out_slow_in">
+    <translate
+        android:fromXDelta="100%p"
+        android:toXDelta="0"
+        android:duration="350" />
+</set>

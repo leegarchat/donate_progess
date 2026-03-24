@@ -7,6 +7,7 @@ import android.os.PowerManager
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -44,7 +45,11 @@ import org.pixel.customparts.R
 import org.pixel.customparts.dynamicDarkColorScheme
 import org.pixel.customparts.dynamicLightColorScheme
 import org.pixel.customparts.ui.ExpandableWarningCard
+import org.pixel.customparts.ui.REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING
 import org.pixel.customparts.ui.RebootBubble
+import org.pixel.customparts.ui.TopBarBlurOverlay
+import org.pixel.customparts.ui.recordLayer
+import org.pixel.customparts.ui.rememberGraphicsLayerRecordingState
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import org.pixel.customparts.utils.dynamicStringResource
@@ -53,6 +58,7 @@ import org.pixel.customparts.utils.RemoteStringsManager
 class ThermalActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             val darkTheme = isSystemInDarkTheme()
             val context = LocalContext.current
@@ -76,6 +82,9 @@ fun ThermalScreen(onBack: () -> Unit) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val blurState = rememberGraphicsLayerRecordingState()
+    val lazyListState = androidx.compose.foundation.lazy.rememberLazyListState()
+    val isScrolled by remember { derivedStateOf { lazyListState.canScrollBackward } }
     var batteryProfile by remember { mutableIntStateOf(0) }
     var socProfile by remember { mutableIntStateOf(0) }
     var isLoading by remember { mutableStateOf(true) }
@@ -101,18 +110,27 @@ fun ThermalScreen(onBack: () -> Unit) {
                     IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
                 )
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .recordLayer(blurState)
+                    .background(MaterialTheme.colorScheme.surfaceContainer),
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    top = innerPadding.calculateTopPadding() + 16.dp,
+                    end = 16.dp,
+                    bottom = innerPadding.calculateBottomPadding() + REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING
+                ),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
             
             item {
                 ExpandableWarningCard(
@@ -158,6 +176,14 @@ fun ThermalScreen(onBack: () -> Unit) {
                     getDescription = { mode -> ThermalManager.getSocDescription(mode) }
                 )
             }
+        }
+
+            TopBarBlurOverlay(
+                modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
+                topBarHeight = innerPadding.calculateTopPadding(),
+                blurState = blurState,
+                isScrolled = isScrolled
+            )
         }
     }
 

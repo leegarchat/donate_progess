@@ -1,3 +1,10 @@
+on post-fs-data
+    mkdir /data/pixelparts 0777 system system
+    mkdir /data/pixelparts/addons 0777 system system
+    mkdir /data/pixelparts/addons-dex 0777 system system
+    mkdir /data/pixelparts/system_addons_data 0777 system system
+    restorecon_recursive /data/pixelparts
+
 on property:persist.sys.pixelparts.thermal_config=*
     setprop vendor.thermal.config ${persist.sys.pixelparts.thermal_config}
-	restart vendor.thermal-hal
+    restart vendor.thermal-hal

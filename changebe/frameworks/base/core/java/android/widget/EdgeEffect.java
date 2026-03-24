@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,22 +35,16 @@ import android.graphics.RecordingCanvas;
 import android.graphics.Rect;
 import android.graphics.RenderNode;
 import android.os.Build;
+import android.os.SystemClock;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-
-// =========================================================================================
-// [CUSTOM INJECTION START] - Imports
-// =========================================================================================
-import android.provider.Settings;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.WindowManager;
-import java.util.WeakHashMap;
-// =========================================================================================
-// [CUSTOM INJECTION END]
-// =========================================================================================
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -74,6 +68,11 @@ import java.lang.annotation.RetentionPolicy;
  * {@link #draw(Canvas)} method.</p>
  */
 public class EdgeEffect {
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Original AOSP constants
+    // ═══════════════════════════════════════════════════════════════════
+
     /**
      * This sets the edge effect to use stretch instead of glow.
      *
@@ -190,6 +189,10 @@ public class EdgeEffect {
     private static final float COS = (float) Math.cos(ANGLE);
     private static final float RADIUS_FACTOR = 0.6f;
 
+    // ═══════════════════════════════════════════════════════════════════
+    //  Original AOSP fields
+    // ═══════════════════════════════════════════════════════════════════
+
     private float mGlowAlpha;
     @UnsupportedAppUsage(maxTargetSdk = Build.VERSION_CODES.R, trackingBug = 170729553)
     private float mGlowScaleY;
@@ -239,122 +242,197 @@ public class EdgeEffect {
     private Matrix mTmpMatrix = null;
     private float[] mTmpPoints = null;
 
-    // =========================================================================================
-    // [CUSTOM INJECTION START] - Custom Fields
-    // =========================================================================================
-    private SpringDynamics mCustomSpring;
-    private Context mCustomContext; 
-    
-    // Animation state
-    private float mCustomSmoothOffsetY = 0f;
-    private float mCustomSmoothScale = 1.0f;
-    private float mCustomSmoothZoom = 1.0f;
-    private float mCustomSmoothHScale = 1.0f;
-    private float mCustomLastDelta = 0f;
-    private float mCustomTargetFingerX = 0.5f;
-    private float mCustomCurrentFingerX = 0.5f;
-    private boolean mCustomFirstTouch = true;
-    
-    private float mCustomScreenHeight = 2200f;
-    private float mCustomScreenWidth = 1080f;
-    
-    private float mCfgScale = 1.0f;
-    private boolean mCfgFilter = false;
-    private boolean mCfgIgnore = false;
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: static configuration
+    // ═══════════════════════════════════════════════════════════════════
 
-    // Caches and helpers
-    private final Matrix mCustomMatrix = new Matrix();
-    private final float[] mCustomPoints = new float[4];
-    private static final WeakHashMap<Object, Boolean> sComposeCache = new WeakHashMap<>();
+    private static final String TAG_CUSTOM = "PixelPartsOverscroll";
+    private static String sKeySuffix = "_pine";
 
-    // Settings Keys (Pine)
-    private static final String KEY_ENABLED = "overscroll_enabled_pine";
-    private static final String KEY_PACKAGES_CONFIG = "overscroll_packages_config_pine";
-    private static final String KEY_PULL_COEFF = "overscroll_pull_pine";
-    private static final String KEY_STIFFNESS = "overscroll_stiffness_pine";
-    private static final String KEY_DAMPING = "overscroll_damping_pine";
-    private static final String KEY_FLING = "overscroll_fling_pine";
-    private static final String KEY_PHYSICS_MIN_VEL = "overscroll_physics_min_vel_pine";
-    private static final String KEY_PHYSICS_MIN_VAL = "overscroll_physics_min_val_pine";
-    private static final String KEY_ANIMATION_SPEED = "overscroll_anim_speed_pine";
-    private static final String KEY_INPUT_SMOOTH_FACTOR = "overscroll_input_smooth_pine";
-    private static final String KEY_RESISTANCE_EXPONENT = "overscroll_res_exponent_pine";
-    private static final String KEY_LERP_MAIN_IDLE = "overscroll_lerp_main_idle_pine";
-    private static final String KEY_LERP_MAIN_RUN = "overscroll_lerp_main_run_pine";
-    private static final String KEY_COMPOSE_SCALE = "overscroll_compose_scale_pine";
-    private static final String KEY_DISABLE_ARBITRARY_RENDERING = "overscroll_disable_arbitrary_rendering_pine";
-    private static final String KEY_SCALE_MODE = "overscroll_scale_mode_pine";
-    private static final String KEY_SCALE_INTENSITY = "overscroll_scale_intensity_pine";
-    private static final String KEY_SCALE_LIMIT_MIN = "overscroll_scale_limit_min_pine";
-    private static final String KEY_ZOOM_MODE = "overscroll_zoom_mode_pine";
-    private static final String KEY_ZOOM_INTENSITY = "overscroll_zoom_intensity_pine";
-    private static final String KEY_ZOOM_LIMIT_MIN = "overscroll_zoom_limit_min_pine";
-    private static final String KEY_ZOOM_ANCHOR_X = "overscroll_zoom_anchor_x_pine";
-    private static final String KEY_ZOOM_ANCHOR_Y = "overscroll_zoom_anchor_y_pine";
-    private static final String KEY_H_SCALE_MODE = "overscroll_h_scale_mode_pine";
-    private static final String KEY_H_SCALE_INTENSITY = "overscroll_h_scale_intensity_pine";
-    private static final String KEY_H_SCALE_LIMIT_MIN = "overscroll_h_scale_limit_min_pine";
-    private static final String KEY_SCALE_ANCHOR_Y = "overscroll_scale_anchor_y_pine";
-    private static final String KEY_H_SCALE_ANCHOR_X = "overscroll_h_scale_anchor_x_pine";
-    private static final String KEY_SCALE_ANCHOR_X_HORIZ = "overscroll_scale_anchor_x_horiz_pine";
-    private static final String KEY_H_SCALE_ANCHOR_Y_HORIZ = "overscroll_h_scale_anchor_y_horiz_pine";
-    private static final String KEY_ZOOM_ANCHOR_X_HORIZ = "overscroll_zoom_anchor_x_horiz_pine";
-    private static final String KEY_ZOOM_ANCHOR_Y_HORIZ = "overscroll_zoom_anchor_y_horiz_pine";
-    private static final String KEY_SCALE_INTENSITY_HORIZ = "overscroll_scale_intensity_horiz_pine";
-    private static final String KEY_ZOOM_INTENSITY_HORIZ = "overscroll_zoom_intensity_horiz_pine";
-    private static final String KEY_H_SCALE_INTENSITY_HORIZ = "overscroll_h_scale_intensity_horiz_pine";
-    private static final String KEY_INVERT_ANCHOR = "overscroll_invert_anchor_pine";
-    
+    /**
+     * @hide
+     */
+    public static void configure(boolean useGlobal, @NonNull String suffix) {
+        if (!useGlobal) {
+            Log.w(TAG_CUSTOM, "Settings.Secure is no longer supported. Forcing Settings.Global.");
+        }
+        sKeySuffix = suffix;
+    }
+
+    private static String resolveKey(String key) {
+        String base = key.replaceAll("_(xposed|pine|native)$", "");
+        return base + sKeySuffix;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: Settings keys
+    // ═══════════════════════════════════════════════════════════════════
+
+    private static final String KEY_ENABLED = "overscroll_enabled";
+    private static final String KEY_PACKAGES_CONFIG = "overscroll_packages_config";
+    private static final String KEY_PULL_COEFF = "overscroll_pull";
+    private static final String KEY_STIFFNESS = "overscroll_stiffness";
+    private static final String KEY_DAMPING = "overscroll_damping";
+    private static final String KEY_FLING = "overscroll_fling";
+    private static final String KEY_PHYSICS_MIN_VEL = "overscroll_physics_min_vel";
+    private static final String KEY_PHYSICS_MIN_VAL = "overscroll_physics_min_val";
+    private static final String KEY_INPUT_SMOOTH_FACTOR = "overscroll_input_smooth";
+    private static final String KEY_ANIMATION_SPEED = "overscroll_anim_speed";
+    private static final String KEY_RESISTANCE_EXPONENT = "overscroll_res_exponent";
+    private static final String KEY_LERP_MAIN_IDLE = "overscroll_lerp_main_idle";
+    private static final String KEY_LERP_MAIN_RUN = "overscroll_lerp_main_run";
+    private static final String KEY_DISABLE_ARBITRARY_RENDERING = "overscroll_disable_arbitrary_rendering";
+    private static final String KEY_SCALE_MODE = "overscroll_scale_mode";
+    private static final String KEY_SCALE_INTENSITY = "overscroll_scale_intensity";
+    private static final String KEY_SCALE_LIMIT_MIN = "overscroll_scale_limit_min";
+    private static final String KEY_ZOOM_MODE = "overscroll_zoom_mode";
+    private static final String KEY_ZOOM_INTENSITY = "overscroll_zoom_intensity";
+    private static final String KEY_ZOOM_LIMIT_MIN = "overscroll_zoom_limit_min";
+    private static final String KEY_ZOOM_ANCHOR_X = "overscroll_zoom_anchor_x";
+    private static final String KEY_ZOOM_ANCHOR_Y = "overscroll_zoom_anchor_y";
+    private static final String KEY_H_SCALE_MODE = "overscroll_h_scale_mode";
+    private static final String KEY_H_SCALE_INTENSITY = "overscroll_h_scale_intensity";
+    private static final String KEY_H_SCALE_LIMIT_MIN = "overscroll_h_scale_limit_min";
+    private static final String KEY_SCALE_ANCHOR_Y = "overscroll_scale_anchor_y";
+    private static final String KEY_H_SCALE_ANCHOR_X = "overscroll_h_scale_anchor_x";
+    private static final String KEY_SCALE_ANCHOR_X_HORIZ = "overscroll_scale_anchor_x_horiz";
+    private static final String KEY_H_SCALE_ANCHOR_Y_HORIZ = "overscroll_h_scale_anchor_y_horiz";
+    private static final String KEY_ZOOM_ANCHOR_X_HORIZ = "overscroll_zoom_anchor_x_horiz";
+    private static final String KEY_ZOOM_ANCHOR_Y_HORIZ = "overscroll_zoom_anchor_y_horiz";
+    private static final String KEY_SCALE_INTENSITY_HORIZ = "overscroll_scale_intensity_horiz";
+    private static final String KEY_ZOOM_INTENSITY_HORIZ = "overscroll_zoom_intensity_horiz";
+    private static final String KEY_H_SCALE_INTENSITY_HORIZ = "overscroll_h_scale_intensity_horiz";
+    private static final String KEY_INVERT_ANCHOR = "overscroll_invert_anchor";
+    private static final String KEY_RECORD_PATTERNS = "record_patterns_edge_effect";
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Ключи Settings.Global: интеллектуальная нормализация дельт
+    //  (Phase 2 — автоматическое подавление усиленных Compose-дельт)
+    // ═══════════════════════════════════════════════════════════════════
+
+    // Главный выключатель нормализации: 0 = выкл (дефолт), 1 = вкл
+    private static final String KEY_NORM_ENABLED = "overscroll_norm_enabled";
+
+    // Эталонная «нормальная» дельта View-приложения (доля от effectiveSize).
+    private static final String KEY_NORM_REF_DELTA = "overscroll_norm_ref_delta";
+
+    // Множитель порога обнаружения. Активация: running_mean > ref × это.
+    private static final String KEY_NORM_DETECT_MUL = "overscroll_norm_detect_mul";
+
+    // Фактор нормализации — на сколько домножить усиленную дельту.
+    private static final String KEY_NORM_FACTOR = "overscroll_norm_factor";
+
+    // Размер скользящего окна — сколько последних |delta| анализировать.
+    private static final String KEY_NORM_WINDOW = "overscroll_norm_window";
+
+    // Плавность перехода — за сколько событий перейти от 1.0 к factor.
+    private static final String KEY_NORM_RAMP = "overscroll_norm_ramp";
+
+    // Режим определения caller'а: 0 = только поведение (окно дельт),
+    // 1 = стек-трейс + поведение, 2 = только стек-трейс.
+    private static final String KEY_NORM_DETECT_MODE = "overscroll_norm_detect_mode";
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: constants
+    // ═══════════════════════════════════════════════════════════════════
+
     private static final float FILTER_THRESHOLD = 0.08f;
     private static final float MICRO_DELTA_EPS = 0.00035f;
     private static final float DIRECTION_FLIP_DAMPING = 0.2f;
     private static final float NORMAL_FLIP_DAMPING = 0.65f;
+    private static final long SETTINGS_CACHE_TTL_MS = 120L;
+    private static final String RECORD_TAG = "EdgePatternRec";
 
-    // [OPTIMIZATION] CACHED SETTINGS VARIABLES
-    // Эти переменные хранят значения настроек, чтобы не читать базу данных в каждом кадре draw()
-    private boolean mCachedEnabled = false;
-    private float mCachedPullCoeff;
-    private float mCachedStiffness;
-    private float mCachedDamping;
-    private float mCachedFling;
-    private float mCachedMinVel;
-    private float mCachedMinVal;
-    private float mCachedInputSmooth;
-    private float mCachedAnimSpeedPercent;
-    private float mCachedAnimSpeedMul;
-    private float mCachedResExponent;
-    private float mCachedLerpIdle;
-    private float mCachedLerpRun;
-    private float mCachedComposeScale;
-    private boolean mCachedInvertAnchor;
-    private boolean mCachedDisableArbitraryRendering;
-    
-    // Cached Visuals
-    private int mCachedScaleMode;
-    private float mCachedScaleInt;
-    private float mCachedScaleIntHoriz;
-    private float mCachedScaleLimit;
-    private float mCachedScaleAnchorY;
-    private float mCachedScaleAnchorXHoriz;
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: per-instance fields
+    //  (were XposedHelpers.additionalInstanceField in the hook)
+    // ═══════════════════════════════════════════════════════════════════
 
-    private int mCachedZoomMode;
-    private float mCachedZoomInt;
-    private float mCachedZoomIntHoriz;
-    private float mCachedZoomLimit;
-    private float mCachedZoomAnchorX;
-    private float mCachedZoomAnchorY;
-    private float mCachedZoomAnchorXHoriz;
-    private float mCachedZoomAnchorYHoriz;
+    private Context mCustomContext;
+    private SpringDynamics mCustomSpring;
+    private float mCustomSmoothOffsetY;
+    private float mCustomSmoothScale = 1.0f;
+    private float mCustomSmoothZoom = 1.0f;
+    private float mCustomSmoothHScale = 1.0f;
+    private Matrix mCustomMatrix;
+    private float[] mCustomPoints;
+    private float mCustomLastDelta;
+    private float mCustomTargetFingerX = 0.5f;
+    private float mCustomCurrentFingerX = 0.5f;
+    private float mCustomScreenHeight = 2200f;
+    private float mCustomScreenWidth = 1080f;
+    private boolean mCustomFirstTouch = true;
+    private SettingsCache mCustomSettingsCache;
+    private float mCfgScale = 1.0f;
+    private boolean mCfgIgnore = false;
+    private boolean mCfgFilter = false;
+    private int mCustomGestureId;
+    private int mCustomGestureSeq;
+    private long mCustomRecordLastNs;
 
-    private int mCachedHScaleMode;
-    private float mCachedHScaleInt;
-    private float mCachedHScaleIntHoriz;
-    private float mCachedHScaleLimit;
-    private float mCachedHScaleAnchorX;
-    private float mCachedHScaleAnchorYHoriz;
-    // =========================================================================================
-    // [CUSTOM INJECTION END]
-    // =========================================================================================
+    // Per-instance поля для интеллектуальной нормализации дельт
+    private float[] mNormDeltaWindow;
+    private int mNormWindowIdx;
+    private int mNormWindowCount;
+    private float mNormCurrentFactor = 1.0f;
+    // true если конструктор вызван из Compose (определено по стек-трейсу)
+    private boolean mIsComposeCaller;
+    private String mCallerInfo;
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: SettingsCache
+    // ═══════════════════════════════════════════════════════════════════
+
+    private static class SettingsCache {
+        long updatedAt;
+        float pullCoeff;
+        float stiffness;
+        float damping;
+        float fling;
+        float minVel;
+        float minVal;
+        float inputSmooth;
+        float animationSpeedPercent;
+        float animationSpeedMul;
+        float resExponent;
+        float lerpMainIdle;
+        float lerpMainRun;
+        boolean disableArbitraryRendering;
+        int scaleMode;
+        float scaleIntensity;
+        float scaleIntensityHoriz;
+        float scaleLimitMin;
+        int zoomMode;
+        float zoomIntensity;
+        float zoomIntensityHoriz;
+        float zoomLimitMin;
+        float zoomAnchorX;
+        float zoomAnchorY;
+        float zoomAnchorXHoriz;
+        float zoomAnchorYHoriz;
+        int hScaleMode;
+        float hScaleIntensity;
+        float hScaleIntensityHoriz;
+        float hScaleLimitMin;
+        float scaleAnchorY;
+        float hScaleAnchorX;
+        float scaleAnchorXHoriz;
+        float hScaleAnchorYHoriz;
+        boolean invertAnchor;
+        boolean recordPatterns;
+        // ── Delta normalization ──
+        boolean normEnabled;
+        float normRefDelta;
+        float normDetectMul;
+        float normFactor;
+        int normWindow;
+        int normRamp;
+        int normDetectMode;  // 0=behavior, 1=hybrid, 2=stacktrace-only
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Constructors
+    // ═══════════════════════════════════════════════════════════════════
 
     /**
      * Construct a new EdgeEffect with a theme appropriate for the provided context.
@@ -362,8 +440,6 @@ public class EdgeEffect {
      */
     public EdgeEffect(Context context) {
         this(context, null);
-        // CUSTOM INJECTION
-        initCustomInstance(context);
     }
 
     /**
@@ -372,6 +448,7 @@ public class EdgeEffect {
      * @param attrs The attributes of the XML tag that is inflating the view
      */
     public EdgeEffect(@NonNull Context context, @Nullable AttributeSet attrs) {
+        // ── Original AOSP constructor logic ──
         final TypedArray a = context.obtainStyledAttributes(
                 attrs, com.android.internal.R.styleable.EdgeEffect);
         final int themeColor = a.getColor(
@@ -384,9 +461,14 @@ public class EdgeEffect {
         mPaint.setColor((themeColor & 0xffffff) | 0x33000000);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setBlendMode(DEFAULT_BLEND_MODE);
-        // CUSTOM INJECTION
+
+        // ── Custom bounce initialization ──
         initCustomInstance(context);
     }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Original AOSP helpers
+    // ═══════════════════════════════════════════════════════════════════
 
     @EdgeEffectType
     private int getCurrentEdgeEffectBehavior() {
@@ -396,6 +478,10 @@ public class EdgeEffect {
             return mEdgeEffectType;
         }
     }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Public API
+    // ═══════════════════════════════════════════════════════════════════
 
     /**
      * Set the size of this edge effect in pixels.
@@ -421,81 +507,81 @@ public class EdgeEffect {
     }
 
     /**
-     * Reports if this EdgeEffect's animation is finished.
+     * Reports if this EdgeEffect's animation is finished. If this method returns false
+     * after a call to {@link #draw(Canvas)} the host widget should schedule another
+     * drawing pass to continue the animation.
+     *
+     * @return true if animation is finished, false if drawing should continue on the next frame.
      */
     public boolean isFinished() {
-        // =========================================================================================
-        // [CUSTOM INJECTION START] - isFinished Logic
-        // =========================================================================================
-        updateSettings();
-        if (mCachedEnabled && !mCfgIgnore) {
-            float minVal = mCachedMinVal; // [OPTIMIZATION] Use cached
-
-            if (mCustomSpring != null) {
-                mCustomSpring.setSpeedMultiplier(mCachedAnimSpeedMul);
-                if (mCustomSpring.isRunning()) {
-                    mCustomSpring.doFrame(System.nanoTime());
-                }
-
-                float smooth = mCustomSmoothOffsetY;
-                smooth += (mCustomSpring.mValue - smooth) * 0.35f;
-                if (Math.abs(mCustomSpring.mValue) < 0.1f && Math.abs(smooth) < minVal * 2f) {
-                    smooth = 0f;
-                }
-                mCustomSmoothOffsetY = smooth;
-
-                boolean physicsDone = !mCustomSpring.isRunning() && Math.abs(mCustomSpring.mValue) < minVal;
-                boolean visualDone = (Math.abs(smooth) < minVal);
-                boolean fullyFinished = physicsDone && visualDone;
-
-                if (physicsDone && !visualDone) {
-                    float diff = Math.abs(smooth);
-                    if (diff < minVal * 3) {
-                        mCustomSmoothOffsetY = 0f;
-                        fullyFinished = true;
-                    }
-                }
-
-                if (fullyFinished) {
-                    resetCustomState();
-                    mState = STATE_IDLE;
-                    mDistance = 0f;
-                }
-                return fullyFinished;
-            }
-            return true;
+        if (!isBounceEnabled()) {
+            // ── Original AOSP logic ──
+            return mState == STATE_IDLE;
         }
-        // =========================================================================================
-        // [CUSTOM INJECTION END]
-        // =========================================================================================
-        return mState == STATE_IDLE;
+
+        // ── Custom bounce logic ──
+        SettingsCache cache = getSettingsCache(mCustomContext, false);
+        float minVal = cache.minVal;
+
+        if (mCustomSpring != null) {
+            mCustomSpring.setSpeedMultiplier(cache.animationSpeedMul);
+
+            float smooth = mCustomSmoothOffsetY;
+            float smoothSc = mCustomSmoothScale;
+            float smoothZ = mCustomSmoothZoom;
+            float smoothH = mCustomSmoothHScale;
+
+            boolean physicsDone = !mCustomSpring.isRunning()
+                    && Math.abs(mCustomSpring.mValue) < minVal;
+            boolean visualDone = Math.abs(smooth) < minVal
+                    && Math.abs(smoothSc - 1f) < 0.001f
+                    && Math.abs(smoothZ - 1f) < 0.001f
+                    && Math.abs(smoothH - 1f) < 0.001f;
+            boolean fullyFinished = physicsDone && visualDone;
+
+            if (fullyFinished) {
+                forceFinish(mCustomSpring);
+            }
+            return fullyFinished;
+        }
+        return true;
     }
 
     /**
      * Immediately finish the current animation.
+     * After this call {@link #isFinished()} will return true.
      */
     public void finish() {
-        // =========================================================================================
-        // [CUSTOM INJECTION START] - finish Logic
-        // =========================================================================================
-        if (mCachedEnabled && !mCfgIgnore) {
-            if (mCustomSpring != null) {
-                mCustomSpring.cancel();
-                mCustomSpring.mValue = 0;
-                mCustomSpring.mVelocity = 0;
-            }
-            resetCustomState();
+        if (!isBounceEnabled()) {
+            // ── Original AOSP logic ──
+            mState = STATE_IDLE;
+            mDistance = 0;
+            mVelocity = 0;
+            return;
         }
-        // =========================================================================================
-        // [CUSTOM INJECTION END]
-        // =========================================================================================
-        mState = STATE_IDLE;
-        mDistance = 0;
-        mVelocity = 0;
+
+        // ── Custom bounce logic ──
+        if (mCustomSpring != null) {
+            mCustomSpring.cancel();
+            mCustomSpring.mValue = 0;
+            mCustomSpring.mVelocity = 0;
+        }
+
+        forceFinish(mCustomSpring);
     }
 
     /**
      * A view should call this when content is pulled away from an edge by the user.
+     * This will update the state of the current visual effect and its associated animation.
+     * The host view should always {@link android.view.View#invalidate()} after this
+     * and draw the results accordingly.
+     *
+     * <p>Views using EdgeEffect should favor {@link #onPull(float, float)} when the displacement
+     * of the pull point is known.</p>
+     *
+     * @param deltaDistance Change in distance since the last call. Values may be 0 (no change) to
+     *                      1.f (full length of the view) or negative values to express change
+     *                      back toward the edge reached to initiate the effect.
      */
     public void onPull(float deltaDistance) {
         onPull(deltaDistance, 0.5f);
@@ -503,104 +589,589 @@ public class EdgeEffect {
 
     /**
      * A view should call this when content is pulled away from an edge by the user.
+     * This will update the state of the current visual effect and its associated animation.
+     * The host view should always {@link android.view.View#invalidate()} after this
+     * and draw the results accordingly.
+     *
+     * @param deltaDistance Change in distance since the last call. Values may be 0 (no change) to
+     *                      1.f (full length of the view) or negative values to express change
+     *                      back toward the edge reached to initiate the effect.
+     * @param displacement The displacement from the starting side of the effect of the point
+     *                     initiating the pull. In the case of touch this is the finger position.
+     *                     Values may be from 0-1.
      */
     public void onPull(float deltaDistance, float displacement) {
-        // =========================================================================================
-        // [CUSTOM INJECTION START] - onPull Logic
-        // =========================================================================================
-        updateSettings(); // [OPTIMIZATION] Update settings cache at start of gesture
-
-        if (mCachedEnabled && !mCfgIgnore) {
-            final boolean strictHold = mCachedDisableArbitraryRendering;
-            if (isComposeCaller()) {
-                float composeDivisor = mCachedComposeScale;
-                if (composeDivisor < 0.01f) composeDivisor = 1.0f;
-                deltaDistance /= composeDivisor;
-            }
-
-            if (mCustomSpring == null) return;
-            mCustomSpring.setSpeedMultiplier(mCachedAnimSpeedMul);
-
-            if (mCfgFilter && Math.abs(deltaDistance) > FILTER_THRESHOLD) return;
-            
-            float correctedDelta = (Math.abs(mCfgScale) > 0.001f) ? deltaDistance / mCfgScale : deltaDistance;
-            if (Math.abs(correctedDelta) < MICRO_DELTA_EPS) {
-                correctedDelta = 0f;
-            }
-
-            float inputSmoothFactor = mCachedInputSmooth;
-            
-            if (mCustomFirstTouch) {
-                mCustomLastDelta = correctedDelta;
-                mCustomFirstTouch = false;
-            }
-
-            boolean directionChanged = (correctedDelta > 0 && mCustomLastDelta < 0) || (correctedDelta < 0 && mCustomLastDelta > 0);
-            float filteredDelta;
-            if (directionChanged) {
-                if (strictHold) {
-                    if (Math.abs(correctedDelta) < Math.abs(mCustomLastDelta) * 1.2f) {
-                        filteredDelta = 0f;
-                    } else {
-                        filteredDelta = correctedDelta * DIRECTION_FLIP_DAMPING + mCustomLastDelta * (1.0f - DIRECTION_FLIP_DAMPING);
-                    }
-                } else {
-                    filteredDelta = correctedDelta * NORMAL_FLIP_DAMPING + mCustomLastDelta * (1.0f - NORMAL_FLIP_DAMPING);
-                }
-            } else {
-                filteredDelta = correctedDelta * (1.0f - inputSmoothFactor) + mCustomLastDelta * inputSmoothFactor;
-            }
-            
-            mCustomLastDelta = filteredDelta;
-            mCustomTargetFingerX = displacement;
-
-            mState = STATE_PULL;
-            mCustomSpring.cancel();
-
-            float currentTranslation = mCustomSpring.mValue;
-            float effectiveSize = Math.max(Math.abs(mHeight), Math.abs(mWidth));
-            if (effectiveSize < 1f) effectiveSize = mCustomScreenHeight;
-
-            float rawMove = filteredDelta * effectiveSize;
-            float pullCoeff = mCachedPullCoeff;
-            float resExponent = mCachedResExponent;
-
-            boolean isPullingAway = (currentTranslation > 0 && rawMove > 0) || (currentTranslation < 0 && rawMove < 0);
-            float change;
-
-            if (pullCoeff >= 1.0f) {
-                change = rawMove * pullCoeff;
-            } else {
-                if (isPullingAway) {
-                    float ratio = Math.min(Math.abs(currentTranslation) / mCustomScreenHeight, 1f);
-                    float resistance = (float) Math.pow(1.0f - ratio, resExponent);
-                    change = rawMove * resistance;
-                } else {
-                    change = rawMove;
-                }
-            }
-
-            float nextTranslation = currentTranslation + change;
-            
-            // Предотвращение пересечения нуля
-            if ((currentTranslation > 0 && nextTranslation < 0) || (currentTranslation < 0 && nextTranslation > 0)) {
-                nextTranslation = 0f;
-            }
-            if (strictHold && directionChanged && Math.abs(filteredDelta) <= Math.abs(mCustomLastDelta)) {
-                nextTranslation = currentTranslation;
-            }
-
-            mCustomSpring.mValue = nextTranslation;
-            mDistance = nextTranslation / effectiveSize;
+        if (!isBounceEnabled()) {
+            // ── Original AOSP logic ──
+            onPullOriginal(deltaDistance, displacement);
             return;
         }
-        // =========================================================================================
-        // [CUSTOM INJECTION END]
-        // =========================================================================================
 
+        // ── Custom bounce logic ──
+        SettingsCache cache = getSettingsCache(mCustomContext, true);
+        boolean strictHold = cache.disableArbitraryRendering;
+
+        if (mCustomSpring == null) return;
+        mCustomSpring.setSpeedMultiplier(cache.animationSpeedMul);
+
+        float cfgScale = mCfgScale;
+        boolean cfgFilter = mCfgFilter;
+
+        if (cfgFilter && Math.abs(deltaDistance) > FILTER_THRESHOLD) return;
+        float correctedDelta = (Math.abs(cfgScale) > 0.001f) ? deltaDistance / cfgScale : deltaDistance;
+        if (Math.abs(correctedDelta) < MICRO_DELTA_EPS) {
+            correctedDelta = 0f;
+        }
+
+        // ── Intelligent delta normalization (Phase 2) ──
+        if (cache.normEnabled && correctedDelta != 0f) {
+            correctedDelta = applyDeltaNormalization(cache, correctedDelta);
+        }
+
+        float inputSmoothFactor = cache.inputSmooth;
+        float lastDelta = mCustomLastDelta;
+        boolean isFirstTouch = mCustomFirstTouch;
+
+        if (isFirstTouch) {
+            lastDelta = correctedDelta;
+            mCustomFirstTouch = false;
+        }
+
+        boolean directionChanged = (correctedDelta > 0 && lastDelta < 0) || (correctedDelta < 0 && lastDelta > 0);
+        float filteredDelta;
+        if (directionChanged) {
+            if (strictHold) {
+                if (Math.abs(correctedDelta) < Math.abs(lastDelta) * 1.2f) {
+                    filteredDelta = 0f;
+                } else {
+                    filteredDelta = correctedDelta * DIRECTION_FLIP_DAMPING + lastDelta * (1.0f - DIRECTION_FLIP_DAMPING);
+                }
+            } else {
+                filteredDelta = correctedDelta * NORMAL_FLIP_DAMPING + lastDelta * (1.0f - NORMAL_FLIP_DAMPING);
+            }
+        } else {
+            filteredDelta = correctedDelta * (1.0f - inputSmoothFactor) + lastDelta * inputSmoothFactor;
+        }
+        mCustomLastDelta = filteredDelta;
+        mCustomTargetFingerX = displacement;
+
+        mState = STATE_PULL;
+        mCustomSpring.cancel();
+
+        float currentTranslation = mCustomSpring.mValue;
+
+        float effectiveSize = Math.max(Math.abs(mHeight), Math.abs(mWidth));
+        if (effectiveSize < 1f) effectiveSize = mCustomScreenHeight;
+
+        float rawMove = filteredDelta * effectiveSize;
+        float pullCoeff = cache.pullCoeff;
+        float resExponent = cache.resExponent;
+
+        boolean isPullingAway = (currentTranslation > 0 && rawMove > 0) || (currentTranslation < 0 && rawMove < 0);
+        float change;
+
+        if (pullCoeff >= 1.0f) {
+            change = rawMove * pullCoeff;
+        } else {
+            if (isPullingAway) {
+                float ratio = Math.min(Math.abs(currentTranslation) / mCustomScreenHeight, 1f);
+                float resistance = (float) Math.pow(1.0f - ratio, resExponent);
+                change = rawMove * resistance;
+            } else {
+                change = rawMove;
+            }
+        }
+
+        float nextTranslation = currentTranslation + change;
+        if ((currentTranslation > 0 && nextTranslation < 0) || (currentTranslation < 0 && nextTranslation > 0)) {
+            nextTranslation = 0f;
+        }
+        if (strictHold && directionChanged && Math.abs(filteredDelta) <= Math.abs(lastDelta)) {
+            nextTranslation = currentTranslation;
+        }
+
+        mCustomSpring.mValue = nextTranslation;
+        // [FIX] mDistance must be non-negative — onPullDistance() assumes >= 0
+        float distance = Math.abs(nextTranslation) / effectiveSize;
+        mDistance = distance;
+
+        if (distance == 0f) {
+            mState = STATE_IDLE;
+            mCustomSpring.mValue = 0f;
+            mCustomSpring.mVelocity = 0f;
+            // [FIX] Don't call resetCustomState() here — smooth offset may still be
+            // non-zero from the previous draw() frame. If we zero smooth now,
+            // isFinished() returns true and AOSP never calls draw() again,
+            // leaving the RenderNode with stale translation → phantom shifted list.
+            // Let draw() handle the visual decay and reset the RenderNode properly.
+            mCustomFirstTouch = true;
+            mCustomLastDelta = 0f;
+        }
+
+        // --- Delta pattern recording ---
+        if (cache.recordPatterns) {
+            long nowNs = SystemClock.elapsedRealtimeNanos();
+            int gid = mCustomGestureId;
+            int seq = mCustomGestureSeq;
+            long prevNs = mCustomRecordLastNs;
+            if (isFirstTouch) { gid++; seq = 0; }
+            seq++;
+            long dtUs = (!isFirstTouch && prevNs > 0) ? (nowNs - prevNs) / 1000L : 0L;
+            mCustomGestureId = gid;
+            mCustomGestureSeq = seq;
+            mCustomRecordLastNs = nowNs;
+            recordPattern(nowNs, mCustomContext.getPackageName(), gid, seq, dtUs,
+                    deltaDistance, correctedDelta, filteredDelta,
+                    displacement, currentTranslation, effectiveSize);
+        }
+    }
+
+    /**
+     * A view should call this when content is pulled away from an edge by the user.
+     * This will update the state of the current visual effect and its associated animation.
+     * The host view should always {@link android.view.View#invalidate()} after this
+     * and draw the results accordingly. This works similarly to {@link #onPull(float, float)},
+     * but returns the amount of <code>deltaDistance</code> that has been consumed. If the
+     * {@link #getDistance()} is currently 0 and <code>deltaDistance</code> is negative, this
+     * function will return 0 and the drawn value will remain unchanged.
+     *
+     * This method can be used to reverse the effect from a pull or absorb and partially consume
+     * some of a motion:
+     *
+     * <pre class="prettyprint">
+     *     if (deltaY < 0) {
+     *         float consumed = edgeEffect.onPullDistance(deltaY / getHeight(), x / getWidth());
+     *         deltaY -= consumed * getHeight();
+     *         if (edgeEffect.getDistance() == 0f) edgeEffect.onRelease();
+     *     }
+     * </pre>
+     *
+     * @param deltaDistance Change in distance since the last call. Values may be 0 (no change) to
+     *                      1.f (full length of the view) or negative values to express change
+     *                      back toward the edge reached to initiate the effect.
+     * @param displacement The displacement from the starting side of the effect of the point
+     *                     initiating the pull. In the case of touch this is the finger position.
+     *                     Values may be from 0-1.
+     * @return The amount of <code>deltaDistance</code> that was consumed, a number between
+     * 0 and <code>deltaDistance</code>.
+     */
+    public float onPullDistance(float deltaDistance, float displacement) {
+        if (!isBounceEnabled()) {
+            // ── Original AOSP logic ──
+            return onPullDistanceOriginal(deltaDistance, displacement);
+        }
+
+        // ── Custom bounce logic ──
+        if (mCustomSpring == null) return 0f;
+
+        float effectiveSize = Math.max(Math.abs(mHeight), Math.abs(mWidth));
+        if (effectiveSize < 1f) effectiveSize = mCustomScreenHeight;
+
+        float currentDistance = Math.abs(mCustomSpring.mValue) / effectiveSize;
+        float finalDistance = Math.max(0f, deltaDistance + currentDistance);
+        float delta = finalDistance - currentDistance;
+
+        if (delta == 0f && currentDistance == 0f) {
+            return 0f;
+        }
+
+        // Delegate to our onPull logic
+        onPull(delta, displacement);
+        return delta;
+    }
+
+    /**
+     * Returns the pull distance needed to be released to remove the showing effect.
+     * It is determined by the {@link #onPull(float, float)} <code>deltaDistance</code> and
+     * any animating values, including from {@link #onAbsorb(int)} and {@link #onRelease()}.
+     *
+     * This can be used in conjunction with {@link #onPullDistance(float, float)} to
+     * release the currently showing effect.
+     *
+     * @return The pull distance that must be released to remove the showing effect.
+     */
+    public float getDistance() {
+        return mDistance;
+    }
+
+    /**
+     * Call when the object is released after being pulled.
+     * This will begin the "decay" phase of the effect. After calling this method
+     * the host view should {@link android.view.View#invalidate()} and thereby
+     * draw the results accordingly.
+     */
+    public void onRelease() {
+        if (!isBounceEnabled()) {
+            // ── Original AOSP logic ──
+            onReleaseOriginal();
+            return;
+        }
+
+        // ── Custom bounce logic ──
+        // [FIX] Match AOSP: onRelease() is a no-op unless in STATE_PULL (1).
+        // Without this guard, onRelease kills spring animations started by onAbsorb,
+        // because Compose/AOSP call onRelease() right after onAbsorb().
+        if (mState != STATE_PULL) {
+            // Still reset touch tracking for next interaction
+            mCustomTargetFingerX = 0.5f;
+            mCustomLastDelta = 0f;
+            mCustomFirstTouch = true;
+            return;
+        }
+
+        SettingsCache cache = getSettingsCache(mCustomContext, true);
+        if (mCustomSpring != null && Math.abs(mCustomSpring.mValue) > 0.5f) {
+            mCustomSpring.setSpeedMultiplier(cache.animationSpeedMul);
+            float stiffness = cache.stiffness;
+            float damping = cache.damping;
+            float minVel = cache.minVel;
+            float minVal = cache.minVal;
+
+            mCustomSpring.setParams(stiffness, damping, minVel, minVal);
+            mCustomSpring.setTargetValue(0);
+            mCustomSpring.setVelocity(0);
+            mCustomSpring.start();
+            mState = STATE_RECEDE;
+        } else {
+            // Value <= 0.5 — negligible pull, reset immediately
+            if (mCustomSpring != null) {
+                mCustomSpring.cancel();
+                mCustomSpring.mValue = 0f;
+                mCustomSpring.mVelocity = 0f;
+            }
+            resetCustomState();
+            mState = STATE_IDLE;
+            mDistance = 0f;
+        }
+
+        mCustomTargetFingerX = 0.5f;
+        mCustomLastDelta = 0f;
+        mCustomFirstTouch = true;
+    }
+
+    /**
+     * Call when the effect absorbs an impact at the given velocity.
+     * Used when a fling reaches the scroll boundary.
+     *
+     * <p>When using a {@link android.widget.Scroller} or {@link android.widget.OverScroller},
+     * the method <code>getCurrVelocity</code> will provide a reasonable approximation
+     * to use here.</p>
+     *
+     * @param velocity Velocity at impact in pixels per second.
+     */
+    public void onAbsorb(int velocity) {
+        if (!isBounceEnabled()) {
+            // ── Original AOSP logic ──
+            onAbsorbOriginal(velocity);
+            return;
+        }
+
+        // ── Custom bounce logic ──
+        mState = STATE_RECEDE;
+        SettingsCache cache = getSettingsCache(mCustomContext, true);
+
+        if (mCustomSpring != null) {
+            mCustomSpring.setSpeedMultiplier(cache.animationSpeedMul);
+            mCustomSpring.cancel();
+
+            float flingMult = cache.fling;
+            float stiffness = cache.stiffness;
+            float damping = cache.damping;
+            float minVel = cache.minVel;
+            float minVal = cache.minVal;
+
+            float velocityPx = velocity * flingMult;
+            if (flingMult > 1.0f) stiffness /= flingMult;
+
+            float maxVel = mCustomScreenHeight * 10f;
+            if (Math.abs(velocityPx) > maxVel) velocityPx = Math.signum(velocityPx) * maxVel;
+
+            mCustomSpring.setParams(stiffness, damping, minVel, minVal);
+            mCustomSpring.setTargetValue(0);
+            mCustomSpring.setVelocity(velocityPx);
+            mCustomSpring.start();
+        }
+        mCustomTargetFingerX = 0.5f;
+        mCustomLastDelta = 0f;
+        mCustomFirstTouch = true;
+    }
+
+    /**
+     * Set the color of this edge effect in argb.
+     *
+     * @param color Color in argb
+     */
+    public void setColor(@ColorInt int color) {
+        mPaint.setColor(color);
+    }
+
+    /**
+     * Set or clear the blend mode. A blend mode defines how source pixels
+     * (generated by a drawing command) are composited with the destination pixels
+     * (content of the render target).
+     * <p />
+     * Pass null to clear any previous blend mode.
+     * <p />
+     *
+     * @see BlendMode
+     *
+     * @param blendmode May be null. The blend mode to be installed in the paint
+     */
+    public void setBlendMode(@Nullable BlendMode blendmode) {
+        mPaint.setBlendMode(blendmode);
+    }
+
+    /**
+     * Return the color of this edge effect in argb.
+     * @return The color of this edge effect in argb
+     */
+    @ColorInt
+    public int getColor() {
+        return mPaint.getColor();
+    }
+
+    /**
+     * Returns the blend mode. A blend mode defines how source pixels
+     * (generated by a drawing command) are composited with the destination pixels
+     * (content of the render target).
+     * <p />
+     *
+     * @return BlendMode
+     */
+    @Nullable
+    public BlendMode getBlendMode() {
+        return mPaint.getBlendMode();
+    }
+
+    /**
+     * Draw into the provided canvas. Assumes that the canvas has been rotated
+     * accordingly and the size has been set. The effect will be drawn the full
+     * width of X=0 to X=width, beginning from Y=0 and extending to some factor <
+     * 1.f of height. The effect will only be visible on a
+     * hardware canvas, e.g. {@link RenderNode#beginRecording()}.
+     *
+     * @param canvas Canvas to draw into
+     * @return true if drawing should continue beyond this frame to continue the
+     *         animation
+     */
+    public boolean draw(Canvas canvas) {
+        if (!isBounceEnabled()) {
+            // ── Original AOSP draw logic ──
+            return drawOriginal(canvas);
+        }
+
+        // ── Custom bounce draw logic ──
+        SettingsCache cache = getSettingsCache(mCustomContext, false);
+        if (!canvas.isHardwareAccelerated()) {
+            forceFinish(mCustomSpring);
+            return false;
+        }
+
+        if (mCustomSpring == null) {
+            forceFinish(null);
+            return false;
+        }
+
+        mCustomSpring.setSpeedMultiplier(cache.animationSpeedMul);
+
+        if (mCustomSpring.isRunning()) mCustomSpring.doFrame(System.nanoTime());
+
+        RenderNode renderNode = null;
+        if (canvas instanceof RecordingCanvas) {
+            renderNode = ((RecordingCanvas) canvas).mNode;
+        }
+        if (renderNode == null) {
+            forceFinish(mCustomSpring);
+            return false;
+        }
+
+        //noinspection deprecation
+        canvas.getMatrix(mCustomMatrix);
+        mCustomPoints[0] = 0; mCustomPoints[1] = 1;
+        mCustomMatrix.mapVectors(mCustomPoints);
+
+        float vx = mCustomPoints[0];
+        float vy = mCustomPoints[1];
+
+        if (Math.abs(vx) > Math.abs(vy)) {
+            vx = Math.signum(vx);
+            vy = 0f;
+        } else {
+            vy = Math.signum(vy);
+            vx = 0f;
+        }
+
+        boolean isVertical = (vy != 0);
+
+        float lerpMainIdle = cache.lerpMainIdle;
+        float lerpMainRun = cache.lerpMainRun;
+        float lerpFactorMain = mCustomSpring.isRunning() ? lerpMainRun : lerpMainIdle;
+        lerpFactorMain = Math.min(1.0f, lerpFactorMain * cache.animationSpeedMul);
+
+        float targetOffset = mCustomSpring.mValue;
+        float currentOffset = mCustomSmoothOffsetY;
+        float newOffset = currentOffset + (targetOffset - currentOffset) * lerpFactorMain;
+
+        float minVal = cache.minVal;
+        if (Math.abs(targetOffset - newOffset) < 0.5f) newOffset = targetOffset;
+        if (Math.abs(targetOffset) < 0.1f && Math.abs(newOffset) < minVal) newOffset = 0f;
+
+        mCustomSmoothOffsetY = newOffset;
+
+        float screenHeight = mCustomScreenHeight;
+        float screenWidth = mCustomScreenWidth;
+
+        float maxDistance = isVertical ? screenHeight : screenWidth;
+        float ratio = (maxDistance > 0) ? Math.min(Math.abs(newOffset) / maxDistance, 1.0f) : 0f;
+        boolean isActive = Math.abs(newOffset) > 1.0f;
+
+        boolean zoomActive = cache.zoomMode != 0;
+        boolean scaleActive = cache.scaleMode != 0;
+        boolean hScaleActive = cache.hScaleMode != 0;
+
+        float targetScaleV = 1f, targetScaleZ = 1f, targetScaleH = 1f;
+
+        if (isActive) {
+            targetScaleV = calcScale(cache.scaleMode,
+                    isVertical ? cache.scaleIntensity : cache.scaleIntensityHoriz,
+                    cache.scaleLimitMin, ratio);
+            targetScaleZ = calcScale(cache.zoomMode,
+                    isVertical ? cache.zoomIntensity : cache.zoomIntensityHoriz,
+                    cache.zoomLimitMin, ratio);
+            targetScaleH = calcScale(cache.hScaleMode,
+                    isVertical ? cache.hScaleIntensity : cache.hScaleIntensityHoriz,
+                    cache.hScaleLimitMin, ratio);
+        }
+
+        float newScaleV = lerp(mCustomSmoothScale, targetScaleV, lerpFactorMain);
+        float newScaleZ = lerp(mCustomSmoothZoom, targetScaleZ, lerpFactorMain);
+        float newScaleH = lerp(mCustomSmoothHScale, targetScaleH, lerpFactorMain);
+
+        mCustomSmoothScale = newScaleV;
+        mCustomSmoothZoom = newScaleZ;
+        mCustomSmoothHScale = newScaleH;
+
+        boolean isResting = Math.abs(newOffset) < 0.1f
+                && Math.abs(newScaleV - 1f) < 0.001f
+                && Math.abs(newScaleZ - 1f) < 0.001f
+                && Math.abs(newScaleH - 1f) < 0.001f;
+        if (isResting && !mCustomSpring.isRunning()) {
+            safeResetRenderNode(renderNode, mWidth, mHeight);
+            forceFinish(mCustomSpring);
+            return false;
+        }
+
+        float canvasW = (float) canvas.getWidth();
+        float canvasH = (float) canvas.getHeight();
+
+        float effectiveSize = Math.max(Math.abs(mHeight), Math.abs(mWidth));
+        if (effectiveSize < 1f) effectiveSize = screenHeight;
+        // [FIX] Use spring physics value for mDistance, not the smooth visual offset.
+        mDistance = Math.abs(mCustomSpring.mValue) / effectiveSize;
+
+        try {
+            renderNode.setTranslationX(newOffset * vx);
+            renderNode.setTranslationY(newOffset * vy);
+
+            float axisMainScale = newScaleV * newScaleZ;
+            float axisCrossScale = newScaleH * newScaleZ;
+
+            float finalScaleX, finalScaleY;
+
+            if (isVertical) {
+                finalScaleX = axisCrossScale;
+                finalScaleY = axisMainScale;
+            } else {
+                finalScaleX = axisMainScale;
+                finalScaleY = axisCrossScale;
+            }
+
+            float ax = 0.5f;
+            float ay = 0.5f;
+
+            if (isVertical) {
+                if (zoomActive) {
+                    ax = cache.zoomAnchorX;
+                    ay = cache.zoomAnchorY;
+                } else if (scaleActive) {
+                    ax = 0.5f;
+                    ay = cache.scaleAnchorY;
+                } else if (hScaleActive) {
+                    ax = cache.hScaleAnchorX;
+                    ay = 0.5f;
+                }
+            } else {
+                if (zoomActive) {
+                    ax = cache.zoomAnchorXHoriz;
+                    ay = cache.zoomAnchorYHoriz;
+                } else if (scaleActive) {
+                    ax = cache.scaleAnchorXHoriz;
+                    ay = 0.5f;
+                } else if (hScaleActive) {
+                    ax = 0.5f;
+                    ay = cache.hScaleAnchorYHoriz;
+                }
+            }
+
+            boolean invertAnchor = cache.invertAnchor;
+
+            float pivotX, pivotY;
+
+            if (isVertical) {
+                pivotX = canvasW * ax;
+                if (vy > 0) {
+                    pivotY = canvasH * ay;
+                } else {
+                    pivotY = canvasH * (invertAnchor ? (1.0f - ay) : ay);
+                }
+            } else {
+                pivotY = canvasH * ay;
+                if (vx > 0) {
+                    pivotX = canvasW * ax;
+                } else {
+                    pivotX = canvasW * (invertAnchor ? (1.0f - ax) : ax);
+                }
+            }
+
+            renderNode.setPivotX(pivotX);
+            renderNode.setPivotY(pivotY);
+            renderNode.setScaleX(finalScaleX);
+            renderNode.setScaleY(finalScaleY);
+            renderNode.stretch(0f, 0f, mWidth, mHeight);
+        } catch (Throwable t) {}
+
+        boolean continueAnim = mCustomSpring.isRunning()
+                || Math.abs(newOffset) >= minVal
+                || Math.abs(newScaleV - 1f) >= 0.001f
+                || Math.abs(newScaleZ - 1f) >= 0.001f
+                || Math.abs(newScaleH - 1f) >= 0.001f;
+
+        if (!continueAnim) {
+            safeResetRenderNode(renderNode, mWidth, mHeight);
+            forceFinish(mCustomSpring);
+        }
+        return continueAnim;
+    }
+
+    /**
+     * Return the maximum height that the edge effect will be drawn at given the original
+     * {@link #setSize(int, int) input size}.
+     * @return The maximum height of the edge effect
+     */
+    public int getMaxHeight() {
+        return (int) mHeight;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Original AOSP method implementations (used when bounce is disabled)
+    // ═══════════════════════════════════════════════════════════════════
+
+    private void onPullOriginal(float deltaDistance, float displacement) {
         int edgeEffectBehavior = getCurrentEdgeEffectBehavior();
         if (edgeEffectBehavior == TYPE_NONE) {
-            finish();
+            mState = STATE_IDLE;
+            mDistance = 0;
+            mVelocity = 0;
             return;
         }
         final long now = AnimationUtils.currentAnimationTimeMillis();
@@ -649,7 +1220,7 @@ public class EdgeEffect {
         }
     }
 
-    public float onPullDistance(float deltaDistance, float displacement) {
+    private float onPullDistanceOriginal(float deltaDistance, float displacement) {
         int edgeEffectBehavior = getCurrentEdgeEffectBehavior();
         if (edgeEffectBehavior == TYPE_NONE) {
             return 0f;
@@ -657,55 +1228,18 @@ public class EdgeEffect {
         float finalDistance = Math.max(0f, deltaDistance + mDistance);
         float delta = finalDistance - mDistance;
         if (delta == 0f && mDistance == 0f) {
-            return 0f; // No pull, don't do anything.
+            return 0f;
         }
 
         if (mState != STATE_PULL && mState != STATE_PULL_DECAY && edgeEffectBehavior == TYPE_GLOW) {
             mPullDistance = mDistance;
             mState = STATE_PULL;
         }
-        onPull(delta, displacement);
+        onPullOriginal(delta, displacement);
         return delta;
     }
 
-    public float getDistance() {
-        return mDistance;
-    }
-
-    public void onRelease() {
-        // =========================================================================================
-        // [CUSTOM INJECTION START] - onRelease Logic
-        // =========================================================================================
-        updateSettings();
-        if (mCachedEnabled && !mCfgIgnore) {
-            mPullDistance = 0;
-            if (mCustomSpring != null && Math.abs(mCustomSpring.mValue) > 0.5f) {
-                mCustomSpring.setSpeedMultiplier(mCachedAnimSpeedMul);
-                // [OPTIMIZATION] Use cached values
-                float stiffness = mCachedStiffness;
-                float damping = mCachedDamping;
-                float minVel = mCachedMinVel;
-                float minVal = mCachedMinVal;
-
-                mCustomSpring.setParams(stiffness, damping, minVel, minVal);
-                mCustomSpring.setTargetValue(0);
-                mCustomSpring.setVelocity(0);
-                mCustomSpring.start();
-                mState = STATE_RECEDE;
-            } else {
-                mState = STATE_IDLE;
-                mDistance = 0f;
-            }
-
-            mCustomTargetFingerX = 0.5f;
-            mCustomLastDelta = 0f;
-            mCustomFirstTouch = true;
-            return;
-        }
-        // =========================================================================================
-        // [CUSTOM INJECTION END]
-        // =========================================================================================
-
+    private void onReleaseOriginal() {
         mPullDistance = 0;
 
         if (mState != STATE_PULL && mState != STATE_PULL_DECAY) {
@@ -724,48 +1258,7 @@ public class EdgeEffect {
         mDuration = RECEDE_TIME;
     }
 
-    public void onAbsorb(int velocity) {
-        // =========================================================================================
-        // [CUSTOM INJECTION START] - onAbsorb Logic
-        // =========================================================================================
-        updateSettings(); // [OPTIMIZATION] Update settings cache at start of gesture
-
-        if (mCachedEnabled && !mCfgIgnore) {
-            mPullDistance = 0;
-            mState = STATE_RECEDE;
-
-            if (mCustomSpring != null) {
-                mCustomSpring.setSpeedMultiplier(mCachedAnimSpeedMul);
-                mCustomSpring.cancel();
-
-                // [OPTIMIZATION] Use cached values
-                float flingMult = mCachedFling;
-                float stiffness = mCachedStiffness;
-                float damping = mCachedDamping;
-                float minVel = mCachedMinVel;
-                float minVal = mCachedMinVal;
-
-                float velocityPx = velocity * flingMult;
-                if (flingMult > 1.0f) stiffness /= flingMult;
-
-                float maxVel = mCustomScreenHeight * 10f;
-                if (Math.abs(velocityPx) > maxVel) velocityPx = Math.signum(velocityPx) * maxVel;
-
-                mCustomSpring.setParams(stiffness, damping, minVel, minVal);
-                mCustomSpring.setTargetValue(0);
-                mCustomSpring.setVelocity(velocityPx);
-                mCustomSpring.start();
-            }
-            
-            mCustomTargetFingerX = 0.5f;
-            mCustomLastDelta = 0f;
-            mCustomFirstTouch = true;
-            return;
-        }
-        // =========================================================================================
-        // [CUSTOM INJECTION END]
-        // =========================================================================================
-
+    private void onAbsorbOriginal(int velocity) {
         int edgeEffectBehavior = getCurrentEdgeEffectBehavior();
         if (edgeEffectBehavior == TYPE_STRETCH) {
             mState = STATE_RECEDE;
@@ -789,251 +1282,13 @@ public class EdgeEffect {
                     Math.min(velocity * VELOCITY_GLOW_FACTOR * .00001f, MAX_ALPHA));
             mTargetDisplacement = 0.5f;
         } else {
-            finish();
+            mState = STATE_IDLE;
+            mDistance = 0;
+            mVelocity = 0;
         }
     }
 
-    public void setColor(@ColorInt int color) {
-        mPaint.setColor(color);
-    }
-
-    public void setBlendMode(@Nullable BlendMode blendmode) {
-        mPaint.setBlendMode(blendmode);
-    }
-
-    @ColorInt
-    public int getColor() {
-        return mPaint.getColor();
-    }
-
-    @Nullable
-    public BlendMode getBlendMode() {
-        return mPaint.getBlendMode();
-    }
-
-    public boolean draw(Canvas canvas) {
-        // =========================================================================================
-        // [CUSTOM INJECTION START] - draw Logic
-        // =========================================================================================
-        updateSettings();
-        if (mCachedEnabled && !mCfgIgnore) {
-            if (!canvas.isHardwareAccelerated()) {
-                finish();
-                return false;
-            }
-            if (mCustomSpring == null) {
-                finish();
-                return false;
-            }
-
-            mCustomSpring.setSpeedMultiplier(mCachedAnimSpeedMul);
-            if (mCustomSpring.isRunning()) mCustomSpring.doFrame(System.nanoTime());
-
-            if (!(canvas instanceof RecordingCanvas)) {
-                finish();
-                return false;
-            }
-            RecordingCanvas recordingCanvas = (RecordingCanvas) canvas;
-            RenderNode renderNode = recordingCanvas.mNode;
-            
-            if (renderNode == null) {
-                finish();
-                return false;
-            }
-
-            canvas.getMatrix(mCustomMatrix);
-            mCustomPoints[0] = 0; mCustomPoints[1] = 1;
-            mCustomMatrix.mapVectors(mCustomPoints);
-
-            float vx = mCustomPoints[0];
-            float vy = mCustomPoints[1];
-
-            if (Math.abs(vx) > Math.abs(vy)) {
-                vx = Math.signum(vx);
-                vy = 0f;
-            } else {
-                vy = Math.signum(vy);
-                vx = 0f;
-            }
-
-            boolean isVertical = (vy != 0);
-
-            // [OPTIMIZATION] Use cached values
-            float lerpMainIdle = mCachedLerpIdle;
-            float lerpMainRun = mCachedLerpRun;
-            float lerpFactorMain = mCustomSpring.isRunning() ? lerpMainRun : lerpMainIdle;
-            lerpFactorMain = Math.min(1.0f, lerpFactorMain * mCachedAnimSpeedMul);
-
-            float targetOffset = mCustomSpring.mValue;
-            float currentOffset = mCustomSmoothOffsetY;
-            float newOffset = currentOffset + (targetOffset - currentOffset) * lerpFactorMain;
-
-            float minVal = mCachedMinVal;
-            if (Math.abs(targetOffset - newOffset) < 0.5f) newOffset = targetOffset;
-            if (Math.abs(targetOffset) < 0.1f && Math.abs(newOffset) < minVal) newOffset = 0f;
-
-            mCustomSmoothOffsetY = newOffset;
-
-            float maxDistance = isVertical ? mCustomScreenHeight : mCustomScreenWidth;
-            float ratio = (maxDistance > 0) ? Math.min(Math.abs(newOffset) / maxDistance, 1.0f) : 0f;
-            boolean isActive = Math.abs(newOffset) > 1.0f;
-
-            float targetScaleV = 1f, targetScaleZ = 1f, targetScaleH = 1f;
-
-            if (isActive) {
-                // [OPTIMIZATION] Use cached values instead of lookups
-                if (isVertical) {
-                    targetScaleV = calcScale(mCachedScaleMode, mCachedScaleInt, mCachedScaleLimit, ratio);
-                    targetScaleZ = calcScale(mCachedZoomMode, mCachedZoomInt, mCachedZoomLimit, ratio);
-                    targetScaleH = calcScale(mCachedHScaleMode, mCachedHScaleInt, mCachedHScaleLimit, ratio);
-                } else {
-                    targetScaleV = calcScale(mCachedScaleMode, mCachedScaleIntHoriz, mCachedScaleLimit, ratio);
-                    targetScaleZ = calcScale(mCachedZoomMode, mCachedZoomIntHoriz, mCachedZoomLimit, ratio);
-                    targetScaleH = calcScale(mCachedHScaleMode, mCachedHScaleIntHoriz, mCachedHScaleLimit, ratio);
-                }
-            }
-
-            float newScaleV = lerp(mCustomSmoothScale, targetScaleV, lerpFactorMain);
-            float newScaleZ = lerp(mCustomSmoothZoom, targetScaleZ, lerpFactorMain);
-            float newScaleH = lerp(mCustomSmoothHScale, targetScaleH, lerpFactorMain);
-
-            mCustomSmoothScale = newScaleV;
-            mCustomSmoothZoom = newScaleZ;
-            mCustomSmoothHScale = newScaleH;
-
-            boolean isResting = Math.abs(newOffset) < 0.1f && Math.abs(newScaleV - 1f) < 0.001f;
-            if (isResting && !mCustomSpring.isRunning()) {
-                renderNode.setTranslationX(0f);
-                renderNode.setTranslationY(0f);
-                renderNode.setScaleX(1f);
-                renderNode.setScaleY(1f);
-                
-                float stretchW = (mWidth > 0) ? (float)mWidth : 1.0f;
-                float stretchH = (mHeight > 0) ? (float)mHeight : 1.0f;
-                renderNode.stretch(0f, 0f, stretchW, stretchH); // [FIX] Passing correct W/H
-                resetCustomState();
-                mState = STATE_IDLE;
-                mDistance = 0f;
-                mVelocity = 0f;
-                if (mCustomSpring != null) {
-                    mCustomSpring.cancel();
-                    mCustomSpring.mValue = 0f;
-                    mCustomSpring.mVelocity = 0f;
-                }
-                return false;
-            }
-
-            float effectiveSize = Math.max(Math.abs(mHeight), Math.abs(mWidth));
-            if (effectiveSize < 1f) effectiveSize = mCustomScreenHeight;
-            mDistance = newOffset / effectiveSize;
-
-            renderNode.setTranslationX(newOffset * vx);
-            renderNode.setTranslationY(newOffset * vy);
-
-            float axisMainScale = newScaleV * newScaleZ;
-            float axisCrossScale = newScaleH * newScaleZ;
-
-            float finalScaleX, finalScaleY;
-
-            if (isVertical) {
-                finalScaleX = axisCrossScale;
-                finalScaleY = axisMainScale;
-            } else {
-                finalScaleX = axisMainScale;
-                finalScaleY = axisCrossScale;
-            }
-
-            float ax = 0.5f;
-            float ay = 0.5f;
-            
-            // [OPTIMIZATION] Use cached boolean checks
-            boolean zoomActive = mCachedZoomMode != 0;
-            boolean scaleActive = mCachedScaleMode != 0;
-            boolean hScaleActive = mCachedHScaleMode != 0;
-
-            if (isVertical) {
-                if (zoomActive) {
-                    ax = mCachedZoomAnchorX;
-                    ay = mCachedZoomAnchorY;
-                } else if (scaleActive) {
-                    ax = 0.5f;
-                    ay = mCachedScaleAnchorY;
-                } else if (hScaleActive) {
-                    ax = mCachedHScaleAnchorX;
-                    ay = 0.5f;
-                }
-            } else {
-                if (zoomActive) {
-                    ax = mCachedZoomAnchorXHoriz;
-                    ay = mCachedZoomAnchorYHoriz;
-                } else if (scaleActive) {
-                    ax = mCachedScaleAnchorXHoriz;
-                    ay = 0.5f;
-                } else if (hScaleActive) {
-                    ax = 0.5f;
-                    ay = mCachedHScaleAnchorYHoriz;
-                }
-            }
-
-            boolean invertAnchor = mCachedInvertAnchor;
-            float pivotX, pivotY;
-            float canvasW = (float) canvas.getWidth();
-            float canvasH = (float) canvas.getHeight();
-
-            if (isVertical) {
-                pivotX = canvasW * ax;
-                if (vy > 0) {
-                    pivotY = canvasH * ay;
-                } else {
-                    pivotY = canvasH * (invertAnchor ? (1.0f - ay) : ay);
-                }
-            } else {
-                pivotY = canvasH * ay;
-                if (vx > 0) {
-                    pivotX = canvasW * ax;
-                } else {
-                    pivotX = canvasW * (invertAnchor ? (1.0f - ax) : ax);
-                }
-            }
-
-            renderNode.setPivotX(pivotX);
-            renderNode.setPivotY(pivotY);
-            renderNode.setScaleX(finalScaleX);
-            renderNode.setScaleY(finalScaleY);
-            
-            float stretchW = (mWidth > 0) ? (float)mWidth : 1.0f;
-            float stretchH = (mHeight > 0) ? (float)mHeight : 1.0f;
-            renderNode.stretch(0f, 0f, stretchW, stretchH); // [FIX] Passing correct W/H
-
-            boolean continueAnim = mCustomSpring.isRunning()
-                    || Math.abs(newOffset) >= mCachedMinVal
-                    || Math.abs(newScaleV - 1f) >= 0.001f
-                    || Math.abs(newScaleZ - 1f) >= 0.001f
-                    || Math.abs(newScaleH - 1f) >= 0.001f;
-
-            if (!continueAnim) {
-                renderNode.setTranslationX(0f);
-                renderNode.setTranslationY(0f);
-                renderNode.setScaleX(1f);
-                renderNode.setScaleY(1f);
-                renderNode.stretch(0f, 0f, stretchW, stretchH);
-                resetCustomState();
-                mState = STATE_IDLE;
-                mDistance = 0f;
-                mVelocity = 0f;
-                if (mCustomSpring != null) {
-                    mCustomSpring.cancel();
-                    mCustomSpring.mValue = 0f;
-                    mCustomSpring.mVelocity = 0f;
-                }
-            }
-
-            return continueAnim;
-        }
-        // =========================================================================================
-        // [CUSTOM INJECTION END]
-        // =========================================================================================
-
+    private boolean drawOriginal(Canvas canvas) {
         int edgeEffectBehavior = getCurrentEdgeEffectBehavior();
         if (edgeEffectBehavior == TYPE_GLOW) {
             update();
@@ -1109,8 +1364,6 @@ public class EdgeEffect {
                 }
             }
         } else {
-            // Animations have been disabled or this is TYPE_STRETCH and drawing into a Canvas
-            // that isn't a Recording Canvas, so no effect can be shown. Just end the effect.
             mState = STATE_IDLE;
             mDistance = 0;
             mVelocity = 0;
@@ -1125,6 +1378,10 @@ public class EdgeEffect {
         return mState != STATE_IDLE || oneLastFrame;
     }
 
+    // ═══════════════════════════════════════════════════════════════════
+    //  Original AOSP private helpers
+    // ═══════════════════════════════════════════════════════════════════
+
     private float min(float f1, float f2, float f3, float f4) {
         float min = Math.min(f1, f2);
         min = Math.min(min, f3);
@@ -1135,15 +1392,6 @@ public class EdgeEffect {
         float max = Math.max(f1, f2);
         max = Math.max(max, f3);
         return Math.max(max, f4);
-    }
-
-    /**
-     * Return the maximum height that the edge effect will be drawn at given the original
-     * {@link #setSize(int, int) input size}.
-     * @return The maximum height of the edge effect
-     */
-    public int getMaxHeight() {
-        return (int) mHeight;
     }
 
     private void update() {
@@ -1169,7 +1417,6 @@ public class EdgeEffect {
                     mGlowAlphaStart = mGlowAlpha;
                     mGlowScaleYStart = mGlowScaleY;
 
-                    // After absorb, the glow should fade to nothing.
                     mGlowAlphaFinish = 0.f;
                     mGlowScaleYFinish = 0.f;
                     break;
@@ -1181,7 +1428,6 @@ public class EdgeEffect {
                     mGlowAlphaStart = mGlowAlpha;
                     mGlowScaleYStart = mGlowScaleY;
 
-                    // After pull, the glow should fade to nothing.
                     mGlowAlphaFinish = 0.f;
                     mGlowScaleYFinish = 0.f;
                     break;
@@ -1197,9 +1443,9 @@ public class EdgeEffect {
 
     private void updateSpring() {
         final long time = AnimationUtils.currentAnimationTimeMillis();
-        final float deltaT = (time - mStartTime) / 1000f; // Convert from millis to seconds
+        final float deltaT = (time - mStartTime) / 1000f;
         if (deltaT < 0.001f) {
-            return; // Must have at least 1 ms difference
+            return;
         }
         mStartTime = time;
 
@@ -1207,13 +1453,10 @@ public class EdgeEffect {
                 && Math.abs(mDistance * mHeight) < LINEAR_DISTANCE_TAKE_OVER
                 && Math.signum(mVelocity) == -Math.signum(mDistance)
         ) {
-            // This is close. The spring will slowly reach the destination. Instead, we
-            // will interpolate linearly so that it arrives at its destination quicker.
             mVelocity = Math.signum(mVelocity) * LINEAR_VELOCITY_TAKE_OVER;
 
             float targetDistance = mDistance + (mVelocity * deltaT / mHeight);
             if (Math.signum(targetDistance) != Math.signum(mDistance)) {
-                // We have arrived
                 mDistance = 0;
                 mVelocity = 0;
             } else {
@@ -1223,7 +1466,6 @@ public class EdgeEffect {
         }
         final double mDampedFreq = NATURAL_FREQUENCY * Math.sqrt(1 - DAMPING_RATIO * DAMPING_RATIO);
 
-        // We're always underdamped, so we can use only those equations:
         double cosCoeff = mDistance * mHeight;
         double sinCoeff = (1 / mDampedFreq) * (DAMPING_RATIO * NATURAL_FREQUENCY
                 * mDistance * mHeight + mVelocity);
@@ -1251,8 +1493,6 @@ public class EdgeEffect {
      */
     private float calculateDistanceFromGlowValues(float scale, float alpha) {
         if (scale >= 1f) {
-            // It should asymptotically approach 1, but not reach there.
-            // Here, we're just choosing a value that is large.
             return 1f;
         }
         if (scale > 0f) {
@@ -1267,12 +1507,9 @@ public class EdgeEffect {
      * considered at rest or false if it is still animating.
      */
     private boolean isAtEquilibrium() {
-        double displacement = mDistance * mHeight; // in pixels
+        double displacement = mDistance * mHeight;
         double velocity = mVelocity;
 
-        // Don't allow displacement to drop below 0. We don't want it stretching the opposite
-        // direction if it is flung that way. We also want to stop the animation as soon as
-        // it gets very close to its destination.
         return displacement < 0 || (Math.abs(velocity) < VELOCITY_THRESHOLD
                 && displacement < VALUE_THRESHOLD);
     }
@@ -1285,15 +1522,35 @@ public class EdgeEffect {
         double expIntensity = EXP_STRETCH_INTENSITY * (1 - Math.exp(-overscroll * scalar));
         return sign * (float) (linearIntensity + expIntensity);
     }
-    
-    // =========================================================================================
-    // [CUSTOM INJECTION START] - Helper Methods
-    // =========================================================================================
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: initialization
+    // ═══════════════════════════════════════════════════════════════════
+
     private void initCustomInstance(Context context) {
         mCustomContext = context;
         mCustomSpring = new SpringDynamics();
-        
-        // Defaults
+        mCustomSmoothOffsetY = 0f;
+        mCustomSmoothScale = 1.0f;
+        mCustomSmoothZoom = 1.0f;
+        mCustomSmoothHScale = 1.0f;
+        mCustomMatrix = new Matrix();
+        mCustomPoints = new float[4];
+        mCustomLastDelta = 0f;
+        mCustomTargetFingerX = 0.5f;
+        mCustomCurrentFingerX = 0.5f;
+        mCustomFirstTouch = true;
+
+        // Normalization state — per-instance, persists across gestures
+        mNormDeltaWindow = null;
+        mNormWindowIdx = 0;
+        mNormWindowCount = 0;
+        mNormCurrentFactor = 1.0f;
+
+        // Определяем caller по стек-трейсу (один раз при создании)
+        mCallerInfo = detectCaller();
+        mIsComposeCaller = mCallerInfo.startsWith("compose");
+
         float screenHeight = 2200f;
         float screenWidth = 1080f;
         try {
@@ -1308,83 +1565,34 @@ public class EdgeEffect {
         mCustomScreenHeight = screenHeight;
         mCustomScreenWidth = screenWidth;
 
-        // Package config check
-        updatePackageConfig();
-    }
-
-    private void updatePackageConfig() {
-        if (mCustomContext == null) return;
+        // Per-package configuration
+        float myScale = 1.0f;
+        boolean myFilter = false;
+        boolean myIgnore = false;
         try {
-            String pkgName = mCustomContext.getPackageName();
-            String configString = getStringSetting(KEY_PACKAGES_CONFIG);
+            String pkgName = context.getPackageName();
+            String configString = getStringSetting(context, KEY_PACKAGES_CONFIG);
             if (!TextUtils.isEmpty(configString) && pkgName != null) {
                 String[] apps = configString.split(" ");
                 for (String appConfig : apps) {
                     String[] parts = appConfig.split(":");
-                    if (parts.length >= 3 && parts[0].equals(pkgName)) {
-                        mCfgFilter = Integer.parseInt(parts[1]) == 1;
-                        mCfgScale = Float.parseFloat(parts[2]);
-                        if (parts.length >= 4) mCfgIgnore = parts[3].equals("1");
+                    if (parts.length >= 3 && matchesWildcard(parts[0], pkgName)) {
+                        myFilter = Integer.parseInt(parts[1]) == 1;
+                        myScale = Float.parseFloat(parts[2]);
+                        if (parts.length >= 4) myIgnore = parts[3].equals("1");
                         break;
                     }
                 }
             }
         } catch (Exception ignored) {}
+        mCfgScale = myScale;
+        mCfgFilter = myFilter;
+        mCfgIgnore = myIgnore;
     }
 
-    // [OPTIMIZATION] New method to batch-update settings
-    private void updateSettings() {
-        if (mCustomContext == null) return;
-        
-        // Read main toggle first
-        mCachedEnabled = getIntSetting(KEY_ENABLED, 1) == 1;
-        
-        if (mCachedEnabled) {
-             mCachedPullCoeff = getFloatSetting(KEY_PULL_COEFF, 0.5f);
-             mCachedStiffness = getFloatSetting(KEY_STIFFNESS, 450f);
-             mCachedDamping = getFloatSetting(KEY_DAMPING, 0.7f);
-             mCachedFling = getFloatSetting(KEY_FLING, 0.6f);
-             mCachedMinVel = getFloatSetting(KEY_PHYSICS_MIN_VEL, 8.0f);
-             mCachedMinVal = getFloatSetting(KEY_PHYSICS_MIN_VAL, 0.6f);
-             mCachedInputSmooth = getFloatSetting(KEY_INPUT_SMOOTH_FACTOR, 0.5f);
-             mCachedAnimSpeedPercent = getFloatSetting(KEY_ANIMATION_SPEED, 100.0f);
-             if (mCachedAnimSpeedPercent < 1.0f) mCachedAnimSpeedPercent = 1.0f;
-             if (mCachedAnimSpeedPercent > 300.0f) mCachedAnimSpeedPercent = 300.0f;
-             mCachedAnimSpeedMul = mCachedAnimSpeedPercent / 100.0f;
-             mCachedResExponent = getFloatSetting(KEY_RESISTANCE_EXPONENT, 4.0f);
-             mCachedLerpIdle = getFloatSetting(KEY_LERP_MAIN_IDLE, 0.4f);
-             mCachedLerpRun = getFloatSetting(KEY_LERP_MAIN_RUN, 0.7f);
-             mCachedComposeScale = getFloatSetting(KEY_COMPOSE_SCALE, 3.33f);
-             mCachedInvertAnchor = getIntSetting(KEY_INVERT_ANCHOR, 1) == 1;
-             mCachedDisableArbitraryRendering = getIntSetting(KEY_DISABLE_ARBITRARY_RENDERING, 0) == 1;
-             
-             // Visuals
-             mCachedScaleMode = getIntSetting(KEY_SCALE_MODE, 0);
-             mCachedScaleInt = getFloatSetting(KEY_SCALE_INTENSITY, 0.0f);
-             mCachedScaleIntHoriz = getFloatSetting(KEY_SCALE_INTENSITY_HORIZ, 0.0f);
-             mCachedScaleLimit = getFloatSetting(KEY_SCALE_LIMIT_MIN, 0.3f);
-             mCachedScaleAnchorY = getFloatSetting(KEY_SCALE_ANCHOR_Y, 0.5f);
-             mCachedScaleAnchorXHoriz = getFloatSetting(KEY_SCALE_ANCHOR_X_HORIZ, 0.5f);
-
-             mCachedZoomMode = getIntSetting(KEY_ZOOM_MODE, 0);
-             mCachedZoomInt = getFloatSetting(KEY_ZOOM_INTENSITY, 0.0f);
-             mCachedZoomIntHoriz = getFloatSetting(KEY_ZOOM_INTENSITY_HORIZ, 0.0f);
-             mCachedZoomLimit = getFloatSetting(KEY_ZOOM_LIMIT_MIN, 0.3f);
-             mCachedZoomAnchorX = getFloatSetting(KEY_ZOOM_ANCHOR_X, 0.5f);
-             mCachedZoomAnchorY = getFloatSetting(KEY_ZOOM_ANCHOR_Y, 0.5f);
-             mCachedZoomAnchorXHoriz = getFloatSetting(KEY_ZOOM_ANCHOR_X_HORIZ, 0.5f);
-             mCachedZoomAnchorYHoriz = getFloatSetting(KEY_ZOOM_ANCHOR_Y_HORIZ, 0.5f);
-
-             mCachedHScaleMode = getIntSetting(KEY_H_SCALE_MODE, 0);
-             mCachedHScaleInt = getFloatSetting(KEY_H_SCALE_INTENSITY, 0.0f);
-             mCachedHScaleIntHoriz = getFloatSetting(KEY_H_SCALE_INTENSITY_HORIZ, 0.0f);
-             mCachedHScaleLimit = getFloatSetting(KEY_H_SCALE_LIMIT_MIN, 0.3f);
-             mCachedHScaleAnchorX = getFloatSetting(KEY_H_SCALE_ANCHOR_X, 0.5f);
-             mCachedHScaleAnchorYHoriz = getFloatSetting(KEY_H_SCALE_ANCHOR_Y_HORIZ, 0.5f);
-           } else {
-               mCachedDisableArbitraryRendering = false;
-        }
-    }
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: state management
+    // ═══════════════════════════════════════════════════════════════════
 
     private void resetCustomState() {
         mCustomSmoothOffsetY = 0f;
@@ -1396,99 +1604,404 @@ public class EdgeEffect {
         mCustomFirstTouch = true;
     }
 
-    private boolean isComposeCaller() {
-        if (sComposeCache.containsKey(this)) return Boolean.TRUE.equals(sComposeCache.get(this));
-        boolean isCompose = false;
+    private void forceFinish(SpringDynamics spring) {
+        if (spring != null) {
+            spring.cancel();
+            spring.mValue = 0f;
+            spring.mVelocity = 0f;
+        }
+        resetCustomState();
+        mState = STATE_IDLE;
+        mDistance = 0f;
+    }
+
+    private void safeResetRenderNode(RenderNode renderNode, float viewWidth, float viewHeight) {
+        if (renderNode == null) return;
+        try {
+            renderNode.setTranslationX(0f);
+            renderNode.setTranslationY(0f);
+            renderNode.setScaleX(1f);
+            renderNode.setScaleY(1f);
+            // [FIX] Pass actual W/H to stretch() — stretch(0,0,0,0) may not properly clear
+            float sw = viewWidth > 0 ? viewWidth : 1f;
+            float sh = viewHeight > 0 ? viewHeight : 1f;
+            renderNode.stretch(0f, 0f, sw, sh);
+        } catch (Throwable ignored) {}
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: caller detection
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Анализирует стек-трейс при создании EdgeEffect, чтобы определить,
+     * кто инициировал создание — Compose или классический View.
+     *
+     * @return строка вида "compose:ClassName", "view:ClassName" или "unknown"
+     */
+    private static String detectCaller() {
+        // Compose-характерные фрагменты в имени класса
+        final String[] COMPOSE_SIGS = {
+            "AndroidEdgeEffectOverscrollEffect",
+            "OverscrollKt",
+            "androidx.compose.foundation",
+            "EdgeEffectCompat"                     // иногда Compose идёт через EdgeEffectCompat
+        };
+        // Классические View-caller'ы
+        final String[] VIEW_SIGS = {
+            "RecyclerView",
+            "ScrollView",
+            "AbsListView",
+            "NestedScrollView",
+            "ListView",
+            "HorizontalScrollView",
+            "ViewPager"
+        };
+
         try {
             StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-            for (StackTraceElement element : stack) {
-                if (element.getClassName().startsWith("androidx.compose")) {
-                    isCompose = true;
-                    break;
+            // Пропускаем первые фреймы (getStackTrace, detectCaller, initCustomInstance, <init>)
+            int startIdx = Math.min(4, stack.length);
+
+            // Сначала ищем Compose (приоритет — он ближе к вызову)
+            for (int i = startIdx; i < stack.length; i++) {
+                String cls = stack[i].getClassName();
+                for (String sig : COMPOSE_SIGS) {
+                    if (cls.contains(sig)) {
+                        String shortName = cls.substring(cls.lastIndexOf('.') + 1);
+                        return "compose:" + shortName;
+                    }
                 }
             }
-        } catch (Exception ignored) {}
-        sComposeCache.put(this, isCompose);
-        return isCompose;
+            // Если Compose не найден, ищем View
+            for (int i = startIdx; i < stack.length; i++) {
+                String cls = stack[i].getClassName();
+                for (String sig : VIEW_SIGS) {
+                    if (cls.contains(sig)) {
+                        String shortName = cls.substring(cls.lastIndexOf('.') + 1);
+                        return "view:" + shortName;
+                    }
+                }
+            }
+        } catch (Throwable ignored) {
+            // Стек-трейс может не быть доступен в некоторых окружениях
+        }
+        return "unknown";
     }
 
-    private float getFloatSetting(String key, float def) {
-        if (mCustomContext == null) return def;
-        try {
-            return Settings.Global.getFloat(mCustomContext.getContentResolver(), key, def);
-        } catch (Exception e1) {
-            try {
-                int intValue = Settings.Global.getInt(mCustomContext.getContentResolver(), key, (int)(def * 100f));
-                return intValue / 100f;
-            } catch (Exception e2) {
-                return def;
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: delta normalization (Phase 2)
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Intelligent delta normalization (Phase 2).
+     *
+     * Tracks a sliding window of |correctedDelta| for each EdgeEffect instance.
+     * When the running mean exceeds refDelta × detectMul, the instance is
+     * identified as "amplified" (e.g. Compose) and deltas are smoothly scaled
+     * down toward normFactor to match normal View-level deltas.
+     *
+     * The transition ramps over normRamp events to avoid visual jumps.
+     * The window persists across gestures — once an instance is identified
+     * as amplified, normalization stays active (with ramp-back if pattern changes).
+     *
+     * normDetectMode:
+     *   0 = behavior-only  — только скользящее окно, стек-трейс игнорируется
+     *   1 = hybrid (default) — Compose-инстансы (по стеку) сразу получают normFactor
+     *       без ожидания прогрева окна; окно продолжает работать и может отменить
+     *       если дельты окажутся нормальными
+     *   2 = stacktrace-only — Compose → всегда normFactor, View/unknown → 1.0,
+     *       окно не используется
+     */
+    private float applyDeltaNormalization(SettingsCache cache, float correctedDelta) {
+        float absDelta = Math.abs(correctedDelta);
+
+        boolean isCompose = mIsComposeCaller;
+        int detectMode = cache.normDetectMode;
+
+        // ── Mode 2: stacktrace-only — мгновенное решение, без окна ──
+        if (detectMode == 2) {
+            float factor = isCompose ? cache.normFactor : 1.0f;
+            mNormCurrentFactor = factor;
+            return correctedDelta * factor;
+        }
+
+        // ── Mode 0 и 1 используют скользящее окно ──
+
+        // Get or recreate circular buffer (handles dynamic window size changes)
+        int windowSize = cache.normWindow;
+        if (mNormDeltaWindow == null || mNormDeltaWindow.length != windowSize) {
+            mNormDeltaWindow = new float[windowSize];
+            mNormWindowIdx = 0;
+            mNormWindowCount = 0;
+        }
+
+        int idx = mNormWindowIdx;
+        int count = mNormWindowCount;
+        float currentFactor = mNormCurrentFactor;
+
+        // Only real deltas go into the window — micro-deltas (noise) are excluded
+        if (absDelta > MICRO_DELTA_EPS) {
+            mNormDeltaWindow[idx] = absDelta;
+            idx = (idx + 1) % windowSize;
+            if (count < windowSize) count++;
+            mNormWindowIdx = idx;
+            mNormWindowCount = count;
+        }
+
+        // ── Mode 1 (hybrid): Compose-инстансы нормализуются мгновенно,
+        //    пока окно ещё не набрало достаточно данных ──
+        int minSamples = Math.max(windowSize / 2, 2);
+        boolean windowReady = (count >= minSamples);
+
+        if (detectMode == 1 && isCompose && !windowReady) {
+            float rampStep = Math.abs(1.0f - cache.normFactor) / Math.max(cache.normRamp, 1);
+            float targetFactor = cache.normFactor;
+            if (currentFactor > targetFactor) {
+                currentFactor = Math.max(currentFactor - rampStep, targetFactor);
+            } else if (currentFactor < targetFactor) {
+                currentFactor = Math.min(currentFactor + rampStep, targetFactor);
+            }
+            mNormCurrentFactor = currentFactor;
+            return correctedDelta * currentFactor;
+        }
+
+        // ── Окно набрало достаточно данных — решение по поведению ──
+        if (windowReady) {
+            float sum = 0;
+            for (int i = 0; i < count; i++) sum += mNormDeltaWindow[i];
+            float runningMean = sum / count;
+
+            float threshold = cache.normRefDelta * cache.normDetectMul;
+            float targetFactor;
+
+            if (runningMean > threshold) {
+                // ▼ Deltas amplified — ramp toward normFactor
+                targetFactor = cache.normFactor;
+            } else {
+                // ▲ Deltas normal — ramp back to 1.0 (no change)
+                targetFactor = 1.0f;
+            }
+
+            float rampStep = Math.abs(1.0f - cache.normFactor) / Math.max(cache.normRamp, 1);
+            if (currentFactor > targetFactor) {
+                currentFactor = Math.max(currentFactor - rampStep, targetFactor);
+            } else if (currentFactor < targetFactor) {
+                currentFactor = Math.min(currentFactor + rampStep, targetFactor);
             }
         }
+
+        mNormCurrentFactor = currentFactor;
+        return correctedDelta * currentFactor;
     }
 
-    private int getIntSetting(String key, int def) {
-        if (mCustomContext == null) return def;
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: pattern recording
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Logs one onPull event via logcat with tag RECORD_TAG.
+     * Active only when global setting record_patterns_edge_effect = 1.
+     * Format: elapsed_ns\tpkg\tgesture_id\tseq\tdt_us\traw\tcorrected\tfiltered\tdisp\tspring\tsize\tcaller
+     * Use `adb logcat -s EdgePatternRec:D` to capture on PC.
+     */
+    private void recordPattern(long elapsedNs, String pkg, int gestureId, int seq,
+                               long dtUs, float raw, float corrected, float filtered,
+                               float disp, float springVal, float effSize) {
+        String callerInfo = (mCallerInfo != null) ? mCallerInfo : "?";
+        Log.d(RECORD_TAG, elapsedNs + "\t" + pkg + "\t" + gestureId + "\t" + seq + "\t" + dtUs
+                + "\t" + raw + "\t" + corrected + "\t" + filtered
+                + "\t" + disp + "\t" + springVal + "\t" + effSize + "\t" + callerInfo);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: settings & helpers
+    // ═══════════════════════════════════════════════════════════════════
+
+    private boolean isBounceEnabled() {
+        if (mCustomContext == null) return false;
         try {
-            return Settings.Global.getInt(mCustomContext.getContentResolver(), key, def);
-        } catch (Exception ignored) { return def; }
+            if (getIntSetting(mCustomContext, KEY_ENABLED, 1) != 1) return false;
+            if (mCfgIgnore) return false;
+            return true;
+        } catch (Exception ignored) { return true; }
     }
 
-    private String getStringSetting(String key) {
-        if (mCustomContext == null) return null;
-        try {
-            return Settings.Global.getString(mCustomContext.getContentResolver(), key);
-        } catch (Exception ignored) { return null; }
+    private SettingsCache getSettingsCache(Context ctx, boolean force) {
+        SettingsCache cache = mCustomSettingsCache;
+        long now = SystemClock.uptimeMillis();
+
+        if (cache == null) {
+            cache = new SettingsCache();
+            force = true;
+        }
+
+        if (!force && (now - cache.updatedAt) < SETTINGS_CACHE_TTL_MS) {
+            return cache;
+        }
+
+        cache.pullCoeff = getFloatSetting(ctx, KEY_PULL_COEFF, 1.5141f);
+        cache.stiffness = getFloatSetting(ctx, KEY_STIFFNESS, 148.6191f);
+        cache.damping = getFloatSetting(ctx, KEY_DAMPING, 0.9976f);
+        cache.fling = getFloatSetting(ctx, KEY_FLING, 1.3679f);
+        cache.minVel = getFloatSetting(ctx, KEY_PHYSICS_MIN_VEL, 8.0f);
+        cache.minVal = getFloatSetting(ctx, KEY_PHYSICS_MIN_VAL, 0.6f);
+        cache.inputSmooth = getFloatSetting(ctx, KEY_INPUT_SMOOTH_FACTOR, 0.5f);
+        cache.animationSpeedPercent = getFloatSetting(ctx, KEY_ANIMATION_SPEED, 168.5232f);
+        if (cache.animationSpeedPercent < 1.0f) cache.animationSpeedPercent = 1.0f;
+        if (cache.animationSpeedPercent > 300.0f) cache.animationSpeedPercent = 300.0f;
+        cache.animationSpeedMul = cache.animationSpeedPercent / 100.0f;
+        cache.resExponent = getFloatSetting(ctx, KEY_RESISTANCE_EXPONENT, 4.0f);
+        cache.lerpMainIdle = getFloatSetting(ctx, KEY_LERP_MAIN_IDLE, 0.4f);
+        cache.lerpMainRun = getFloatSetting(ctx, KEY_LERP_MAIN_RUN, 0.6999f);
+        cache.disableArbitraryRendering = getIntSetting(ctx, KEY_DISABLE_ARBITRARY_RENDERING, 0) == 1;
+
+        cache.scaleMode = getIntSetting(ctx, KEY_SCALE_MODE, 0);
+        cache.scaleIntensity = getFloatSetting(ctx, KEY_SCALE_INTENSITY, 0.31f);
+        cache.scaleIntensityHoriz = getFloatSetting(ctx, KEY_SCALE_INTENSITY_HORIZ, 0.3786f);
+        cache.scaleLimitMin = getFloatSetting(ctx, KEY_SCALE_LIMIT_MIN, 0.1f);
+
+        cache.zoomMode = getIntSetting(ctx, KEY_ZOOM_MODE, 0);
+        cache.zoomIntensity = getFloatSetting(ctx, KEY_ZOOM_INTENSITY, 0.2f);
+        cache.zoomIntensityHoriz = getFloatSetting(ctx, KEY_ZOOM_INTENSITY_HORIZ, 0.2f);
+        cache.zoomLimitMin = getFloatSetting(ctx, KEY_ZOOM_LIMIT_MIN, 0.1f);
+        cache.zoomAnchorX = getFloatSetting(ctx, KEY_ZOOM_ANCHOR_X, 0.5f);
+        cache.zoomAnchorY = getFloatSetting(ctx, KEY_ZOOM_ANCHOR_Y, 0.5f);
+        cache.zoomAnchorXHoriz = getFloatSetting(ctx, KEY_ZOOM_ANCHOR_X_HORIZ, 0.5f);
+        cache.zoomAnchorYHoriz = getFloatSetting(ctx, KEY_ZOOM_ANCHOR_Y_HORIZ, 0.5f);
+
+        cache.hScaleMode = getIntSetting(ctx, KEY_H_SCALE_MODE, 0);
+        cache.hScaleIntensity = getFloatSetting(ctx, KEY_H_SCALE_INTENSITY, 0.2f);
+        cache.hScaleIntensityHoriz = getFloatSetting(ctx, KEY_H_SCALE_INTENSITY_HORIZ, 0.0f);
+        cache.hScaleLimitMin = getFloatSetting(ctx, KEY_H_SCALE_LIMIT_MIN, 0.1f);
+
+        cache.scaleAnchorY = getFloatSetting(ctx, KEY_SCALE_ANCHOR_Y, 0.5f);
+        cache.hScaleAnchorX = getFloatSetting(ctx, KEY_H_SCALE_ANCHOR_X, 0.5f);
+        cache.scaleAnchorXHoriz = getFloatSetting(ctx, KEY_SCALE_ANCHOR_X_HORIZ, 0.5f);
+        cache.hScaleAnchorYHoriz = getFloatSetting(ctx, KEY_H_SCALE_ANCHOR_Y_HORIZ, 0.5f);
+        cache.invertAnchor = getIntSetting(ctx, KEY_INVERT_ANCHOR, 1) == 1;
+        cache.recordPatterns = getIntSetting(ctx, KEY_RECORD_PATTERNS, 0) == 1;
+
+        // ── Delta normalization keys ──
+        cache.normEnabled = getIntSetting(ctx, KEY_NORM_ENABLED, 1) == 1;
+        cache.normRefDelta = getFloatSetting(ctx, KEY_NORM_REF_DELTA, 9.9999f);
+        cache.normDetectMul = getFloatSetting(ctx, KEY_NORM_DETECT_MUL, 0f);
+        cache.normFactor = getFloatSetting(ctx, KEY_NORM_FACTOR, 0.33f);
+        cache.normWindow = (int) getFloatSetting(ctx, KEY_NORM_WINDOW, 2f);
+        cache.normRamp = (int) getFloatSetting(ctx, KEY_NORM_RAMP, 1f);
+        cache.normDetectMode = getIntSetting(ctx, KEY_NORM_DETECT_MODE, 1);
+        if (cache.normWindow < 2) cache.normWindow = 2;
+        if (cache.normWindow > 64) cache.normWindow = 64;
+        if (cache.normRamp < 1) cache.normRamp = 1;
+        if (cache.normDetectMode < 0 || cache.normDetectMode > 2) cache.normDetectMode = 1;
+
+        cache.updatedAt = now;
+        mCustomSettingsCache = cache;
+        return cache;
     }
 
-    // [OPTIMIZATION] Changed args to accept raw values instead of keys
-    private float calcScale(int mode, float intensity, float limit, float ratio) {
+    private static float calcScale(int mode, float intensity, float limit, float ratio) {
         if (mode == 0 || intensity <= 0) return 1.0f;
         if (mode == 1) return Math.max(1.0f - (ratio * intensity), limit);
         if (mode == 2) return 1.0f + (ratio * intensity);
         return 1.0f;
     }
 
-    private float lerp(float start, float end, float factor) {
+    private static float lerp(float start, float end, float factor) {
         return start + (end - start) * factor;
     }
 
-    private static class SpringDynamics {
+    private static boolean matchesWildcard(String pattern, String text) {
+        if (pattern.equals("*")) return true;
+        if (!pattern.contains("*")) return pattern.equals(text);
+        // Split by '*' and match segments in order
+        String[] segments = pattern.split("\\*", -1);
+        int textIdx = 0;
+        for (int i = 0; i < segments.length; i++) {
+            String seg = segments[i];
+            if (seg.isEmpty()) continue;
+            int found = text.indexOf(seg, textIdx);
+            if (found < 0) return false;
+            // First segment must match at start if pattern doesn't start with '*'
+            if (i == 0 && !pattern.startsWith("*") && found != 0) return false;
+            textIdx = found + seg.length();
+        }
+        // Last segment must match at end if pattern doesn't end with '*'
+        if (!pattern.endsWith("*")) {
+            String lastSeg = segments[segments.length - 1];
+            if (!lastSeg.isEmpty() && !text.endsWith(lastSeg)) return false;
+        }
+        return true;
+    }
+
+    private static float getFloatSetting(Context ctx, String key, float def) {
+        if (ctx == null) return def;
+        try {
+            String resolved = resolveKey(key);
+            return Settings.Global.getFloat(ctx.getContentResolver(), resolved, def);
+        } catch (Exception ignored) { return def; }
+    }
+
+    private static int getIntSetting(Context ctx, String key, int def) {
+        if (ctx == null) return def;
+        try {
+            String resolved = resolveKey(key);
+            return Settings.Global.getInt(ctx.getContentResolver(), resolved, def);
+        } catch (Exception ignored) { return def; }
+    }
+
+    private static String getStringSetting(Context ctx, String key) {
+        if (ctx == null) return null;
+        try {
+            String resolved = resolveKey(key);
+            return Settings.Global.getString(ctx.getContentResolver(), resolved);
+        } catch (Exception ignored) { return null; }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Custom bounce: SpringDynamics
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * @hide
+     */
+    static class SpringDynamics {
         private float mStiffness = 450.0f;
         private float mDampingRatio = 0.7f;
         private float mMinVel = 1.0f;
         private float mMinVal = 0.5f;
         private float mSpeedMultiplier = 1.0f;
 
-        public float mValue;
-        public float mVelocity;
-        public float mTargetValue = 0f;
+        float mValue;
+        float mVelocity;
+        float mTargetValue = 0f;
         private boolean mIsRunning = false;
         private long mLastFrameTimeNanos = 0;
 
-        public void setParams(float stiffness, float damping, float minVel, float minVal) {
+        void setParams(float stiffness, float damping, float minVel, float minVal) {
             mStiffness = stiffness > 0 ? stiffness : 0.1f;
             mDampingRatio = damping >= 0 ? damping : 0;
             mMinVel = minVel;
             mMinVal = minVal;
         }
 
-        public void setSpeedMultiplier(float speedMultiplier) {
+        void setSpeedMultiplier(float speedMultiplier) {
             if (speedMultiplier < 0.01f) speedMultiplier = 0.01f;
             mSpeedMultiplier = speedMultiplier;
         }
 
-        public void setTargetValue(float targetValue) { mTargetValue = targetValue; }
-        public void setVelocity(float velocity) { mVelocity = velocity; }
-        public boolean isRunning() { return mIsRunning; }
-        public void cancel() { mIsRunning = false; }
+        void setTargetValue(float targetValue) { mTargetValue = targetValue; }
+        void setVelocity(float velocity) { mVelocity = velocity; }
+        boolean isRunning() { return mIsRunning; }
+        void cancel() { mIsRunning = false; }
 
-        public void start() {
+        void start() {
             if (mIsRunning) return;
             mIsRunning = true;
             mLastFrameTimeNanos = System.nanoTime();
         }
 
-        public void doFrame(long frameTimeNanos) {
+        void doFrame(long frameTimeNanos) {
             if (!mIsRunning) return;
             long deltaTimeNanos = frameTimeNanos - mLastFrameTimeNanos;
             if (deltaTimeNanos > 100_000_000) deltaTimeNanos = 16_000_000;
@@ -1518,7 +2031,4 @@ public class EdgeEffect {
             }
         }
     }
-    // =========================================================================================
-    // [CUSTOM INJECTION END]
-    // =========================================================================================
 }

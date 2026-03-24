@@ -3,7 +3,9 @@ package org.pixel.customparts.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,15 +23,23 @@ import org.pixel.customparts.dynamicDarkColorScheme
 import org.pixel.customparts.dynamicLightColorScheme
 import org.pixel.customparts.R
 import org.pixel.customparts.ui.InfoDialog
+import org.pixel.customparts.ui.REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING
 import org.pixel.customparts.ui.RebootBubble
 import org.pixel.customparts.ui.launcher.Dt2sUiSection
 import org.pixel.customparts.ui.launcher.NativeSearchSection
 import org.pixel.customparts.ui.launcher.SearchWidgetSection
 import org.pixel.customparts.utils.dynamicStringResource
 
+import org.pixel.customparts.ui.TopBarBlurOverlay
+import org.pixel.customparts.ui.recordLayer
+import org.pixel.customparts.ui.rememberGraphicsLayerRecordingState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Alignment
+
 class SearchAndFeedActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             val darkTheme = isSystemInDarkTheme()
             val context = LocalContext.current
@@ -51,15 +61,17 @@ class SearchAndFeedActivity : ComponentActivity() {
 @Composable
 fun SearchAndFeedScreen(onBack: () -> Unit) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    
-    var infoDialogTitle by remember { mutableStateOf<String?>(null) }
-    var infoDialogText by remember { mutableStateOf<String?>(null) }
-    var infoDialogVideo by remember { mutableStateOf<String?>(null) }
-    var showXposedWarning by remember { mutableStateOf(false) }
+    val blurState = rememberGraphicsLayerRecordingState()
+    val lazyListState = androidx.compose.foundation.lazy.rememberLazyListState()
+    val isScrolled by remember { derivedStateOf { lazyListState.canScrollBackward } }
 
     var needsRestart by remember { mutableStateOf(false) }
     var nativeSearchEnabled by remember { mutableStateOf(LauncherManager.isNativeSearchEnabled(context)) }
+    val scope = rememberCoroutineScope()
+    var showXposedWarning by remember { mutableStateOf(false) }
+    var infoDialogTitle by remember { mutableStateOf<String?>(null) }
+    var infoDialogText by remember { mutableStateOf<String?>(null) }
+    var infoDialogVideo by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -87,57 +99,80 @@ fun SearchAndFeedScreen(onBack: () -> Unit) {
                         }
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
+                )
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(innerPadding).fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                Dt2sUiSection(
-                    context = context,
-                    scope = scope,
-                    showXposedDialog = { showXposedWarning = true },
-                    onInfoClick = { t, s, v ->
-                        infoDialogTitle = t
-                        infoDialogText = s
-                        infoDialogVideo = v
-                    },
-                    onSettingChanged = { needsRestart = true }
-                )
-            }
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .recordLayer(blurState)
+                    .background(MaterialTheme.colorScheme.surfaceContainer),
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    top = 16.dp + innerPadding.calculateTopPadding(),
+                    end = 16.dp,
+                    bottom = REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING + innerPadding.calculateBottomPadding()
+                ),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item {
+                    Dt2sUiSection(
+                        context = context,
+                        scope = scope,
+                        showXposedDialog = { showXposedWarning = true },
+                        onInfoClick = { t, s, v ->
+                            infoDialogTitle = t
+                            infoDialogText = s
+                            infoDialogVideo = v
+                        },
+                        onSettingChanged = { needsRestart = true }
+                    )
+                }
 
-            item {
-                NativeSearchSection(
-                    context = context,
-                    scope = scope,
-                    nativeSearchEnabled = nativeSearchEnabled,
-                    onNativeSearchChanged = { checked ->
-                        nativeSearchEnabled = checked
-                        scope.launch { LauncherManager.setNativeSearchEnabled(context, checked) }
-                        needsRestart = true
-                    },
-                    onInfoClick = { t, s, v ->
-                        infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v
-                    },
-                    onSettingChanged = { needsRestart = true }
-                )
-            }
+                item {
+                    NativeSearchSection(
+                        context = context,
+                        scope = scope,
+                        nativeSearchEnabled = nativeSearchEnabled,
+                        onNativeSearchChanged = { checked ->
+                            nativeSearchEnabled = checked
+                            scope.launch { LauncherManager.setNativeSearchEnabled(context, checked) }
+                            needsRestart = true
+                        },
+                        onInfoClick = { t, s, v ->
+                            infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v
+                        },
+                        onSettingChanged = { needsRestart = true }
+                    )
+                }
 
-            item {
-                SearchWidgetSection(
-                    context = context,
-                    scope = scope,
-                    showXposedDialog = { showXposedWarning = true },
-                    onInfoClick = { t, s, v ->
-                        infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v
-                    },
-                    onSettingChanged = { needsRestart = true }
-                )
+                item {
+                    SearchWidgetSection(
+                        context = context,
+                        scope = scope,
+                        showXposedDialog = { showXposedWarning = true },
+                        onInfoClick = { t, s, v ->
+                            infoDialogTitle = t; infoDialogText = s; infoDialogVideo = v
+                        },
+                        onSettingChanged = { needsRestart = true }
+                    )
+                }
             }
+            
+            TopBarBlurOverlay(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter),
+                blurState = blurState,
+                topBarHeight = innerPadding.calculateTopPadding(),
+                isScrolled = isScrolled
+            )
         }
     }
 

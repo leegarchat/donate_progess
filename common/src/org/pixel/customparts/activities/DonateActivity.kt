@@ -47,7 +47,11 @@ import org.json.JSONObject
 import org.pixel.customparts.R
 import org.pixel.customparts.dynamicDarkColorScheme
 import org.pixel.customparts.dynamicLightColorScheme
+import org.pixel.customparts.ui.REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING
 import org.pixel.customparts.ui.RebootBubble
+import org.pixel.customparts.ui.TopBarBlurOverlay
+import org.pixel.customparts.ui.recordLayer
+import org.pixel.customparts.ui.rememberGraphicsLayerRecordingState
 import org.pixel.customparts.utils.dynamicStringResource
 import java.net.HttpURLConnection
 import java.net.URL
@@ -168,6 +172,9 @@ fun DonateScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val blurState = rememberGraphicsLayerRecordingState()
+    val lazyListState = androidx.compose.foundation.lazy.rememberLazyListState()
+    val isScrolled by remember { derivedStateOf { lazyListState.canScrollBackward } }
     
     var pageData by remember { mutableStateOf<DonatePageData?>(null) }
     var isLoading by remember { mutableStateOf(true) }
@@ -241,26 +248,39 @@ fun DonateScreen(onBack: () -> Unit) {
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
+                ),
                 scrollBehavior = scrollBehavior
             )
         }
     ) { innerPadding ->
-        if (isLoading) {
-            Box(modifier = Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        } else if (loadError != null) {
-            Box(modifier = Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
-                Text(text = loadError!!, color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
-            }
-        } else {
-            val data = pageData!!
-            LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(innerPadding),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (isLoading) {
+                Box(modifier = Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            } else if (loadError != null) {
+                Box(modifier = Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
+                    Text(text = loadError!!, color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
+                }
+            } else {
+                val data = pageData!!
+                LazyColumn(
+                    state = lazyListState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .recordLayer(blurState)
+                        .background(MaterialTheme.colorScheme.surfaceContainer),
+                    contentPadding = PaddingValues(
+                        start = 16.dp,
+                        top = innerPadding.calculateTopPadding() + 16.dp,
+                        end = 16.dp,
+                        bottom = innerPadding.calculateBottomPadding() + REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
                 if (data.mainDonate != null) item { MainDonateCard(data.mainDonate) }
                 if (!data.urlsHeader.isNullOrEmpty()) {
                     item {
@@ -284,6 +304,14 @@ fun DonateScreen(onBack: () -> Unit) {
                     }
                 }
             }
+        }
+
+            TopBarBlurOverlay(
+                modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
+                topBarHeight = innerPadding.calculateTopPadding(),
+                blurState = blurState,
+                isScrolled = isScrolled
+            )
         }
     }
 }

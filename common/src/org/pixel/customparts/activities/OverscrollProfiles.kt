@@ -1,20 +1,25 @@
 package org.pixel.customparts.activities
 
 import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.FileUpload
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +48,7 @@ fun ProfilesSection(
     refreshKey: Int 
 ) {
     var showSaveProfileDialog by remember { mutableStateOf(false) }
+    var showNetworkDialog by remember { mutableStateOf(false) }
     var activeProfileName by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(refreshKey) {
@@ -61,24 +67,31 @@ fun ProfilesSection(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Button(
-                onClick = { exportLauncher.launch("overscroll_settings.json") },
+            // Row 1: Import + Export
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer, contentColor = MaterialTheme.colorScheme.onSecondaryContainer)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(Icons.Outlined.FileUpload, null, modifier = Modifier.size(18.dp))
-                Spacer(Modifier.width(8.dp))
-                Text(dynamicStringResource(R.string.os_prof_btn_export))
+                Button(
+                    onClick = { importLauncher.launch(arrayOf("application/json")) },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer, contentColor = MaterialTheme.colorScheme.onSecondaryContainer)
+                ) {
+                    Icon(Icons.Outlined.FileDownload, null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(6.dp))
+                    Text(dynamicStringResource(R.string.os_prof_btn_import))
+                }
+                Button(
+                    onClick = { exportLauncher.launch("overscroll_settings.json") },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer, contentColor = MaterialTheme.colorScheme.onSecondaryContainer)
+                ) {
+                    Icon(Icons.Outlined.FileUpload, null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(6.dp))
+                    Text(dynamicStringResource(R.string.os_prof_btn_export))
+                }
             }
-            Button(
-                onClick = { importLauncher.launch(arrayOf("application/json")) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer, contentColor = MaterialTheme.colorScheme.onSecondaryContainer)
-            ) {
-                Icon(Icons.Outlined.FileDownload, null, modifier = Modifier.size(18.dp))
-                Spacer(Modifier.width(8.dp))
-                Text(dynamicStringResource(R.string.os_prof_btn_import))
-            }
+            // Row 2: Save
             Button(
                 onClick = { showSaveProfileDialog = true },
                 modifier = Modifier.fillMaxWidth(),
@@ -87,6 +100,19 @@ fun ProfilesSection(
                 Icon(Icons.Default.Save, null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(dynamicStringResource(R.string.os_prof_btn_save))
+            }
+            // Row 3: Online Configs
+            Button(
+                onClick = { showNetworkDialog = true },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            ) {
+                Icon(Icons.Default.CloudDownload, null, modifier = Modifier.size(18.dp))
+                Spacer(Modifier.width(8.dp))
+                Text(dynamicStringResource(R.string.os_prof_btn_network))
             }
         }
         
@@ -102,7 +128,7 @@ fun ProfilesSection(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 profiles.forEachIndexed { index, profile ->
                     if (index > 0) {
-                        Divider(
+                        HorizontalDivider(
                             color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )
@@ -200,6 +226,7 @@ fun ProfilesSection(
         }
     }
 
+    // Save profile dialog
     if (showSaveProfileDialog) {
         var profileName by remember { mutableStateOf("") }
         AlertDialog(
@@ -226,4 +253,150 @@ fun ProfilesSection(
             dismissButton = { TextButton(onClick = { showSaveProfileDialog = false }) { Text(dynamicStringResource(R.string.btn_cancel)) } }
         )
     }
+
+    // Network configs dialog
+    if (showNetworkDialog) {
+        NetworkConfigsDialog(
+            context = context,
+            scope = scope,
+            onDismiss = { showNetworkDialog = false },
+            onConfigApplied = { configName ->
+                onProfilesChanged(OverscrollManager.getSavedProfiles(context))
+                onProfileLoaded()
+                showNetworkDialog = false
+                Toast.makeText(context, context.getString(R.string.os_net_applied, configName), Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
+}
+
+
+@Composable
+private fun NetworkConfigsDialog(
+    context: Context,
+    scope: kotlinx.coroutines.CoroutineScope,
+    onDismiss: () -> Unit,
+    onConfigApplied: (String) -> Unit
+) {
+    var configs by remember { mutableStateOf<List<OverscrollManager.NetworkConfig>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
+    var isError by remember { mutableStateOf(false) }
+    var applyingConfig by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(Unit) {
+        val result = OverscrollManager.fetchNetworkConfigs()
+        result.fold(
+            onSuccess = {
+                configs = it
+                isLoading = false
+            },
+            onFailure = {
+                isError = true
+                isLoading = false
+            }
+        )
+    }
+
+    AlertDialog(
+        onDismissRequest = { if (applyingConfig == null) onDismiss() },
+        title = { Text(dynamicStringResource(R.string.os_net_dialog_title)) },
+        text = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 100.dp, max = 400.dp)
+            ) {
+                when {
+                    isLoading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    isError -> {
+                        Text(
+                            dynamicStringResource(R.string.os_net_error),
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    configs.isEmpty() -> {
+                        Text(
+                            dynamicStringResource(R.string.os_net_empty),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    else -> {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            items(configs, key = { it.name }) { config ->
+                                val isApplying = applyingConfig == config.name
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable(enabled = applyingConfig == null) {
+                                            applyingConfig = config.name
+                                            scope.launch {
+                                                val success = OverscrollManager.applyNetworkConfig(context, config)
+                                                if (success) {
+                                                    onConfigApplied(config.name)
+                                                } else {
+                                                    applyingConfig = null
+                                                    Toast.makeText(context, context.getString(R.string.os_net_error), Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        },
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = if (isApplying)
+                                            MaterialTheme.colorScheme.primaryContainer
+                                        else
+                                            MaterialTheme.colorScheme.surfaceContainerHigh
+                                    ),
+                                    shape = RoundedCornerShape(12.dp)
+                                ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 16.dp, vertical = 14.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Text(
+                                            text = config.name,
+                                            style = MaterialTheme.typography.bodyLarge,
+                                            fontWeight = FontWeight.Medium,
+                                            modifier = Modifier.weight(1f)
+                                        )
+                                        if (isApplying) {
+                                            CircularProgressIndicator(
+                                                modifier = Modifier.size(20.dp),
+                                                strokeWidth = 2.dp
+                                            )
+                                        } else {
+                                            Icon(
+                                                Icons.Default.CloudDownload,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                modifier = Modifier.size(20.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(
+                onClick = onDismiss,
+                enabled = applyingConfig == null
+            ) {
+                Text(dynamicStringResource(R.string.btn_cancel))
+            }
+        }
+    )
 }

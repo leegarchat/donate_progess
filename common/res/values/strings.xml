@@ -18,6 +18,72 @@
     <string name="os_label_master_native">System Integration</string>
     <string name="os_desc_master_native">Enables the built-in firmware physics implementation (Native).\n\nWorks directly through Pixel Parts system classes without hooks, ensuring maximum performance and compatibility.</string>
 
+    <!-- SystemUI Settings -->
+    <string name="sysui_settings_title">SystemUI Settings</string>
+    <string name="sysui_lockscreen_title">Lockscreen Settings</string>
+    <string name="sysui_lockscreen_subtitle">Configure lockscreen charging info and gesture</string>
+
+    <string name="sysui_shade_title">Shade Settings</string>
+    <string name="sysui_shade_subtitle">Compact media player and scrim</string>
+
+    <!-- Magnifier (text loupe) -->
+    <string name="magnifier_section_title">Text Magnifier</string>
+    <string name="magnifier_enable_title">Custom zoom</string>
+    <string name="magnifier_enable_summary">Override the default text magnifier zoom level</string>
+    <string name="magnifier_zoom_title">Zoom level</string>
+    <string name="magnifier_size_title">Window size</string>
+    <string name="magnifier_shape_title">Window shape</string>
+    <string name="magnifier_shape_default">Default</string>
+    <string name="magnifier_shape_square">Square</string>
+    <string name="magnifier_shape_circle">Circle</string>
+    <string name="magnifier_offset_y_title">Vertical offset</string>
+    <string name="magnifier_xposed_warning_title">Xposed module required</string>
+    <string name="magnifier_xposed_warning_desc">Text magnifier modification works per-app. Enable the Xposed module for each application where you want the modified loupe to appear.</string>
+    <string name="overscroll_xposed_warning_title">Xposed module required</string>
+    <string name="overscroll_xposed_warning_desc">Overscroll effect modification works per-app. Enable the Xposed module for each application where you want the modified edge effect to appear.</string>
+
+    <string name="sysui_media_player_title">Media player</string>
+    <string name="sysui_media_compact_mode_title">Compact mode</string>
+    <string name="sysui_media_compact_mode_off">Off</string>
+    <string name="sysui_media_compact_mode_small">Small</string>
+    <string name="sysui_media_compact_mode_header">Header only</string>
+    <string name="sysui_media_compact_mode_very_small">Very small</string>
+
+    <string name="sysui_media_bg_alpha_title">Player background opacity</string>
+
+    <string name="sysui_media_hide_title">Hide media player</string>
+    <string name="sysui_media_hide_qs">Hide in Quick Settings</string>
+    <string name="sysui_media_hide_notifications">Hide in notifications</string>
+    <string name="sysui_media_hide_lockscreen">Hide on lockscreen</string>
+
+    <string name="sysui_shade_surface_title">Shade surface</string>
+    <string name="sysui_shade_surface_solid">Solid shade (no scrim)</string>
+    <string name="sysui_shade_blur_title">Background blur intensity</string>
+    <string name="sysui_shade_zoom_title">Background zoom intensity</string>
+    <string name="sysui_shade_disable_scale_threshold_title">Disable scale threshold</string>
+    <string name="sysui_shade_scrim_title">Scrim customization</string>
+    <string name="sysui_shade_notif_scrim_alpha_title">Notification scrim alpha</string>
+    <string name="sysui_shade_main_scrim_alpha_title">Main scrim alpha</string>
+    <string name="sysui_shade_notif_scrim_tint_title">Notification scrim tint</string>
+    <string name="sysui_shade_notif_scrim_tint_color">Tint color</string>
+    <string name="sysui_shade_main_scrim_tint_title">Main scrim tint</string>
+    <string name="sysui_shade_main_scrim_tint_color">Tint color</string>
+    <string name="sysui_shade_override_enable">Relative alpha multiplier</string>
+
+    <string name="sysui_charging_info_title">Charging Info</string>
+    <string name="sysui_charging_info_enable">Enable Custom Charging Info</string>
+    <string name="sysui_show_wattage">Show Wattage</string>
+    <string name="sysui_show_voltage">Show Voltage</string>
+    <string name="sysui_show_current">Show Current (mA)</string>
+    <string name="sysui_show_temp">Show Battery Temperature</string>
+    <string name="sysui_show_percent">Show Battery Percentage</string>
+    <string name="sysui_show_standard">Show Standard Text (Fast/Slow)</string>
+    <string name="sysui_show_custom_symbol">Show Custom Symbol</string>
+    <string name="sysui_custom_symbol">Custom Symbol (e.g. ⚡)</string>
+    <string name="sysui_sensor_interval_title">Sensor refresh interval</string>
+    <string name="sysui_average_mode_title">Display averaged charging values</string>
+
+
     <string name="os_status_active">Active</string>
     <string name="os_status_disabled">Disabled</string>
     
@@ -27,10 +93,16 @@
 
     <!-- Profiles UI -->
     <string name="os_group_profiles">Profiles</string>
-    <string name="os_prof_btn_export">Export to File</string>
-    <string name="os_prof_btn_import">Import from File</string>
+    <string name="os_prof_btn_export">Export</string>
+    <string name="os_prof_btn_import">Import</string>
+    <string name="os_prof_btn_network">Online Configs</string>
     <string name="os_prof_btn_create">Save New Profile</string>
     <string name="os_prof_header_list">Saved Profiles</string>
+    <string name="os_net_dialog_title">Online Configs</string>
+    <string name="os_net_loading">Loading…</string>
+    <string name="os_net_empty">No configs found</string>
+    <string name="os_net_error">Failed to load configs</string>
+    <string name="os_net_applied">Config applied: %s</string>
     <string name="os_prof_item_active">Active</string>
     <string name="os_prof_item_tap">Tap to load</string>
     <string name="os_prof_dialog_title">New Profile</string>
@@ -271,6 +343,8 @@
 
     <string name="launcher_clear_all_title">Кнопка «Очистить всё»</string>
     <string name="launcher_clear_all_desc">Добавляет кнопку закрытия всех приложений в меню многозадачности (Recents).\n\nПоддерживает несколько режимов отображения для интеграции в стандартный интерфейс.</string>
+    <string name="launcher_clear_all_enable_title">Включить кнопку «Очистить всё»</string>
+    <string name="launcher_ca_hide_actions_row_title">Скрыть стандартные кнопки действий</string>
 
     <string name="launcher_ca_mode_float">Снизу по центру</string>
     <string name="launcher_ca_mode_screenshot">Заменить «Скриншот»</string>
@@ -279,6 +353,7 @@
     <string name="launcher_ca_margin">Позиция (Отступ снизу)</string>
     <string name="launcher_btn_restart">Перезапустить лаунчер</string>
     <string name="launcher_ca_margin_desc">Регулирует вертикальное положение плавающей кнопки. Значение — множитель стандартного отступа.</string>
+    <string name="launcher_ca_hide_actions_row_desc">Скрывает системные кнопки «Скриншот» и «Выбрать» в Recents, оставляя общую логику контейнера и вашу кастомную кнопку «Очистить всё».</string>
     <!-- ///// -->
     <!-- DOUBLE TAP (DT) SETTINGS -->
     <string name="dt_category_title">Double Tap Gestures</string>
@@ -339,6 +414,10 @@
     <string name="main_header_gesture">Gestures &amp; Input</string>
     <string name="main_header_system">System</string>
     <string name="main_header_network">Network &amp; Connectivity</string>
+
+    <!-- Test things (debug section, hidden by default) -->
+    <string name="test_things_title">Test Things</string>
+    <string name="test_things_desc">Experimental features under development</string>
     
     <string name="main_root_title">No Root Access</string>
     <string name="main_root_desc">Application requires Superuser rights (Root) and active Xposed Framework.\n\nPlease install Magisk/KernelSU and grant permissions.</string>
@@ -356,6 +435,27 @@
     <string name="thermal_desc_activity">Throttling Management (Tensor)</string>
 
     <string name="os_desc_anchor">Transformation pivot point.</string>
+
+    <!-- Delta Normalization (Compose Smoothing) -->
+    <string name="os_group_norm">Compose Delta Smoothing</string>
+    <string name="os_desc_norm_group">Intelligent normalization system for Jetpack Compose scroll implementations.\n\nCompose passes amplified deltas compared to classic View scrolls. This module automatically detects Compose instances and smoothly reduces their deltas to match standard View behavior.\n\nCalibrated from empirical data: Compose deltas are ~5× larger than View deltas for identical gestures.</string>
+    <string name="os_lbl_norm_enabled">Enable Normalization</string>
+    <string name="os_desc_norm_enabled">Master switch for intelligent delta normalization.\n\nWhen enabled, the system analyzes each EdgeEffect instance and applies correction factor to Compose-amplified deltas.\n\nSafe to leave on — does nothing for apps with normal deltas.</string>
+    <string name="os_lbl_norm_ref_delta">Reference Delta</string>
+    <string name="os_desc_norm_ref_delta">Baseline \"normal\" delta value (fraction of effectiveSize).\n\nDetermined empirically from View-based apps. If the running mean exceeds this × Detect Multiplier, the instance is considered amplified.\n\nDefault: 0.00001 (very sensitive). Increase if false positives occur on normal apps.</string>
+    <string name="os_lbl_norm_detect_mul">Detect Multiplier</string>
+    <string name="os_desc_norm_detect_mul">Threshold multiplier for amplification detection.\n\nActivation: running_mean > ref_delta × this.\n3.3 = reliably catches Compose (~5× from View), won\'t trigger on View apps.\n\nIncrease if false positives, decrease if not catching Compose.</string>
+    <string name="os_lbl_norm_factor">Correction Factor</string>
+    <string name="os_desc_norm_factor">How much to multiply amplified deltas by.\n\n0.2 = bring to View level (from analysis: ref/compose ≈ 0.195).\n0.5 = halve the delta. 1.0 = no change.\n\nSmaller = weaker bounce, larger = stronger.</string>
+    <string name="os_lbl_norm_window">Window Size</string>
+    <string name="os_desc_norm_window">Number of recent |delta| samples to analyze.\n\nSmaller = faster detection (reacts in fewer events) but more noise-sensitive.\n Larger = more stable but slower to adapt.\n\nRange: 2–64.</string>
+    <string name="os_lbl_norm_ramp">Ramp Events</string>
+    <string name="os_desc_norm_ramp">How many events to transition from 1.0 to factor.\n\n1–4 = near-instant. 8–12 = smooth transition.\n\nPrevents visual jumps when normalization activates.</string>
+    <string name="os_lbl_norm_detect_mode">Detection Mode</string>
+    <string name="os_desc_norm_detect_mode">How Compose instances are identified.\n\n0 = Behavior only (sliding window of deltas)\n1 = Hybrid: stack trace gives instant ID, window confirms\n2 = Stack trace only (no window analysis)\n\nHybrid (1) is recommended for best accuracy + speed.</string>
+    <string name="os_norm_mode_behavior">Behavior Only</string>
+    <string name="os_norm_mode_hybrid">Hybrid (Recommended)</string>
+    <string name="os_norm_mode_stacktrace">Stack Trace Only</string>
 
     <string name="ims_desc_activity">VoLTE, VoWiFi, 5G</string>
     <string name="ims_title_activity">IMS Config</string>
@@ -515,4 +615,143 @@
 
     <string name="launcher_top_widget_title">Disable Top Widget</string>
     <string name="launcher_top_widget_desc">Removes the persistent "At a Glance" widget from the first screen and allows icons to be placed there.</string>
+
+    <!-- Animation Theme Manager -->
+    <string name="anim_theme_create_title">Create Animation Theme</string>
+    <string name="anim_theme_style_name">Style name</string>
+    <string name="anim_theme_open_enter">Open Enter</string>
+    <string name="anim_theme_open_exit">Open Exit</string>
+    <string name="anim_theme_close_enter">Close Enter</string>
+    <string name="anim_theme_close_exit">Close Exit</string>
+    <string name="anim_theme_tap_to_select">Tap to select XML file</string>
+    <string name="anim_theme_compile_btn">Compile &amp; Install</string>
+    <string name="anim_theme_log_title">Build Log</string>
+    <string name="anim_theme_installed_title">Installed Themes</string>
+    <string name="anim_theme_none_installed">No animation themes installed</string>
+    <string name="anim_theme_paste_xml">Paste XML</string>
+    <string name="anim_theme_xml_hint">Paste animation XML here…</string>
+    <string name="anim_theme_input_mode_file">File</string>
+    <string name="anim_theme_input_mode_xml">XML Text</string>
+
+    <!-- Built-in Animations -->
+    <string name="anim_builtin_title">Built-in Animations</string>
+    <string name="anim_builtin_disabled">Disabled</string>
+    <string name="anim_builtin_custom">Custom Theme</string>
+    <string name="anim_preview_open">Open</string>
+    <string name="anim_preview_close">Close</string>
+    <string name="anim_apply_both">Apply Both</string>
+    <string name="anim_apply_open">Apply Open</string>
+    <string name="anim_apply_close">Apply Close</string>
+    <string name="anim_current_open">Current open: %s</string>
+    <string name="anim_current_close">Current close: %s</string>
+
+    <!-- Animation type names -->
+    <string name="anim_group_slide">Slide</string>
+    <string name="anim_group_card_stack">Card Stack</string>
+    <string name="anim_group_train">Train</string>
+    <string name="anim_group_ios">iOS Parallax</string>
+    <string name="anim_group_fade">Fade</string>
+    <string name="anim_group_zoom">Zoom</string>
+    <string name="anim_group_modal">Modal</string>
+    <string name="anim_group_depth">Depth</string>
+    <string name="anim_group_pivot">Pivot</string>
+
+    <!-- Direction names -->
+    <string name="anim_dir_right">Right</string>
+    <string name="anim_dir_left">Left</string>
+    <string name="anim_dir_top">Top</string>
+    <string name="anim_dir_bottom">Bottom</string>
+
+    <!-- Activity Transition Settings -->
+    <string name="anim_transition_title">Activity Transitions</string>
+    <string name="anim_transition_subtitle">Custom animation themes and built-in transitions</string>
+    <string name="anim_predictive_back_title">Disable Predictive Back</string>
+    <string name="anim_predictive_back_desc">Removes the system swipe-back animation</string>
+    <string name="anim_no_animation_title">No Animation</string>
+    <string name="anim_no_animation_desc">Completely disables transition animation</string>
+    <string name="anim_constructor_title">Animation Constructor</string>
+    <string name="anim_constructor_preview">Preview</string>
+    <string name="anim_constructor_style_name">Style name</string>
+    <string name="anim_constructor_build_theme">Build Theme</string>
+    <string name="anim_constructor_hide">Hide</string>
+    <string name="anim_constructor_show_xml">Show XML</string>
+    <string name="anim_constructor_hide_xml">Hide XML</string>
+    <string name="anim_dialog_cancel">Cancel</string>
+    <string name="anim_active_open_close">Open + Close</string>
+    <string name="anim_installing">Installing…</string>
+    <string name="anim_install_success">✓ Theme installed successfully!</string>
+    <string name="anim_install_failed">Installation failed</string>
+    <string name="anim_install_failed_log">✗ Installation failed</string>
+    <string name="anim_compile_failed">Compilation failed</string>
+    <string name="anim_cd_delete">Delete</string>
+    <string name="anim_cd_confirm_delete">Confirm delete</string>
+    <string name="anim_cd_reset">Reset</string>
+    <string name="anim_cd_copy">Copy</string>
+    <string name="anim_param_translate">Translate</string>
+    <string name="anim_param_scale">Scale</string>
+    <string name="anim_param_alpha">Alpha</string>
+    <string name="anim_param_rotate">Rotate</string>
+    <string name="anim_param_pivot">Pivot</string>
+    <string name="anim_param_timing">Timing</string>
+    <string name="anim_param_interpolator">Interpolator</string>
+
+    <!-- Addon Manager -->
+    <string name="addon_title">Pine Addons</string>
+    <string name="addon_desc">Manage external hook modules</string>
+    <string name="addon_count">%d module(s) installed</string>
+    <string name="addon_active_count">Active: %1$d of %2$d</string>
+    <string name="addon_safe_mode_title">Safe Mode Active</string>
+    <string name="addon_safe_mode_desc">Addons were disabled due to repeated crashes. If the problem was caused by a faulty addon, you can disable it before exiting safe mode.</string>
+    <string name="addon_safe_mode_exit">Exit Safe Mode</string>
+    <string name="addon_section_system">System modules</string>
+    <string name="addon_section_user">Installed modules</string>
+    <string name="addon_system_empty_title">No system modules</string>
+    <string name="addon_system_empty_desc">System modules are pre-installed with the firmware</string>
+    <string name="addon_user_empty_title">No user modules installed</string>
+    <string name="addon_user_empty_desc">Import a .jar addon to get started</string>
+    <string name="addon_import">Import Addon</string>
+    <string name="addon_import_desc">Select a .jar addon file</string>
+    <string name="addon_import_success">Addon imported</string>
+    <string name="addon_import_failed">Import failed</string>
+    <string name="addon_empty_title">No addons installed</string>
+    <string name="addon_empty_desc">Import a .jar addon to get started</string>
+    <string name="addon_delete_title">Remove Addon</string>
+    <string name="addon_delete_confirm">Remove \"%s\"?\n\nThe JAR file will be deleted and all settings cleared.</string>
+    <string name="addon_scope_default">Default targets</string>
+    <string name="addon_scope_custom">Custom only</string>
+    <string name="addon_scope_merge">Merge both</string>
+    <string name="addon_scope_label_default">Default scope</string>
+    <string name="addon_scope_label_custom">Custom scope</string>
+    <string name="addon_scope_label_merge">Merged scope</string>
+    <string name="addon_target_scope">Target Scope</string>
+    <string name="addon_targets_default">Default Targets</string>
+    <string name="addon_targets_custom">Custom Targets</string>
+    <string name="addon_builtin_badge">built-in</string>
+    <string name="addon_builtin_plus_addon">Built-in + Addon</string>
+    <string name="addon_enabled">Enabled</string>
+    <string name="addon_btn_save">Save</string>
+    <string name="addon_btn_cancel">Cancel</string>
+    <string name="addon_btn_remove">Remove</string>
+    <string name="addon_settings_title">Module Settings</string>
+    <string name="addon_range_format">Range: %1$s — %2$s</string>
+    <string name="addon_file_not_set">Not set</string>
+    <string name="addon_file_saved">File saved</string>
+    <string name="addon_file_copy_failed">File copy failed</string>
+    <string name="addon_apps_selected">%d app(s) selected</string>
+    <string name="addon_select_apps">Select apps</string>
+    <string name="addon_selected_count">%d selected</string>
+    <string name="addon_confirm_count">Confirm (%d)</string>
+    <string name="addon_search_apps">Search apps\u2026</string>
+    <string name="addon_show_system">Show system</string>
+    <string name="addon_hide_system">Hide system</string>
+    <string name="addon_no_apps_match">No apps match \"%s\"</string>
+    <string name="addon_no_apps_available">No apps available</string>
+    <string name="addon_default_target_badge">Default target</string>
+    <string name="addon_author_unknown">Unknown</string>
+
+    <!-- Addon Manager: Active Apps -->
+    <string name="addon_active_apps_title">Active Apps</string>
+    <string name="addon_active_apps_desc">%d app(s) with active hooks</string>
+    <string name="addon_active_apps_empty">No active hooks</string>
+    <string name="addon_active_apps_modules">%d module(s)</string>
 </resources>

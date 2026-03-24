@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Train exit: the old activity slides out to the left completely,
+    as if it is a train car connected to the entering activity.
+    Same speed and interpolator as the enter animation for a seamless feel.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/linear_out_slow_in">
+    <translate
+        android:fromXDelta="0"
+        android:toXDelta="-100%p"
+        android:duration="350" />
+</set>

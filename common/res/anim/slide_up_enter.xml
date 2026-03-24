@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Slide-up enter: the new activity slides up from below the screen,
+    like a modal sheet being presented.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/linear_out_slow_in">
+    <translate
+        android:fromYDelta="100%p"
+        android:toYDelta="0"
+        android:duration="350" />
+</set>

@@ -9,6 +9,15 @@
         "com.android.settings"
     ],
     "enabled": true,
+    "icon": "META-INF/icon.png",
+    "background": "META-INF/bg.png",
+    "backgroundMode": "gradient",
+    "backgroundAlpha": 100,
+    "backgroundGradientSteps": [0, 60, 100, 60, 0],
+    "backgroundBlur": true,
+    "backgroundBlurRadius": 25,
+    "cardColor": "",
+    "backgroundScope": "full",
 
     "settings": [
         {

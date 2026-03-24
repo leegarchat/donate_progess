@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Pivot enter: the new activity rotates in from the bottom-right corner.
+    Starts tilted 30° and at 90 % scale, settling into its final position
+    with a smooth "page un-pinning" feel.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_cubic">
+    <rotate
+        android:fromDegrees="30"
+        android:toDegrees="0"
+        android:pivotX="100%"
+        android:pivotY="100%"
+        android:duration="350" />
+    <scale
+        android:fromXScale="0.9"
+        android:fromYScale="0.9"
+        android:toXScale="1.0"
+        android:toYScale="1.0"
+        android:pivotX="100%"
+        android:pivotY="100%"
+        android:duration="350" />
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:duration="350" />
+</set>

@@ -1,0 +1,37 @@
+{
+    "id": "rv_scroll_animation",
+    "entryClass": "com.example.addon.test.RVAnimationHook",
+    "name": "RecyclerView Scroll Animation",
+    "author": "liuqiang (Ported by You)",
+    "description": "Globally adds a beautiful pop-up scale animation to list items when scrolling.",
+    "version": "1.0",
+    "enabled": true,
+    "backgroundMode": "gradient",
+    "backgroundAlpha": 70,
+    "settings": [
+        {
+            "key": "rv_anim_duration",
+            "title": "Animation Duration",
+            "description": "Duration of the scale animation in milliseconds.",
+            "type": "int",
+            "provider": "global",
+            "default": 333,
+            "min": 100,
+            "max": 1000,
+            "step": 10,
+            "unit": "ms"
+        },
+        {
+            "key": "rv_anim_start_scale",
+            "title": "Start Scale",
+            "description": "The initial size from which the item scales up to 100%.",
+            "type": "float",
+            "provider": "global",
+            "default": 0.2,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.1,
+            "unit": "x"
+        }
+    ]
+}

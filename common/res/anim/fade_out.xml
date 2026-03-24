@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Fade out: the activity fades from fully opaque to fully transparent.
+    Used for both open-exit and close-exit in Fade mode.
+-->
+<alpha xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/accelerate_cubic"
+    android:fromAlpha="1.0"
+    android:toAlpha="0.0"
+    android:duration="350" />

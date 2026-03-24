@@ -3,11 +3,13 @@ package org.pixel.customparts.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -46,13 +49,23 @@ import kotlinx.coroutines.launch
 import org.pixel.customparts.R
 import org.pixel.customparts.dynamicDarkColorScheme
 import org.pixel.customparts.dynamicLightColorScheme
+import org.pixel.customparts.ui.REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING
 import org.pixel.customparts.ui.RebootBubble
 import org.pixel.customparts.ui.launcher.GridSizerSection
 import org.pixel.customparts.utils.dynamicStringResource
 
+import org.pixel.customparts.ui.TopBarBlurOverlay
+import org.pixel.customparts.ui.recordLayer
+import org.pixel.customparts.ui.rememberGraphicsLayerRecordingState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+
 class GridSettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             val darkTheme = isSystemInDarkTheme()
             val context = LocalContext.current
@@ -74,6 +87,9 @@ fun GridSettingsScreen(onBack: () -> Unit) {
     val scope = rememberCoroutineScope()
     var needsRestart by remember { mutableStateOf(false) }
     var restartTrigger by remember { mutableIntStateOf(0) }
+    val blurState = rememberGraphicsLayerRecordingState()
+    val scrollState = rememberScrollState()
+    val isScrolled by remember { derivedStateOf { scrollState.value > 0 } }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -109,23 +125,45 @@ fun GridSettingsScreen(onBack: () -> Unit) {
                         }
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
+                )
             )
         }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(PaddingValues(16.dp)),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            GridSizerSection(
-                context = context,
-                scope = scope,
-                restartTrigger = restartTrigger,
-                onSettingsChanged = { needsRestart = it }
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .recordLayer(blurState)
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
+                    .verticalScroll(scrollState)
+                    .padding(
+                        PaddingValues(
+                            start = 16.dp,
+                            top = 16.dp + innerPadding.calculateTopPadding(),
+                            end = 16.dp,
+                            bottom = REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING + innerPadding.calculateBottomPadding()
+                        )
+                    ),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                GridSizerSection(
+                    context = context,
+                    scope = scope,
+                    restartTrigger = restartTrigger,
+                    onSettingsChanged = { needsRestart = it }
+                )
+            }
+            
+            TopBarBlurOverlay(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter),
+                blurState = blurState,
+                topBarHeight = innerPadding.calculateTopPadding(),
+                isScrolled = isScrolled
             )
         }
     }

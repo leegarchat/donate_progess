@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pivot enter, direction=left: swings in from bottom-left corner. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_cubic">
+    <rotate android:fromDegrees="-30" android:toDegrees="0"
+        android:pivotX="0%" android:pivotY="100%" android:duration="350" />
+    <scale android:fromXScale="0.9" android:fromYScale="0.9"
+        android:toXScale="1.0" android:toYScale="1.0"
+        android:pivotX="0%" android:pivotY="100%" android:duration="350" />
+    <alpha android:fromAlpha="0.0" android:toAlpha="1.0" android:duration="350" />
+</set>

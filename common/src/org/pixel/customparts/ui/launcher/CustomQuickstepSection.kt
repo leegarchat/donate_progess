@@ -27,7 +27,7 @@ import androidx.compose.material.icons.rounded.ViewCarousel
 import androidx.compose.material.icons.rounded.Widgets
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -159,7 +159,7 @@ fun CustomQuickstepSection(
             }
         }
         
-        Divider(color = Color.Gray.copy(alpha = 0.2f))
+        HorizontalDivider(color = Color.Gray.copy(alpha = 0.2f))
     }
 }
 

@@ -8,6 +8,8 @@ import android.telephony.SubscriptionManager
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,6 +32,7 @@ import org.pixel.customparts.dynamicLightColorScheme
 import org.pixel.customparts.ui.ExpandableWarningCard
 import org.pixel.customparts.ui.GenericSwitchRow
 import org.pixel.customparts.ui.InfoDialog
+import org.pixel.customparts.ui.REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING
 import org.pixel.customparts.ui.RebootBubble
 import org.pixel.customparts.ui.SettingsGroupCard
 import org.pixel.customparts.utils.RootUtils
@@ -37,9 +40,16 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import org.pixel.customparts.utils.dynamicStringResource
 
+import org.pixel.customparts.ui.TopBarBlurOverlay
+import org.pixel.customparts.ui.recordLayer
+import org.pixel.customparts.ui.rememberGraphicsLayerRecordingState
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Alignment
+
 class ImsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             val darkTheme = isSystemInDarkTheme()
             val context = LocalContext.current
@@ -65,6 +75,10 @@ fun ImsScreen(onBack: () -> Unit) {
     var infoDialogTitle by remember { mutableStateOf<String?>(null) }
     var infoDialogText by remember { mutableStateOf<String?>(null) }
 
+    val blurState = rememberGraphicsLayerRecordingState()
+    val lazyListState = androidx.compose.foundation.lazy.rememberLazyListState()
+    val isScrolled by remember { derivedStateOf { lazyListState.canScrollBackward } }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         floatingActionButton = { RebootBubble() },
@@ -78,18 +92,27 @@ fun ImsScreen(onBack: () -> Unit) {
                     IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
                 )
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .recordLayer(blurState)
+                    .background(MaterialTheme.colorScheme.surfaceContainer),
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    top = 16.dp + innerPadding.calculateTopPadding(),
+                    end = 16.dp,
+                    bottom = REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING + innerPadding.calculateBottomPadding()
+                ),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
             
             item {
                 ExpandableWarningCard(
@@ -178,7 +201,17 @@ fun ImsScreen(onBack: () -> Unit) {
                 }
             }
         }
+
+        TopBarBlurOverlay(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter),
+            blurState = blurState,
+            topBarHeight = innerPadding.calculateTopPadding(),
+            isScrolled = isScrolled
+        )
     }
+}
 
     if (infoDialogTitle != null && infoDialogText != null) {
         InfoDialog(

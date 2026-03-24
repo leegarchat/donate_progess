@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Card-stack exit for direction=left: old activity shifts RIGHT +33 %. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/linear_out_slow_in">
+    <translate android:fromXDelta="0" android:toXDelta="33%p" android:duration="350" />
+    <scale android:fromXScale="1.0" android:fromYScale="1.0"
+        android:toXScale="0.92" android:toYScale="0.92"
+        android:pivotX="50%" android:pivotY="50%" android:duration="350" />
+    <alpha android:fromAlpha="1.0" android:toAlpha="0.7" android:duration="350" />
+</set>

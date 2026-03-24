@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.pixel.customparts.utils.SettingsCompat
 import org.pixel.customparts.SettingsKeys
-import java.io.DataOutputStream
+import org.pixel.customparts.utils.runRootCommand
 
 object LauncherManager {
     private const val KEY_NATIVE_SEARCH = SettingsKeys.PIXEL_LAUNCHER_NATIVE_SEARCH
@@ -62,6 +62,8 @@ object LauncherManager {
     const val KEY_ICON_PACK = SettingsKeys.LAUNCHER_CURRENT_ICON_PACK
     val KEY_CLEAR_ALL_ENABLED: String
         get() = SettingsKeys.LAUNCHER_CLEAR_ALL_ENABLED
+    val KEY_CLEAR_ALL_HIDE_ACTIONS_ROW: String
+        get() = SettingsKeys.LAUNCHER_CLEAR_ALL_HIDE_ACTIONS_ROW
     val KEY_CLEAR_ALL_MODE: String
         get() = SettingsKeys.LAUNCHER_CLEAR_ALL_MODE
     val KEY_CLEAR_ALL_MARGIN: String
@@ -81,24 +83,6 @@ object LauncherManager {
     }
     suspend fun restartLauncher(context: Context) = withContext(Dispatchers.IO) {
         runRootCommand("am force-stop com.google.android.apps.nexuslauncher")
-    }
-    private fun runRootCommand(command: String) {
-        try {
-            val process = Runtime.getRuntime().exec("su")
-            val os = DataOutputStream(process.outputStream)
-            os.writeBytes("$command\n")
-            os.writeBytes("exit\n")
-            os.flush()
-            process.waitFor()
-            os.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            try {
-                Runtime.getRuntime().exec(arrayOf("sh", "-c", command))
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }
-        }
     }
 }
 

@@ -62,6 +62,7 @@ object SettingsCompat {
         "launcher_disable_google_feed",
         "launcher_disable_top_widget",
         "launcher_clear_all",
+        "launcher_clear_all_hide_actions_row",
         "launcher_replace_on_clear",
         "launcher_clear_all_bottom_margin",
         "launcher_debug_enable",
@@ -72,7 +73,9 @@ object SettingsCompat {
         "launcher_padding_dots_x",
         "doze_double_tap_hook",
         "launcher_dt2s_enabled",
-        "overscroll_enabled"
+        "overscroll_enabled",
+        "pixelparts_battery_info_refresh_interval_ms",
+        "pixelparts_battery_info_average_mode"
     )
     private fun isSuffixedKey(key: String): Boolean {
         val baseKey = key.removeSuffix(PINE_INJECT_SUFFIX).removeSuffix(XPOSED_SUFFIX)

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.pixel.customparts.xposed"
     android:versionCode="71"
+    android:extractNativeLibs="true"
     android:versionName="beta-0.7.1-RC">
 
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" 
@@ -85,6 +86,42 @@
             android:label="@string/ims_category_title"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
             android:exported="false" />
+        <activity
+            android:name="org.pixel.customparts.activities.ShadeSettingsActivity"
+            android:label="Shade Settings"
+            android:exported="false"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+
+        <activity
+            android:name="org.pixel.customparts.activities.SystemUISettingsActivity"
+            android:label="SystemUI Settings"
+            android:exported="false"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+        <activity
+            android:name="org.pixel.customparts.activities.LockscreenSettingsActivity"
+            android:label="Lockscreen Settings"
+            android:exported="false"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+        <activity
+            android:name="org.pixel.customparts.activities.TestActivity"
+            android:label="@string/test_things_title"
+            android:exported="false"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+        <activity
+            android:name="org.pixel.customparts.activities.AddonManagerActivity"
+            android:label="@string/addon_title"
+            android:exported="false"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+        <activity
+            android:name="org.pixel.customparts.activities.MagnifierSettingsActivity"
+            android:label="@string/magnifier_section_title"
+            android:exported="false"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
+        <activity
+            android:name="org.pixel.customparts.activities.ActivityTransitionActivity"
+            android:label="@string/anim_transition_title"
+            android:exported="false"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar" />
 
         <receiver
             android:name="org.pixel.customparts.services.BootCompletedReceiver"

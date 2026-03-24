@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Train enter (close): the previous activity slides in from the left,
+    coupled with the current activity sliding out to the right —
+    reverse of the train open transition.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/linear_out_slow_in">
+    <translate
+        android:fromXDelta="-100%p"
+        android:toXDelta="0"
+        android:duration="350" />
+</set>

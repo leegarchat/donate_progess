@@ -8,3 +8,4 @@
 -keep class * implements de.robv.android.xposed.IXposedHookZygoteInit { *; }
 -keep class * implements de.robv.android.xposed.IXposedHookInitPackageResources { *; }
 -dontwarn de.robv.android.xposed.**
+-keep class androidx.compose.ui.graphics.layer.GraphicsLayer { *; }

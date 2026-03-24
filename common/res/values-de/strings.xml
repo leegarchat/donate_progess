@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <!-- General / Navigation -->
     <string name="os_title_activity">Scroll-Physik</string>
@@ -18,6 +19,72 @@
     <string name="os_label_master_native">Systemintegration</string>
     <string name="os_desc_master_native">Aktiviert die in der Firmware integrierte Physik-Implementierung (Native).\n\nArbeitet direkt über die Systemklassen von Pixel Parts ohne Hooks und gewährleistet maximale Leistung und Kompatibilität.</string>
 
+    <!-- SystemUI Settings -->
+    <string name="sysui_settings_title">SystemUI-Einstellungen</string>
+    <string name="sysui_lockscreen_title">Sperrbildschirm-Einstellungen</string>
+    <string name="sysui_lockscreen_subtitle">Ladeinformationen und Gesten auf dem Sperrbildschirm konfigurieren</string>
+
+    <string name="sysui_shade_title">Benachrichtigungsleiste</string>
+    <string name="sysui_shade_subtitle">Kompakter Player und Scrim</string>
+
+    <!-- Magnifier (text loupe) -->
+    <string name="magnifier_section_title">Textlupe</string>
+    <string name="magnifier_enable_title">Eigener Zoom</string>
+    <string name="magnifier_enable_summary">Vergrößerungsstufe der Textlupe ändern</string>
+    <string name="magnifier_zoom_title">Vergrößerungsstufe</string>
+    <string name="magnifier_size_title">Fenstergröße</string>
+    <string name="magnifier_shape_title">Fensterform</string>
+    <string name="magnifier_shape_default">Standard</string>
+    <string name="magnifier_shape_square">Quadrat</string>
+    <string name="magnifier_shape_circle">Kreis</string>
+    <string name="magnifier_offset_y_title">Vertikaler Versatz</string>
+    <string name="magnifier_xposed_warning_title">Xposed-Modul erforderlich</string>
+    <string name="magnifier_xposed_warning_desc">Die Textlupen-Modifikation funktioniert pro App. Aktivieren Sie das Xposed-Modul für jede App, in der die modifizierte Lupe erscheinen soll.</string>
+    <string name="overscroll_xposed_warning_title">Xposed-Modul erforderlich</string>
+    <string name="overscroll_xposed_warning_desc">Die Overscroll-Modifikation funktioniert pro App. Aktivieren Sie das Xposed-Modul für jede App, in der der modifizierte Randeffekt erscheinen soll.</string>
+
+    <string name="sysui_media_player_title">Mediaplayer</string>
+    <string name="sysui_media_compact_mode_title">Kompaktmodus</string>
+    <string name="sysui_media_compact_mode_off">Aus</string>
+    <string name="sysui_media_compact_mode_small">Kompakt</string>
+    <string name="sysui_media_compact_mode_header">Nur Kopfzeile</string>
+    <string name="sysui_media_compact_mode_very_small">Sehr kompakt</string>
+
+    <string name="sysui_media_bg_alpha_title">Player-Hintergrund-Deckkraft</string>
+
+    <string name="sysui_media_hide_title">Mediaplayer ausblenden</string>
+    <string name="sysui_media_hide_qs">In Schnelleinstellungen ausblenden</string>
+    <string name="sysui_media_hide_notifications">In Benachrichtigungen ausblenden</string>
+    <string name="sysui_media_hide_lockscreen">Auf Sperrbildschirm ausblenden</string>
+
+    <string name="sysui_shade_surface_title">Hintergrund der Leiste</string>
+    <string name="sysui_shade_surface_solid">Einfarbige Leiste (kein Scrim)</string>
+    <string name="sysui_shade_blur_title">Hintergrund-Unschärfe</string>
+    <string name="sysui_shade_zoom_title">Hintergrund-Zoom</string>
+    <string name="sysui_shade_disable_scale_threshold_title">Skalierungsschwelle deaktivieren</string>
+    <string name="sysui_shade_scrim_title">Scrim-Anpassung</string>
+    <string name="sysui_shade_notif_scrim_alpha_title">Benachrichtigungs-Scrim-Alpha</string>
+    <string name="sysui_shade_main_scrim_alpha_title">Haupt-Scrim-Alpha</string>
+    <string name="sysui_shade_notif_scrim_tint_title">Benachrichtigungs-Scrim-Tönung</string>
+    <string name="sysui_shade_notif_scrim_tint_color">Tönungsfarbe</string>
+    <string name="sysui_shade_main_scrim_tint_title">Haupt-Scrim-Tönung</string>
+    <string name="sysui_shade_main_scrim_tint_color">Tönungsfarbe</string>
+    <string name="sysui_shade_override_enable">Relativer Alpha-Multiplikator</string>
+
+    <string name="sysui_charging_info_title">Ladeinformationen</string>
+    <string name="sysui_charging_info_enable">Eigene Ladeinformationen aktivieren</string>
+    <string name="sysui_show_wattage">Leistung anzeigen</string>
+    <string name="sysui_show_voltage">Spannung anzeigen</string>
+    <string name="sysui_show_current">Strom anzeigen (mA)</string>
+    <string name="sysui_show_temp">Akkutemperatur anzeigen</string>
+    <string name="sysui_show_percent">Akkustand anzeigen</string>
+    <string name="sysui_show_standard">Standardtext anzeigen (Schnell/Langsam)</string>
+    <string name="sysui_show_custom_symbol">Eigenes Symbol anzeigen</string>
+    <string name="sysui_custom_symbol">Eigenes Symbol (z.B. ⚡)</string>
+    <string name="sysui_sensor_interval_title">Sensor-Aktualisierungsintervall</string>
+    <string name="sysui_average_mode_title">Gemittelte Ladewerte anzeigen</string>
+
+
     <string name="os_status_active">Aktiv</string>
     <string name="os_status_disabled">Deaktiviert</string>
     
@@ -27,10 +94,16 @@
 
     <!-- Profiles UI -->
     <string name="os_group_profiles">Profile</string>
-    <string name="os_prof_btn_export">In Datei exportieren</string>
-    <string name="os_prof_btn_import">Aus Datei importieren</string>
+    <string name="os_prof_btn_export">Export</string>
+    <string name="os_prof_btn_import">Import</string>
+    <string name="os_prof_btn_network">Online-Konfigs</string>
     <string name="os_prof_btn_create">Neues Profil speichern</string>
     <string name="os_prof_header_list">Gespeicherte Profile</string>
+    <string name="os_net_dialog_title">Online-Konfigurationen</string>
+    <string name="os_net_loading">Laden…</string>
+    <string name="os_net_empty">Keine Konfigurationen gefunden</string>
+    <string name="os_net_error">Laden fehlgeschlagen</string>
+    <string name="os_net_applied">Konfiguration angewendet: %s</string>
     <string name="os_prof_item_active">Aktiv</string>
     <string name="os_prof_item_tap">Zum Laden tippen</string>
     <string name="os_prof_dialog_title">Neues Profil</string>
@@ -76,6 +149,8 @@
     <string name="os_group_visual_horz">Horizontale Verformung</string>
     <string name="os_desc_visual_horz">Ändert die Skalierung (ScaleX) entlang der Breite.\n\nErmöglicht einen "Fasseffekt" oder eine Verengung der Liste beim Ziehen.</string>
 
+    <string name="misc_group_title">Sonstiges</string>
+
     <string name="os_desc_scale_intensity">Koeffizient des Einflusses der Verschiebung auf die Skalierung. Je höher der Wert, desto stärker die Verzerrung bei gleicher Verschiebung.</string>
     <string name="os_desc_scale_limit">Hartes Limit der Verzerrung (min/max Skalierung), um visuelle Artefakte bei starken Zügen zu verhindern.</string>
     <string name="os_desc_scale_anchor">Koordinate des Punktes, um den skaliert wird (0.0 - 1.0). 0.5 ist die Mitte.</string>
@@ -105,6 +180,8 @@
     
     <string name="os_lbl_input_smooth">Eingabefilter</string>
     <string name="os_desc_input_smooth">Low-Pass-Filter für Fingerkoordinaten bei onPull.\n\nGlättet Sensorrauschen vor der Weitergabe an das Physikmodell. Hohe Werte lassen die Reaktion "zäh" wirken.</string>
+    <string name="os_lbl_anim_speed">Animationsgeschwindigkeit (%)</string>
+    <string name="os_desc_anim_speed">Globaler Multiplikator der Animationsgeschwindigkeit.\n\nWird auf alle Physik- und visuellen Einstellungen angewendet.\n100%% = Standardgeschwindigkeit, unter 100%% verlangsamt, über 100%% beschleunigt.</string>
     <string name="os_lbl_lerp_idle">Glättung: FINGER</string>
     <string name="os_desc_lerp_idle">Interpolationsgeschwindigkeit (LERP) bei direkter Interaktion (onPull).\n\nBestimmt, wie schnell die Grafik dem Finger folgt, solange die Feder NICHT läuft (deaktiviert). Niedriger = weicher, aber mit Verzögerung.</string>
 
@@ -119,6 +196,7 @@
     <string name="os_btn_add_app">App hinzufügen</string>
     <string name="os_btn_cancel">Abbrechen</string>
     <string name="btn_cancel">Abbrechen</string>
+    <string name="btn_restart_launcher">Anwenden und Launcher neustarten</string>
     
     <!-- App Config Items -->
     <string name="os_app_filter">Glättung</string>
@@ -134,7 +212,7 @@
     <string name="thermal_title">Thermische Profile</string>
     
     <!-- Info Header -->
-    <string name="thermal_info_title">Funktionsweise</string>
+    <string name="thermal_info_title">Funktionsweise (Tensor)</string>
     <string name="thermal_info_summary">Im Gegensatz zu Qualcomm-Chips erfolgt das Hitzemanagement bei Google Tensor nicht über direkte Kernel-Parameter, sondern über Konfigurationsdateien (thermal_info_config.json).\n\nDieses Modul arbeitet auf Systemebene: Es ändert eine spezielle Eigenschaft (prop), die den Thermal-HAL-Dienst zwingt, eine alternative Konfigurationsdatei mit anderen Drosselungsschwellen zu laden.\n\nDies ist eine sichere, "native" Anpassungsmethode, die von der Pixel-Architektur vorgesehen ist. Für Änderungen ist ein Neustart erforderlich.</string>
 
     <!-- Sections -->
@@ -152,7 +230,7 @@
     <string name="thermal_desc_bat_stock">Standard-Werkslimits. Gewährleisten maximale Sicherheit und Lebensdauer des Akkus.</string>
     <string name="thermal_desc_bat_soft">Leichte Erhöhung der Schwelle (+5°C). Hilft, ein Verlangsamen des Ladens bei mäßiger Erwärmung zu vermeiden.</string>
     <string name="thermal_desc_bat_medium">Ausgewogenes Profil (+9°C). Kompromiss zwischen Ladegeschwindigkeit und Gehäusewärme.</string>
-    <string name="thermal_desc_bat_hard">WARNUNG: Hohe Limits (+15°C). Spürbare Erwärmung beim Schnellladen möglich. Beschleunigt den Verschleiß der Akkuchmie.</string>
+    <string name="thermal_desc_bat_hard">WARNUNG: Hohe Limits (+15°C). Spürbare Erwärmung beim Schnellladen möglich. Beschleunigt den Verschleiß der Akkuchemie.</string>
     <string name="thermal_desc_bat_off">GEFAHR: Praktisch vollständige Deaktivierung des Hitzeschutzes (+90°C). Hohes Risiko für Akkuaufblähung und Geräteschäden.</string>
 
     <!-- SoC Descriptions -->
@@ -169,6 +247,16 @@
     
     <string name="btn_ok">Verstanden</string>
     <string name="btn_reboot">Neustarten</string>
+    <string name="btn_confirm">Bestätigen</string>
+
+    <!-- Reboot Bubble -->
+    <string name="reboot_launcher">Launcher neustarten</string>
+    <string name="reboot_systemui">SystemUI neustarten</string>
+    <string name="reboot_system">System neustarten</string>
+    <string name="reboot_confirm_system_title">Gerät neustarten?</string>
+    <string name="reboot_confirm_system_msg">Das Gerät wird sofort neugestartet. Speichern Sie Ihre Arbeit, bevor Sie fortfahren.</string>
+    <string name="reboot_confirm_sysui_title">SystemUI neustarten?</string>
+    <string name="reboot_confirm_sysui_msg">SystemUI wird neugestartet. Navigationsleiste, Statusleiste und Benachrichtigungen verschwinden kurzzeitig.</string>
 
     <!-- IMS MANAGER -->
     <string name="ims_category_title">IMS-Konfiguration</string>
@@ -215,10 +303,59 @@
     <!-- LAUNCHER SETTINGS -->
     <string name="launcher_settings_title">Launcher-Einstellungen</string>
     <string name="launcher_search_section">Suche &amp; Navigation</string>
+
+    <!-- Launcher Navigation Items -->
+    <string name="launcher_group_general">Allgemein</string>
+    <string name="launcher_search_feed_title">Suche &amp; Feed</string>
+    <string name="launcher_search_feed_subtitle">Native Suche und Google Feed konfigurieren</string>
+    <string name="launcher_group_appearance">Darstellung</string>
+    <string name="launcher_grid_title">Raster-Einstellungen</string>
+    <string name="launcher_grid_subtitle">Zeilen und Spalten anpassen</string>
+    <string name="launcher_group_recents_features">Recents-Funktionen</string>
+    <string name="launcher_clear_all_nav_title">Alle-löschen-Taste</string>
+    <string name="launcher_clear_all_nav_subtitle">Verhalten der Alle-löschen-Taste anpassen</string>
+    <string name="launcher_group_gestures">Gesten</string>
+    <string name="launcher_gestures_title">Gesten</string>
+    <string name="launcher_gestures_subtitle">Doppeltippen zum Schlafen und mehr</string>
+    <string name="launcher_group_recents_customization">Recents-Anpassung</string>
+    <string name="launcher_recents_menu_title">Recents-Menü</string>
+    <string name="launcher_recents_menu_subtitle">Karussell, Skalierung, Unschärfe und mehr konfigurieren</string>
     
     <string name="launcher_search_title">Native Suche</string>
     <string name="launcher_search_desc">Erzwingt die Aktivierung der integrierten Suchoberfläche im Pixel Launcher.\n\nGoogle ändert das Suchverhalten oft "server-seitig" und ersetzt die schnelle lokale Suche durch den langsamen Start der Google App. Diese Option fixiert das \'device_config\'-Flag und stellt die schnelle Suche nach Apps und Kontakten wieder her.</string>
 
+
+    <!-- //// -->
+    <string name="donate_progress_title">Spendenfortschritt</string>
+    <string name="menu_refresh">Aktualisieren</string>
+    <string name="donate_open_target">Spendenseite öffnen</string>
+    <string name="donate_error_loading">Fehler beim Laden der Daten</string>
+    <string name="donate_retry">Wiederholen</string>
+    <string name="donate_title">Unterstützung und Links</string>
+    <string name="donate_desc_short">GitHub, Telegram, Boosty</string>
+    <string name="donate_header">Projekt unterstützen</string>
+    <string name="donate_desc_long">Wenn Ihnen dieses Modul gefällt und Sie die Weiterentwicklung unterstützen möchten, können Sie dies über Boosty tun.</string>
+    <string name="donate_btn_boosty">Zu Boosty</string>
+    <string name="donate_links_header">Nützliche Links</string>
+    <string name="error_network">Netzwerkfehler</string>
+    <string name="refresh_strings">Seitenstrings aktualisiert</string>
+    <string name="donate_page_updated">Seite aktualisiert</string>
+    <string name="donate_page_updated_error">Fehler beim Laden der Daten</string>
+
+    <string name="launcher_clear_all_title">Alle-löschen-Taste</string>
+    <string name="launcher_clear_all_desc">Fügt eine Taste zum Schließen aller Apps im Recents-Menü hinzu.\n\nUnterstützt mehrere Anzeigemodi für die Integration in die Standardoberfläche.</string>
+    <string name="launcher_clear_all_enable_title">Alle-löschen-Taste aktivieren</string>
+    <string name="launcher_ca_hide_actions_row_title">Standard-Aktionstasten ausblenden</string>
+
+    <string name="launcher_ca_mode_float">Unten zentriert</string>
+    <string name="launcher_ca_mode_screenshot">"Screenshot" ersetzen</string>
+    <string name="launcher_ca_mode_select">"Auswählen" ersetzen</string>
+
+    <string name="launcher_ca_margin">Position (Abstand unten)</string>
+    <string name="launcher_btn_restart">Launcher neustarten</string>
+    <string name="launcher_ca_margin_desc">Passt die vertikale Position der schwebenden Taste an. Der Wert ist ein Multiplikator des Standardabstands.</string>
+    <string name="launcher_ca_hide_actions_row_desc">Blendet die Systemtasten "Screenshot" und "Auswählen" in Recents aus und behält die Container-Logik und Ihre benutzerdefinierte Alle-löschen-Taste bei.</string>
+    <!-- ///// -->
     <!-- DOUBLE TAP (DT) SETTINGS -->
     <string name="dt_category_title">Doppeltipp-Gesten</string>
     <string name="dt_sec_wake">Aufwecken</string>
@@ -237,7 +374,7 @@
     <string name="dt2w_timeout_desc">Maximale Zeit zwischen zwei Berührungen (in ms), damit sie als Doppeltipp gewertet werden.</string>
 
     <!-- DT2S (Sleep) -->
-    <string name="dt2s_title">Schlafen auf Desktop</string>
+    <string name="dt2s_title">Doppeltippen zum Schlafen</string>
     
     <string name="dt2s_desc_xposed">Xposed-Hook für Pixel Launcher.\n\nFängt die Methode \'onTouchEvent\' in der Workspace-Klasse des Launchers ab und ermöglicht das Sperren des Bildschirms durch Tippen auf eine leere Stelle.</string>
     <string name="dt2s_desc_native">Native Code-Injektion.\n\nNutzt das modifizierte Framework zur Registrierung von \'ActivityLifecycleCallbacks\' im Launcher3-Prozess. Beim Start der Activity wird automatisch der Root-Workspace-View gefunden und ein benutzerdefinierter \'OnTouchListener\' angehängt. Dies funktioniert ohne Xposed und erfordert keine Root-Rechte für den Launcher selbst.</string>
@@ -254,22 +391,34 @@
     <string name="common_input_label">Wert eingeben</string>
     <string name="common_video_placeholder">Video-Demonstration</string>
 
-
+    <!-- GLOBAL COMMON -->
+    <string name="app_name">Pixel Extra Parts</string>
     <string name="btn_apply">Anwenden</string>
     <string name="btn_default">Standard</string>
     <string name="btn_close">Schließen</string>
     <string name="btn_exit">Beenden</string>
+    <string name="btn_restart">Neustart</string>
+    <string name="nav_back">Zurück</string>
+
+    <!-- Shared Dialogs -->
+    <string name="xposed_required_title">Xposed erforderlich</string>
+    <string name="xposed_required_message">Diese Funktion erfordert ein aktives Xposed-Modul.</string>
     
     <string name="status_active">Aktiv</string>
     <string name="status_disabled">Deaktiviert</string>
     <string name="status_error">Fehler</string>
 
-
+    <!-- MAIN ACTIVITY -->
+    <string name="main_title">Pixel Extra Parts</string>
     <string name="main_desc">Benutzerdefinierte Module und Tweaks</string>
     
     <string name="main_header_gesture">Gesten &amp; Eingabe</string>
     <string name="main_header_system">System</string>
     <string name="main_header_network">Netzwerk &amp; Verbindung</string>
+
+    <!-- Test things (debug section, hidden by default) -->
+    <string name="test_things_title">Testfunktionen</string>
+    <string name="test_things_desc">Experimentelle Funktionen in Entwicklung</string>
     
     <string name="main_root_title">Kein Root-Zugriff</string>
     <string name="main_root_desc">Die App benötigt Superuser-Rechte (Root) und ein aktives Xposed Framework.\n\nBitte installieren Sie Magisk/KernelSU und gewähren Sie die Rechte.</string>
@@ -284,10 +433,326 @@
     
     <string name="thermal_title_activity">Thermische Profile</string>
     
-    <string name="thermal_desc_activity">Drosselungsmanagement</string>
+    <string name="thermal_desc_activity">Drosselungsmanagement (Tensor)</string>
 
     <string name="os_desc_anchor">Transformationsankerpunkt.</string>
 
+    <!-- Delta Normalization (Compose Smoothing) -->
+    <string name="os_group_norm">Compose-Delta-Glättung</string>
+    <string name="os_desc_norm_group">Intelligentes Normalisierungssystem für Jetpack-Compose-Scrollimplementierungen.\n\nCompose übermittelt verstärkte Deltas im Vergleich zum klassischen View-Scrollen. Dieses Modul erkennt automatisch Compose-Instanzen und reduziert deren Deltas sanft auf das Standard-View-Niveau.\n\nEmpirisch kalibriert: Compose-Deltas sind ca. 5× größer als View-Deltas bei identischen Gesten.</string>
+    <string name="os_lbl_norm_enabled">Normalisierung aktivieren</string>
+    <string name="os_desc_norm_enabled">Hauptschalter für intelligente Delta-Normalisierung.\n\nBei Aktivierung analysiert das System jede EdgeEffect-Instanz und wendet Korrekturfaktoren auf Compose-verstärkte Deltas an.\n\nKann sicher eingeschaltet bleiben — beeinflusst Apps mit normalen Deltas nicht.</string>
+    <string name="os_lbl_norm_ref_delta">Referenz-Delta</string>
+    <string name="os_desc_norm_ref_delta">Baseline "normaler" Delta-Wert (Bruchteil von effectiveSize).\n\nEmpirisch aus View-basierten Apps ermittelt. Wenn der gleitende Mittelwert diesen × Erkennungsmultiplikator überschreitet, gilt die Instanz als verstärkt.\n\nStandard: 0.00001 (sehr empfindlich). Erhöhen bei Fehlerkennungen bei normalen Apps.</string>
+    <string name="os_lbl_norm_detect_mul">Erkennungsmultiplikator</string>
+    <string name="os_desc_norm_detect_mul">Schwellenmultiplikator für die Verstärkungserkennung.\n\nAktivierung: gleitender_Mittelwert &gt; Referenz × dieser Wert.\n3.3 = erkennt Compose zuverlässig (~5× von View), löst nicht bei View-Apps aus.\n\nErhöhen bei Fehlerkennungen, verringern wenn Compose nicht erkannt wird.</string>
+    <string name="os_lbl_norm_factor">Korrekturfaktor</string>
+    <string name="os_desc_norm_factor">Multiplikator für verstärkte Deltas.\n\n0.2 = auf View-Niveau bringen (aus Analyse: ref/compose ≈ 0.195).\n0.5 = halbieren. 1.0 = keine Änderung.\n\nKleiner = schwächerer Rückprall, größer = stärker.</string>
+    <string name="os_lbl_norm_window">Fenstergröße</string>
+    <string name="os_desc_norm_window">Anzahl der letzten |Delta|-Samples zur Analyse.\n\nKleiner = schnellere Erkennung, aber rauschempfindlicher.\nGrößer = stabiler, aber langsamere Anpassung.\n\nBereich: 2–64.</string>
+    <string name="os_lbl_norm_ramp">Anlauf-Events</string>
+    <string name="os_desc_norm_ramp">Wie viele Events für den Übergang von 1.0 zum Faktor.\n\n1–4 = nahezu sofort. 8–12 = sanfter Übergang.\n\nVerhindert visuelle Sprünge bei Aktivierung der Normalisierung.</string>
+    <string name="os_lbl_norm_detect_mode">Erkennungsmodus</string>
+    <string name="os_desc_norm_detect_mode">Wie Compose-Instanzen identifiziert werden.\n\n0 = Nur Verhalten (gleitendes Fenster der Deltas)\n1 = Hybrid: Stack-Trace gibt sofortige ID, Fenster bestätigt\n2 = Nur Stack-Trace (keine Fensteranalyse)\n\nHybrid (1) empfohlen für beste Genauigkeit + Geschwindigkeit.</string>
+    <string name="os_norm_mode_behavior">Nur Verhalten</string>
+    <string name="os_norm_mode_hybrid">Hybrid (empfohlen)</string>
+    <string name="os_norm_mode_stacktrace">Nur Stack-Trace</string>
+
     <string name="ims_desc_activity">VoLTE, VoWiFi, 5G</string>
     <string name="ims_title_activity">IMS-Konfig</string>
+
+
+    <!-- Grid Sizer / App Drawer Customization -->
+    <string name="grid_group_homepage">Startseiten-Anpassung</string>
+    <string name="grid_lbl_home_enable">Startseiten-Raster anpassen</string>
+    <string name="grid_desc_home_enable">Aktiviert die Anpassung von Spalten und Zeilen des Startbildschirm-Rasters.</string>
+    
+    <string name="grid_lbl_columns">Spalten</string>
+    <string name="grid_desc_home_cols">Anzahl der Spalten auf dem Startbildschirm.</string>
+    
+    <string name="grid_lbl_rows">Zeilen</string>
+    <string name="grid_desc_home_rows">Anzahl der Zeilen auf dem Startbildschirm.</string>
+    
+    <string name="grid_lbl_hide_text">Icon-Text ausblenden</string>
+    <string name="grid_desc_home_hide_text">Blendet Icon-Beschriftungen auf dem Startbildschirm aus.</string>
+
+    <string name="grid_lbl_icon_size">Icon-Größe</string>
+    <string name="grid_desc_home_icon_size">Passt die Größe der Icons auf dem Startbildschirm an (100%% ist Standard).</string>
+    <string name="grid_desc_drawer_icon_size">Passt die Größe der Icons in der App-Übersicht an (100%% ist Standard).</string>
+    <string name="grid_desc_dock_icon_size">Passt die Größe der Icons im Dock an (100%% ist Standard).</string>
+
+    <string name="grid_lbl_text_mode">Textanzeige-Modus</string>
+    <string name="grid_desc_text_mode">Wie Icon-Beschriftungen angezeigt werden, wenn Text sichtbar ist.</string>
+    <string name="grid_text_mode_default">Abschneiden</string>
+    <string name="grid_text_mode_two_line">Zwei Zeilen</string>
+    <string name="grid_text_mode_marquee">Laufschrift</string>
+
+    <string name="grid_group_drawer">App-Übersicht anpassen</string>
+    <string name="grid_lbl_drawer_enable">App-Übersicht anpassen</string>
+    <string name="grid_desc_drawer_enable">Aktiviert die Anpassung des App-Übersicht-Rasters und -Layouts.</string>
+    
+    <string name="grid_lbl_drawer_cols">Menü-Spalten</string>
+    <string name="grid_desc_drawer_cols">Anzahl der Spalten in der App-Übersicht.</string>
+    
+    <string name="grid_lbl_row_height">Zeilenhöhe</string>
+    <string name="grid_desc_row_height">Passt den vertikalen Abstand zwischen den Zeilen in der App-Übersicht an (100% ist Standard).</string>
+    
+    <string name="grid_lbl_drawer_hide_text">Menü-Text ausblenden</string>
+    <string name="grid_desc_drawer_hide_text">Blendet Icon-Beschriftungen in der App-Übersicht aus.</string>
+
+    <!-- Dock Grid Section -->
+    <string name="grid_group_dock">Dock-Anpassung</string>
+    <string name="grid_lbl_dock_icons">Dock-Icon-Anzahl</string>
+    <string name="grid_desc_dock_icons">Anzahl der Icons in der Dock-Leiste.</string>
+    <string name="grid_lbl_dock_hide_text">Dock-Text ausblenden</string>
+    <string name="grid_desc_dock_hide_text">Blendet Icon-Beschriftungen im Dock aus.</string>
+
+    <string name="grid_lbl_search_cols">Such-Spalten</string>
+    <string name="grid_desc_search_cols">Anzahl der Spalten für Suchergebnisse und Vorschläge in der App-Übersicht.</string>
+    <!-- Search Widget & Dock Section -->
+    <string name="search_widget_group_title">Such-Widget und Dock</string>
+    
+    <string name="search_widget_enable_dock">Dock-Anpassung aktivieren</string>
+    <string name="search_widget_desc_dock">Hauptschalter für alle Dock- und Suchleisten-Modifikationen unten.</string>
+    
+    <string name="search_widget_hide_search">Suchleiste ausblenden</string>
+    <string name="search_widget_desc_hide_search">Blendet das Such-Widget unten aus.</string>
+    
+    <string name="search_widget_hide_dock">Dock-Icons ausblenden</string>
+    <string name="search_widget_desc_hide_dock">Blendet den Bereich der unteren Dock-Icons (Hotseat) aus.</string>
+    <string name="pref_recents_size_summary">pref_recents_size_summary</string>
+    <string name="info_recents_size">info_recents_size</string>
+    
+    <string name="search_widget_padding_home">Startseite oberer Abstand</string>
+    <string name="search_widget_desc_padding_home">Passt den oberen Abstand für die Arbeitsbereich-Icons an (dehnt von oben).</string>
+    
+    <string name="search_widget_padding_home_bottom">Startseite unterer Abstand</string>
+    <string name="search_widget_desc_padding_home_bottom">Passt den unteren Abstand für die Arbeitsbereich-Icons an (dehnt von unten).</string>
+    
+    <string name="search_widget_padding_dock">Dock-Icon-Abstand</string>
+    <string name="search_widget_desc_padding_dock">Passt die vertikale Position der Dock-Icons an (+/-).</string>
+    
+    <string name="search_widget_padding_search">Such-Widget-Abstand</string>
+    <string name="search_widget_desc_padding_search">Passt die vertikale Position des Such-Widgets an (+/-).</string>
+
+    <string name="search_widget_padding_dots">Punkte-Abstand</string>
+    <string name="search_widget_desc_padding_dots">Passt die vertikale Position der Seitenindikator-Punkte an.</string>
+    <string name="search_widget_padding_dots_x">Punkte horizontaler Versatz</string>
+    <string name="search_widget_desc_padding_dots_x">Passt die horizontale Position der Seitenindikator-Punkte an.</string>
+
+    <!-- Recents Size -->
+    <string name="title_recents_size">Recents-Kartengröße</string>
+    <string name="desc_recents_size">Größe der Aufgabenkarten in der Übersicht anpassen</string>
+    <string name="pref_recents_size_enable">Eigene Größe aktivieren</string>
+    <string name="pref_recents_size_scale">Skalierung (%)</string>
+    <string name="pref_recents_carousel_enable">Karussell-Effekt (OnePlus-Stil)</string>
+    <string name="pref_recents_icons_enable">App-Icons-Zeile</string>
+
+    <!-- Recents Menu Screen -->
+    <string name="recents_menu_screen_title">Recents-Menü</string>
+    <string name="recents_group_general">Allgemeine Verwaltung</string>
+    <string name="recents_enable_modding">Recents-Modding aktivieren</string>
+    <string name="recents_disable_live_tile">Live-Kacheln deaktivieren</string>
+    <string name="recents_disable_live_tile_desc">Zeigt Schnappschuss statt Live-Vorschau</string>
+    <string name="recents_group_scaling">Basis-Kartenskalierung</string>
+    <string name="recents_enable_static_scale">Statische Skalierung aktivieren</string>
+    <string name="recents_scale_percent">Skalierung (%)</string>
+    <string name="recents_group_carousel_geometry">Karussell: Geometrie</string>
+    <string name="recents_carousel_min_scale">Min. Skalierung (Rand)</string>
+    <string name="recents_carousel_spacing">Abstand / Überlappung</string>
+    <string name="recents_carousel_min_alpha">Min. Alpha (Rand)</string>
+    <string name="recents_group_carousel_blur">Karussell: Unschärfe</string>
+    <string name="recents_carousel_blur_radius">Max. Unschärferadius</string>
+    <string name="recents_blur_overflow">Unschärfe auf ganze Karte</string>
+    <string name="recents_blur_overflow_desc">Auf ganze Karte anwenden statt nur Miniatur</string>
+    <string name="recents_group_carousel_tint">Karussell: Tönung</string>
+    <string name="recents_tint_intensity">Tönungsintensität</string>
+    <string name="recents_select_tint_color">Tönungsfarbe wählen</string>
+    <string name="recents_group_icon_offset">Karussell: Icon-Versatz</string>
+    <string name="recents_icon_offset_x">Icon-Versatz X</string>
+    <string name="recents_icon_offset_y">Icon-Versatz Y</string>
+
+    <!-- Gestures Screen -->
+    <string name="gestures_screen_title">Gesten</string>
+
+    <!-- Clear All Screen-->
+    <string name="clear_all_screen_title">Alle-löschen-Taste</string>
+
+    <!-- Grid Settings Screen -->
+    <string name="grid_screen_title">Raster-Einstellungen</string>
+    <string name="grid_homepage_title">Startbildschirm-Einstellungen</string>
+    <string name="grid_homepage_dock_title">Dock-Leiste</string>
+    <string name="grid_menupage_title">Menüseite</string>
+    <string name="grid_menupage_enable">Menüseite anpassen</string>
+    <string name="grid_menupage_search_title">Suchergebnisse</string>
+    <string name="grid_menupage_suggestions_title">Vorschlagsliste</string>
+    <string name="grid_menupage_apps_title">App-Liste</string>
+    <string name="grid_menupage_suggestions_disable">Vorschlagsliste deaktivieren</string>
+    <string name="grid_text_mode_hide">Text ausblenden</string>
+
+    <!-- Search &amp; Feed Screen -->
+    <string name="search_feed_screen_title">Suche &amp; Feed</string>
+
+    <!-- Quickstep Section -->
+    <string name="quickstep_warning_title">Experimentelle Funktion</string>
+    <string name="quickstep_warning_text">Diese Funktion ersetzt die native Quickstep-Ansicht vollständig durch eine benutzerdefinierte Implementierung. Es können visuelle Störungen oder Abstürze auftreten. Nutzung auf eigene Gefahr. Deaktivieren Sie diese Option bei Problemen.</string>
+    <string name="quickstep_engine_title">Benutzerdefinierte Quickstep-Engine</string>
+    <string name="quickstep_engine_summary">Native Recents durch eigene Implementierung ersetzen</string>
+    <string name="quickstep_engine_info">Aktiviert eine vollständig benutzerdefinierte Recents-Ansicht mit verschiedenen visuellen Stilen und Animationen. Ersetzt die Standard-Recents des Pixel Launchers vollständig.</string>
+    <string name="quickstep_style_title">Recents-Stil</string>
+    <string name="quickstep_style_stock">Standard</string>
+    <string name="quickstep_style_stock_desc">Sauberes horizontales Kartenlayout</string>
+    <string name="quickstep_style_ios">iOS-Stil</string>
+    <string name="quickstep_style_ios_desc">Vertikal gestapelte Karten mit 3D-Effekt</string>
+    <string name="quickstep_style_oneplus">OnePlus-Stil</string>
+    <string name="quickstep_style_oneplus_desc">Karussell mit fokussierter Mittenkarte</string>
+    <string name="quickstep_style_minimal">Minimal</string>
+    <string name="quickstep_style_minimal_desc">Kleine Karten nur mit Icons</string>
+    <string name="content_desc_selected">Ausgewählt</string>
+
+    
+    <string name="launcher_feed_title">Google Feed deaktivieren</string>
+    <string name="launcher_feed_desc">Deaktiviert den -1-Bildschirm (Google Discover/Feed) auf dem Startbildschirm.</string>
+
+    <string name="launcher_top_widget_title">Oberes Widget deaktivieren</string>
+    <string name="launcher_top_widget_desc">Entfernt das permanente "Auf einen Blick"-Widget vom Startbildschirm und ermöglicht das Platzieren von Icons dort.</string>
+
+    <!-- Animation Theme Manager -->
+    <string name="anim_theme_create_title">Animationsthema erstellen</string>
+    <string name="anim_theme_style_name">Stilname</string>
+    <string name="anim_theme_open_enter">Öffnen — Eingang</string>
+    <string name="anim_theme_open_exit">Öffnen — Ausgang</string>
+    <string name="anim_theme_close_enter">Schließen — Eingang</string>
+    <string name="anim_theme_close_exit">Schließen — Ausgang</string>
+    <string name="anim_theme_tap_to_select">Tippen zur XML-Datei-Auswahl</string>
+    <string name="anim_theme_compile_btn">Kompilieren &amp; Installieren</string>
+    <string name="anim_theme_log_title">Build-Log</string>
+    <string name="anim_theme_installed_title">Installierte Themen</string>
+    <string name="anim_theme_none_installed">Keine Animationsthemen installiert</string>
+    <string name="anim_theme_paste_xml">XML einfügen</string>
+    <string name="anim_theme_xml_hint">Animations-XML hier einfügen…</string>
+    <string name="anim_theme_input_mode_file">Datei</string>
+    <string name="anim_theme_input_mode_xml">XML Text</string>
+
+    <!-- Built-in Animations -->
+    <string name="anim_builtin_title">Eingebaute Animationen</string>
+    <string name="anim_builtin_disabled">Deaktiviert</string>
+    <string name="anim_builtin_custom">Benutzerdefiniertes Thema</string>
+    <string name="anim_preview_open">Öffnen</string>
+    <string name="anim_preview_close">Schließen</string>
+    <string name="anim_apply_both">Beide anwenden</string>
+    <string name="anim_apply_open">Öffnen anwenden</string>
+    <string name="anim_apply_close">Schließen anwenden</string>
+    <string name="anim_current_open">Aktuelles Öffnen: %s</string>
+    <string name="anim_current_close">Aktuelles Schließen: %s</string>
+
+    <!-- Animation type names -->
+    <string name="anim_group_slide">Schieben</string>
+    <string name="anim_group_card_stack">Kartenstapel</string>
+    <string name="anim_group_train">Zug</string>
+    <string name="anim_group_ios">iOS Parallax</string>
+    <string name="anim_group_fade">Ausblenden</string>
+    <string name="anim_group_zoom">Zoom</string>
+    <string name="anim_group_modal">Modal</string>
+    <string name="anim_group_depth">Tiefe</string>
+    <string name="anim_group_pivot">Drehpunkt</string>
+
+    <!-- Direction names -->
+    <string name="anim_dir_right">Rechts</string>
+    <string name="anim_dir_left">Links</string>
+    <string name="anim_dir_top">Oben</string>
+    <string name="anim_dir_bottom">Unten</string>
+
+    <!-- Activity Transition Settings -->
+    <string name="anim_transition_title">Aktivitätsübergänge</string>
+    <string name="anim_transition_subtitle">Benutzerdefinierte Themen und eingebaute Übergänge</string>
+    <string name="anim_predictive_back_title">Vorausschauende Zurück-Geste deaktivieren</string>
+    <string name="anim_predictive_back_desc">Entfernt die System-Swipe-Back-Animation</string>
+    <string name="anim_no_animation_title">Keine Animation</string>
+    <string name="anim_no_animation_desc">Deaktiviert die Übergangsanimation vollständig</string>
+    <string name="anim_constructor_title">Animations-Konstruktor</string>
+    <string name="anim_constructor_preview">Vorschau</string>
+    <string name="anim_constructor_style_name">Stilname</string>
+    <string name="anim_constructor_build_theme">Thema bauen</string>
+    <string name="anim_constructor_hide">Ausblenden</string>
+    <string name="anim_constructor_show_xml">XML anzeigen</string>
+    <string name="anim_constructor_hide_xml">XML ausblenden</string>
+    <string name="anim_dialog_cancel">Abbrechen</string>
+    <string name="anim_active_open_close">Öffnen + Schließen</string>
+    <string name="anim_installing">Installiere…</string>
+    <string name="anim_install_success">✓ Thema erfolgreich installiert!</string>
+    <string name="anim_install_failed">Installation fehlgeschlagen</string>
+    <string name="anim_install_failed_log">✗ Installation fehlgeschlagen</string>
+    <string name="anim_compile_failed">Kompilierung fehlgeschlagen</string>
+    <string name="anim_cd_delete">Löschen</string>
+    <string name="anim_cd_confirm_delete">Löschen bestätigen</string>
+    <string name="anim_cd_reset">Zurücksetzen</string>
+    <string name="anim_cd_copy">Kopieren</string>
+    <string name="anim_param_translate">Verschieben</string>
+    <string name="anim_param_scale">Skalieren</string>
+    <string name="anim_param_alpha">Alpha</string>
+    <string name="anim_param_rotate">Drehen</string>
+    <string name="anim_param_pivot">Drehpunkt</string>
+    <string name="anim_param_timing">Timing</string>
+    <string name="anim_param_interpolator">Interpolator</string>
+
+    <!-- Addon Manager -->
+    <string name="addon_title">Pine-Addons</string>
+    <string name="addon_desc">Externe Hook-Module verwalten</string>
+    <string name="addon_count">%d Modul(e) installiert</string>
+    <string name="addon_active_count">Aktiv: %1$d von %2$d</string>
+    <string name="addon_safe_mode_title">Abgesicherter Modus aktiv</string>
+    <string name="addon_safe_mode_desc">Addons wurden aufgrund wiederholter Abstürze deaktiviert. Wenn das Problem durch ein fehlerhaftes Addon verursacht wurde, können Sie es vor dem Verlassen des abgesicherten Modus deaktivieren.</string>
+    <string name="addon_safe_mode_exit">Abgesicherten Modus verlassen</string>
+    <string name="addon_section_system">Systemmodule</string>
+    <string name="addon_section_user">Installierte Module</string>
+    <string name="addon_system_empty_title">Keine Systemmodule</string>
+    <string name="addon_system_empty_desc">Systemmodule werden mit der Firmware vorinstalliert</string>
+    <string name="addon_user_empty_title">Keine Benutzermodule installiert</string>
+    <string name="addon_user_empty_desc">Importieren Sie ein .jar Addon, um zu beginnen</string>
+    <string name="addon_import">Addon importieren</string>
+    <string name="addon_import_desc">Eine .jar Addon-Datei auswählen</string>
+    <string name="addon_import_success">Addon importiert</string>
+    <string name="addon_import_failed">Import fehlgeschlagen</string>
+    <string name="addon_empty_title">Keine Addons installiert</string>
+    <string name="addon_empty_desc">Importieren Sie ein .jar Addon, um zu beginnen</string>
+    <string name="addon_delete_title">Addon entfernen</string>
+    <string name="addon_delete_confirm">"%s" entfernen?\n\nDie JAR-Datei wird gelöscht und alle Einstellungen zurückgesetzt.</string>
+    <string name="addon_scope_default">Standard-Ziele</string>
+    <string name="addon_scope_custom">Nur benutzerdefiniert</string>
+    <string name="addon_scope_merge">Beide zusammenführen</string>
+    <string name="addon_scope_label_default">Standard-Bereich</string>
+    <string name="addon_scope_label_custom">Benutzerdefinierter Bereich</string>
+    <string name="addon_scope_label_merge">Zusammengeführter Bereich</string>
+    <string name="addon_target_scope">Zielbereich</string>
+    <string name="addon_targets_default">Standard-Ziele</string>
+    <string name="addon_targets_custom">Benutzerdefinierte Ziele</string>
+    <string name="addon_builtin_badge">eingebaut</string>
+    <string name="addon_builtin_plus_addon">Eingebaut + Addon</string>
+    <string name="addon_enabled">Aktiviert</string>
+    <string name="addon_btn_save">Speichern</string>
+    <string name="addon_btn_cancel">Abbrechen</string>
+    <string name="addon_btn_remove">Entfernen</string>
+    <string name="addon_settings_title">Moduleinstellungen</string>
+    <string name="addon_range_format">Bereich: %1$s — %2$s</string>
+    <string name="addon_file_not_set">Nicht festgelegt</string>
+    <string name="addon_file_saved">Datei gespeichert</string>
+    <string name="addon_file_copy_failed">Kopieren fehlgeschlagen</string>
+    <string name="addon_apps_selected">%d App(s) ausgewählt</string>
+    <string name="addon_select_apps">Apps auswählen</string>
+    <string name="addon_selected_count">%d ausgewählt</string>
+    <string name="addon_confirm_count">Bestätigen (%d)</string>
+    <string name="addon_search_apps">Apps suchen\u2026</string>
+    <string name="addon_show_system">System-Apps anzeigen</string>
+    <string name="addon_hide_system">System-Apps ausblenden</string>
+    <string name="addon_no_apps_match">Keine Apps für "%s" gefunden</string>
+    <string name="addon_no_apps_available">Keine Apps verfügbar</string>
+    <string name="addon_default_target_badge">Standard-Ziel</string>
+    <string name="addon_author_unknown">Unbekannt</string>
+
+    <!-- Addon Manager: Active Apps -->
+    <string name="addon_active_apps_title">Aktive Apps</string>
+    <string name="addon_active_apps_desc">%d App(s) mit aktiven Hooks</string>
+    <string name="addon_active_apps_empty">Keine aktiven Hooks</string>
+    <string name="addon_active_apps_modules">%d Modul(e)</string>
 </resources>

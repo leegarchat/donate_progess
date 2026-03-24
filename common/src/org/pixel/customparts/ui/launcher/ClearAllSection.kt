@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,16 +60,19 @@ fun ClearAllSection(
     onShowXposedDialog: () -> Unit
 ) {
     val keyEnabled = LauncherManager.KEY_CLEAR_ALL_ENABLED
+    val keyHideActionsRow = LauncherManager.KEY_CLEAR_ALL_HIDE_ACTIONS_ROW
     val keyMode = LauncherManager.KEY_CLEAR_ALL_MODE
     val keyMargin = LauncherManager.KEY_CLEAR_ALL_MARGIN
     
     var enabled by remember(refreshKey) { mutableStateOf(SettingsCompat.getInt(context, keyEnabled, 0) == 1) }
+    var hideActionsRow by remember(refreshKey) { mutableStateOf(SettingsCompat.getInt(context, keyHideActionsRow, 0) == 1) }
     var mode by remember(refreshKey) { mutableIntStateOf(SettingsCompat.getInt(context, keyMode, 0)) }
     var margin by remember(refreshKey) { mutableFloatStateOf(SettingsCompat.getFloat(context, keyMargin, 3.0f)) }
 
     SettingsGroupCard(title = dynamicStringResource(R.string.launcher_clear_all_title)) {
         GenericSwitchRow(
-            title = if (enabled) dynamicStringResource(R.string.os_status_active) else dynamicStringResource(R.string.os_status_disabled),
+            title = dynamicStringResource(R.string.launcher_clear_all_enable_title),
+            summary = if (enabled) dynamicStringResource(R.string.os_status_active) else dynamicStringResource(R.string.os_status_disabled),
             checked = enabled,
             onCheckedChange = { checked ->
                 if (checked && AppConfig.IS_XPOSED && !ModuleStatus.isModuleActive()) {
@@ -84,6 +88,22 @@ fun ClearAllSection(
             },
             videoResName = "launcher_clear_all",
             infoText = dynamicStringResource(R.string.launcher_clear_all_desc),
+            onInfoClick = onInfo
+        )
+
+        GenericSwitchRow(
+            title = dynamicStringResource(R.string.launcher_ca_hide_actions_row_title),
+            summary = if (hideActionsRow) dynamicStringResource(R.string.os_status_active) else dynamicStringResource(R.string.os_status_disabled),
+            checked = hideActionsRow,
+            enabled = enabled,
+            onCheckedChange = { checked ->
+                hideActionsRow = checked
+                scope.launch(Dispatchers.IO) {
+                    SettingsCompat.putInt(context, keyHideActionsRow, if (checked) 1 else 0)
+                    launch(Dispatchers.Main) { onSettingChanged() }
+                }
+            },
+            infoText = dynamicStringResource(R.string.launcher_ca_hide_actions_row_desc),
             onInfoClick = onInfo
         )
 
@@ -127,7 +147,7 @@ fun ClearAllSection(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
                         Box(
                             modifier = Modifier
                                 .size(32.dp)
@@ -147,7 +167,9 @@ fun ClearAllSection(
                             text = dynamicStringResource(item.labelRes),
                             style = MaterialTheme.typography.bodyLarge,
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
 
@@ -171,7 +193,7 @@ fun ClearAllSection(
         SliderSettingFloat(
             title = dynamicStringResource(R.string.launcher_ca_margin),
             value = margin,
-            range = 0.1f..7.0f,
+            range = 0.1f..16.0f,
             unit = "x",
             enabled = isSliderActive,
             onValueChange = { 

@@ -16,6 +16,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.graphics.drawable.toBitmap
@@ -87,8 +89,8 @@ fun AppConfigCard(
             Spacer(Modifier.width(12.dp))
             
             Column(modifier = Modifier.weight(1f)) {
-                Text(appName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                Text(item.pkg, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(appName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(item.pkg, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             
             IconButton(onClick = onDelete, enabled = enabled) {
@@ -96,11 +98,11 @@ fun AppConfigCard(
             }
         }
         
-        Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f), modifier = Modifier.padding(vertical = 12.dp))
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f), modifier = Modifier.padding(vertical = 12.dp))
         
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(dynamicStringResource(R.string.os_app_filter), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+                Text(dynamicStringResource(R.string.os_app_filter), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1)
                 Spacer(Modifier.width(8.dp))
                 Switch(
                     checked = item.filter,
@@ -112,7 +114,7 @@ fun AppConfigCard(
                 )
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(dynamicStringResource(R.string.os_app_ignore), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error)
+                Text(dynamicStringResource(R.string.os_app_ignore), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error, maxLines = 1)
                 Spacer(Modifier.width(8.dp))
                 Switch(
                     checked = item.ignore,
@@ -128,7 +130,7 @@ fun AppConfigCard(
         Spacer(Modifier.height(8.dp))
         
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(dynamicStringResource(R.string.os_app_scale), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+            Text(dynamicStringResource(R.string.os_app_scale), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface, maxLines = 1)
             Spacer(Modifier.width(8.dp))
             Text(
                 String.format(Locale.US, "%.1f", sliderValue), 
@@ -232,9 +234,9 @@ fun AppSelectorDialog(
                                     modifier = Modifier.size(40.dp)
                                 )
                                 Spacer(Modifier.width(12.dp))
-                                Column {
-                                    Text(app.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-                                    Text(app.pkg, style = MaterialTheme.typography.bodySmall)
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(app.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    Text(app.pkg, style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 }
                             }
                         }

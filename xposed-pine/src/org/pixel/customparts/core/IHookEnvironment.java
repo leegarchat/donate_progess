@@ -9,6 +9,8 @@ public interface IHookEnvironment {
 
     float getFloat(Context context, String key, float defaultValue);
 
+    String getString(Context context, String key, String defaultValue);
+
     void log(String tag, String message);
 
     void logError(String tag, String message, Throwable t);

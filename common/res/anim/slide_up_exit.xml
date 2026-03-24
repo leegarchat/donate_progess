@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Slide-up exit: the old activity shifts upward slightly and dims,
+    giving the impression of sliding behind the new activity.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/linear_out_slow_in">
+    <translate
+        android:fromYDelta="0"
+        android:toYDelta="-25%p"
+        android:duration="350" />
+    <alpha
+        android:fromAlpha="1.0"
+        android:toAlpha="0.7"
+        android:duration="350" />
+</set>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Slide-up (modal) exit for direction=left: old shifts RIGHT +25 % and dims. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/linear_out_slow_in">
+    <translate android:fromXDelta="0" android:toXDelta="25%p" android:duration="350" />
+    <alpha android:fromAlpha="1.0" android:toAlpha="0.7" android:duration="350" />
+</set>

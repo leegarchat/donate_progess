@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Depth close enter: the previous activity rises back from its 70 %
+    "sunken" state to full size and opacity.  Reverse of depth_exit.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_cubic">
+    <scale
+        android:fromXScale="0.7"
+        android:fromYScale="0.7"
+        android:toXScale="1.0"
+        android:toYScale="1.0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:duration="350" />
+    <alpha
+        android:fromAlpha="0.5"
+        android:toAlpha="1.0"
+        android:duration="350" />
+</set>

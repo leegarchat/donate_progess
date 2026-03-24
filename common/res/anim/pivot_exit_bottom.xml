@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pivot exit, direction=bottom: old swings out to top-left corner. -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/accelerate_cubic">
+    <rotate android:fromDegrees="0" android:toDegrees="-30"
+        android:pivotX="0%" android:pivotY="0%" android:duration="350" />
+    <scale android:fromXScale="1.0" android:fromYScale="1.0"
+        android:toXScale="0.9" android:toYScale="0.9"
+        android:pivotX="0%" android:pivotY="0%" android:duration="350" />
+    <alpha android:fromAlpha="1.0" android:toAlpha="0.0" android:duration="350" />
+</set>

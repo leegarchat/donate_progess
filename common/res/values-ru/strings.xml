@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <!-- General / Navigation -->
     <string name="os_title_activity">Физика прокрутки</string>
@@ -18,6 +19,72 @@
     <string name="os_label_master_native">Системная интеграция</string>
     <string name="os_desc_master_native">Включает встроенную в прошивку реализацию физики.\n\nРаботает напрямую через системные классы Pixel Parts без использования хуков, обеспечивая максимальную производительность и совместимость.</string>
 
+    <!-- SystemUI Settings -->
+    <string name="sysui_settings_title">Настройки SystemUI</string>
+    <string name="sysui_lockscreen_title">Настройки экрана блокировки</string>
+    <string name="sysui_lockscreen_subtitle">Настройка информации о зарядке и жестов на экране блокировки</string>
+
+    <string name="sysui_shade_title">Настройки шторки</string>
+    <string name="sysui_shade_subtitle">Компактный плеер и скрим</string>
+
+    <!-- Magnifier (text loupe) -->
+    <string name="magnifier_section_title">Текстовая лупа</string>
+    <string name="magnifier_enable_title">Кастомный зум</string>
+    <string name="magnifier_enable_summary">Изменить уровень увеличения текстовой лупы</string>
+    <string name="magnifier_zoom_title">Уровень увеличения</string>
+    <string name="magnifier_size_title">Размер окна</string>
+    <string name="magnifier_shape_title">Форма окна</string>
+    <string name="magnifier_shape_default">По умолчанию</string>
+    <string name="magnifier_shape_square">Квадрат</string>
+    <string name="magnifier_shape_circle">Круг</string>
+    <string name="magnifier_offset_y_title">Смещение по вертикали</string>
+    <string name="magnifier_xposed_warning_title">Требуется Xposed-модуль</string>
+    <string name="magnifier_xposed_warning_desc">Модификация текстовой лупы работает поприложениям. Включите Xposed-модуль для каждого приложения, где вы хотите видеть изменённую лупу.</string>
+    <string name="overscroll_xposed_warning_title">Требуется Xposed-модуль</string>
+    <string name="overscroll_xposed_warning_desc">Модификация эффекта прокрутки работает поприложениям. Включите Xposed-модуль для каждого приложения, где вы хотите видеть изменённый эффект прокрутки.</string>
+
+    <string name="sysui_media_player_title">Медиаплеер</string>
+    <string name="sysui_media_compact_mode_title">Режим компактности</string>
+    <string name="sysui_media_compact_mode_off">Выключено</string>
+    <string name="sysui_media_compact_mode_small">Компактный</string>
+    <string name="sysui_media_compact_mode_header">Только заголовок</string>
+    <string name="sysui_media_compact_mode_very_small">Очень компактный</string>
+
+    <string name="sysui_media_bg_alpha_title">Прозрачность фона плеера</string>
+
+    <string name="sysui_media_hide_title">Скрыть медиаплеер</string>
+    <string name="sysui_media_hide_qs">Скрыть в быстрых настройках</string>
+    <string name="sysui_media_hide_notifications">Скрыть в уведомлениях</string>
+    <string name="sysui_media_hide_lockscreen">Скрыть на экране блокировки</string>
+
+    <string name="sysui_shade_surface_title">Фон шторки</string>
+    <string name="sysui_shade_surface_solid">Однотонная шторка (без скрима)</string>
+    <string name="sysui_shade_blur_title">Интенсивность размытия фона</string>
+    <string name="sysui_shade_zoom_title">Интенсивность зума фона</string>
+    <string name="sysui_shade_disable_scale_threshold_title">Отключить порог масштабирования</string>
+    <string name="sysui_shade_scrim_title">Настройка скрима</string>
+    <string name="sysui_shade_notif_scrim_alpha_title">Прозрачность скрима уведомлений</string>
+    <string name="sysui_shade_main_scrim_alpha_title">Прозрачность основного скрима</string>
+    <string name="sysui_shade_notif_scrim_tint_title">Тонирование скрима уведомлений</string>
+    <string name="sysui_shade_notif_scrim_tint_color">Цвет тонировки</string>
+    <string name="sysui_shade_main_scrim_tint_title">Тонирование основного скрима</string>
+    <string name="sysui_shade_main_scrim_tint_color">Цвет тонировки</string>
+    <string name="sysui_shade_override_enable">Относительный множитель прозрачности</string>
+
+    <string name="sysui_charging_info_title">Информация о зарядке</string>
+    <string name="sysui_charging_info_enable">Пользовательская информация о зарядке</string>
+    <string name="sysui_show_wattage">Показать мощность (Вт)</string>
+    <string name="sysui_show_voltage">Показать напряжение</string>
+    <string name="sysui_show_current">Показать ток (мА)</string>
+    <string name="sysui_show_temp">Показать температуру батареи</string>
+    <string name="sysui_show_percent">Показать процент батареи</string>
+    <string name="sysui_show_standard">Показать стандартный текст (быстро/медленно)</string>
+    <string name="sysui_show_custom_symbol">Показать свой символ</string>
+    <string name="sysui_custom_symbol">Свой символ (напр. ⚡)</string>
+    <string name="sysui_sensor_interval_title">Интервал обновления датчика</string>
+    <string name="sysui_average_mode_title">Показывать усреднённые значения зарядки</string>
+
+
     <string name="os_status_active">Активно</string>
     <string name="os_status_disabled">Отключено</string>
     
@@ -27,10 +94,16 @@
 
     <!-- Profiles UI -->
     <string name="os_group_profiles">Профили настроек</string>
-    <string name="os_prof_btn_export">Экспорт в файл</string>
-    <string name="os_prof_btn_import">Импорт из файла</string>
+    <string name="os_prof_btn_export">Экспорт</string>
+    <string name="os_prof_btn_import">Импорт</string>
+    <string name="os_prof_btn_network">Из сети</string>
     <string name="os_prof_btn_create">Сохранить новый профиль</string>
     <string name="os_prof_header_list">Сохраненные профили</string>
+    <string name="os_net_dialog_title">Конфиги из сети</string>
+    <string name="os_net_loading">Загрузка…</string>
+    <string name="os_net_empty">Конфигов не найдено</string>
+    <string name="os_net_error">Не удалось загрузить конфиги</string>
+    <string name="os_net_applied">Конфиг применён: %s</string>
     <string name="os_prof_item_active">Активен</string>
     <string name="os_prof_item_tap">Нажмите, чтобы загрузить</string>
     <string name="os_prof_dialog_title">Новый профиль</string>
@@ -52,7 +125,7 @@
     <string name="os_desc_physics_damping">Коэффициент демпфирования.\n\nГасит энергию пружины. Определяет, как быстро затухнут колебания после отпускания пальца или удара о границу.</string>
 
     <string name="os_lbl_physics_fling">Импульс</string>
-    <string name="os_desc_physics_fling">Множитель входящей скорости при инерционном ударе.\n\nУвеличивает амплитуду отскока при резкой прокрутке. \nПримечание: При высоких значениях (&gt;1.0) код динамически снижает жесткость пружины, чтобы удар ощущался "мягче".</string>
+    <string name="os_desc_physics_fling">Множитель входящей скорости при инерционном ударе.\n\nУвеличивает амплитуду отскока при резкой прокрутке.\nПримечание: При высоких значениях (&gt;1.0) код динамически снижает жесткость пружины, чтобы удар ощущался "мягче".</string>
 
     <string name="os_lbl_physics_res_exp">Кривая сопротивления</string>
     <string name="os_desc_physics_res_exp">Степень экспоненты для формулы сопротивления.\n\nРаботает только если Тяга &lt; 1.0. Задает крутизну нарастания усилия при оттягивании края.</string>
@@ -75,6 +148,8 @@
 
     <string name="os_group_visual_horz">Горизонтальная деформация</string>
     <string name="os_desc_visual_horz">Изменяет масштаб (ScaleX) по ширине.\n\nПозволяет сделать эффект "бочки" или сужения списка при натяжении.</string>
+
+    <string name="misc_group_title">Разное</string>
 
     <string name="os_desc_scale_intensity">Коэффициент влияния смещения на масштаб. Чем выше значение, тем сильнее искажение при том же сдвиге.</string>
     <string name="os_desc_scale_limit">Жесткий лимит искажения (мин/макс масштаб), чтобы предотвратить визуальные артефакты при сильных рывках.</string>
@@ -121,6 +196,7 @@
     <string name="os_btn_add_app">Добавить приложение</string>
     <string name="os_btn_cancel">Отмена</string>
     <string name="btn_cancel">Отмена</string>
+    <string name="btn_restart_launcher">Применить и перезапустить лаунчер</string>
     
     <!-- App Config Items -->
     <string name="os_app_filter">Сглаживание</string>
@@ -171,6 +247,16 @@
     
     <string name="btn_ok">Понятно</string>
     <string name="btn_reboot">Перезагрузить</string>
+    <string name="btn_confirm">Подтвердить</string>
+
+    <!-- Reboot Bubble -->
+    <string name="reboot_launcher">Перезапустить лаунчер</string>
+    <string name="reboot_systemui">Перезапустить SystemUI</string>
+    <string name="reboot_system">Перезагрузить систему</string>
+    <string name="reboot_confirm_system_title">Перезагрузить устройство?</string>
+    <string name="reboot_confirm_system_msg">Устройство будет перезагружено немедленно. Сохраните свою работу перед продолжением.</string>
+    <string name="reboot_confirm_sysui_title">Перезапустить SystemUI?</string>
+    <string name="reboot_confirm_sysui_msg">SystemUI будет перезапущен. Панель навигации, строка состояния и уведомления ненадолго исчезнут.</string>
 
     <!-- IMS MANAGER -->
     <string name="ims_category_title">Конфигурация IMS</string>
@@ -217,10 +303,59 @@
     <!-- LAUNCHER SETTINGS -->
     <string name="launcher_settings_title">Настройки Лаунчера</string>
     <string name="launcher_search_section">Поиск и навигация</string>
+
+    <!-- Launcher Navigation Items -->
+    <string name="launcher_group_general">Основные</string>
+    <string name="launcher_search_feed_title">Поиск и Лента</string>
+    <string name="launcher_search_feed_subtitle">Настройка нативного поиска и ленты Google</string>
+    <string name="launcher_group_appearance">Внешний вид</string>
+    <string name="launcher_grid_title">Настройки сетки</string>
+    <string name="launcher_grid_subtitle">Настройка строк и столбцов рабочего стола</string>
+    <string name="launcher_group_recents_features">Функции Recents</string>
+    <string name="launcher_clear_all_nav_title">Кнопка «Очистить всё»</string>
+    <string name="launcher_clear_all_nav_subtitle">Настройка кнопки очистки всех приложений</string>
+    <string name="launcher_group_gestures">Жесты</string>
+    <string name="launcher_gestures_title">Жесты</string>
+    <string name="launcher_gestures_subtitle">Двойной тап для сна и другое</string>
+    <string name="launcher_group_recents_customization">Кастомизация Recents</string>
+    <string name="launcher_recents_menu_title">Меню Recents</string>
+    <string name="launcher_recents_menu_subtitle">Настройка карусели, масштаба, размытия и другого</string>
     
     <string name="launcher_search_title">Нативный поиск</string>
     <string name="launcher_search_desc">Принудительно включает встроенный интерфейс поиска в Pixel Launcher.\n\nGoogle часто меняет поведение поиска на "серверной стороне", заменяя быстрый локальный поиск на медленный запуск приложения Google. Эта опция фиксирует флаг \'device_config\', возвращая быстрый поиск приложений и контактов.</string>
 
+
+    <!-- //// -->
+    <string name="donate_progress_title">Прогресс сбора средств</string>
+    <string name="menu_refresh">Обновить</string>
+    <string name="donate_open_target">Открыть страницу сбора</string>
+    <string name="donate_error_loading">Ошибка получения данных</string>
+    <string name="donate_retry">Повторить</string>
+    <string name="donate_title">Поддержка и ссылки</string>
+    <string name="donate_desc_short">GitHub, Telegram, Boosty</string>
+    <string name="donate_header">Поддержать проект</string>
+    <string name="donate_desc_long">Если вам нравится этот модуль и вы хотите поддержать его дальнейшую разработку, вы можете сделать это на Boosty.</string>
+    <string name="donate_btn_boosty">Перейти на Boosty</string>
+    <string name="donate_links_header">Полезные ссылки</string>
+    <string name="error_network">Ошибка сети</string>
+    <string name="refresh_strings">Строки страницы обновлены</string>
+    <string name="donate_page_updated">Страница обновлена</string>
+    <string name="donate_page_updated_error">Ошибка загрузки данных</string>
+
+    <string name="launcher_clear_all_title">Кнопка «Очистить всё»</string>
+    <string name="launcher_clear_all_desc">Добавляет кнопку закрытия всех приложений в меню многозадачности (Recents).\n\nПоддерживает несколько режимов отображения для интеграции в стандартный интерфейс.</string>
+    <string name="launcher_clear_all_enable_title">Включить кнопку «Очистить всё»</string>
+    <string name="launcher_ca_hide_actions_row_title">Скрыть стандартные кнопки действий</string>
+
+    <string name="launcher_ca_mode_float">Снизу по центру</string>
+    <string name="launcher_ca_mode_screenshot">Заменить «Скриншот»</string>
+    <string name="launcher_ca_mode_select">Заменить «Выбрать»</string>
+
+    <string name="launcher_ca_margin">Позиция (Отступ снизу)</string>
+    <string name="launcher_btn_restart">Перезапустить лаунчер</string>
+    <string name="launcher_ca_margin_desc">Регулирует вертикальное положение плавающей кнопки. Значение — множитель стандартного отступа.</string>
+    <string name="launcher_ca_hide_actions_row_desc">Скрывает системные кнопки «Скриншот» и «Выбрать» в Recents, оставляя общую логику контейнера и вашу кастомную кнопку «Очистить всё».</string>
+    <!-- ///// -->
     <!-- DOUBLE TAP (DT) SETTINGS -->
     <string name="dt_category_title">Жесты двойного тапа</string>
     <string name="dt_sec_wake">Пробуждение</string>
@@ -233,7 +368,7 @@
     <string name="dt2w_desc_native">Нативная системная интеграция.\n\nИспользует встроенный в прошивку код для обработки сенсорных событий в режиме Doze, обеспечивая пробуждение без сторонних хуков.</string>
     
     <string name="dt2w_info_title">Как это работает</string>
-    <string name="dt2w_info_desc">Это программная эмуляция, а не аппаратная функция ядра.\n\n<b>Принцип работы:</b>\nСистема держит сенсор активным в режиме AOD/Doze и анализирует касания. \n\n<b>Важно:</b>\n• Из-за программной обработки возможна небольшая задержка.\n• Может незначительно влиять на расход батареи (Deep Sleep).</string>
+    <string name="dt2w_info_desc">Это программная эмуляция, а не аппаратная функция ядра.\n\n<b>Принцип работы:</b>\nСистема держит сенсор активным в режиме AOD/Doze и анализирует касания.\n\n<b>Важно:</b>\n• Из-за программной обработки возможна небольшая задержка.\n• Может незначительно влиять на расход батареи (Deep Sleep).</string>
 
     <string name="dt2w_timeout_title">Интервал тапа</string>
     <string name="dt2w_timeout_desc">Максимальное время между двумя касаниями (в мс), чтобы они засчитались как двойной тап.</string>
@@ -257,43 +392,33 @@
     <string name="common_video_placeholder">Демонстрация видео</string>
 
     <!-- GLOBAL COMMON -->
+    <string name="app_name">Pixel Extra Parts</string>
     <string name="btn_apply">Применить</string>
     <string name="btn_default">По умолчанию</string>
     <string name="btn_close">Закрыть</string>
     <string name="btn_exit">Выход</string>
+    <string name="btn_restart">Перезапуск</string>
+    <string name="nav_back">Назад</string>
+
+    <!-- Shared Dialogs -->
+    <string name="xposed_required_title">Требуется Xposed</string>
+    <string name="xposed_required_message">Для работы этой функции необходим активный модуль Xposed.</string>
     
     <string name="status_active">Активно</string>
     <string name="status_disabled">Отключено</string>
     <string name="status_error">Ошибка</string>
-    <string name="donate_progress_title">Прогресс сбора средств</string>
-    <string name="menu_refresh">Обновить</string>
-    <string name="donate_open_target">Открыть страницу сбора</string>
-    <string name="donate_error_loading">Ошибка получения данных</string>
-    <string name="donate_retry">Повторить</string>
-    <string name="donate_title">Поддержка и ссылки</string>
-    <string name="donate_desc_short">GitHub, Telegram, Boosty</string>
-    <string name="donate_header">Поддержать проект</string>
-    <string name="donate_desc_long">Если вам нравится этот модуль и вы хотите поддержать его дальнейшую разработку, вы можете сделать это на Boosty.</string>
-    <string name="donate_btn_boosty">Перейти на Boosty</string>
-    <string name="donate_links_header">Полезные ссылки</string>
-
-    <string name="launcher_clear_all_title">Кнопка «Очистить всё»</string>
-    <string name="launcher_clear_all_desc">Добавляет кнопку закрытия всех приложений в меню многозадачности (Recents).\n\nПоддерживает несколько режимов отображения для интеграции в стандартный интерфейс.</string>
-
-    <string name="launcher_ca_mode_float">Снизу по центру</string>
-    <string name="launcher_ca_mode_screenshot">Заменить «Скриншот»</string>
-    <string name="launcher_ca_mode_select">Заменить «Выбрать»</string>
-
-    <string name="launcher_ca_margin">Позиция (Отступ снизу)</string>
-    <string name="launcher_btn_restart">Перезапустить лаунчер</string>
-    <string name="launcher_ca_margin_desc">Регулирует вертикальное положение плавающей кнопки. Значение — множитель стандартного отступа.</string>
 
     <!-- MAIN ACTIVITY -->
+    <string name="main_title">Pixel Extra Parts</string>
     <string name="main_desc">Кастомные модули и твики</string>
     
     <string name="main_header_gesture">Жесты и ввод</string>
     <string name="main_header_system">Система</string>
     <string name="main_header_network">Сеть и связь</string>
+
+    <!-- Test things (debug section, hidden by default) -->
+    <string name="test_things_title">Тестовые штуки</string>
+    <string name="test_things_desc">Экспериментальные возможности в разработке</string>
     
     <string name="main_root_title">Нет Root доступа</string>
     <string name="main_root_desc">Для работы приложения необходимы права суперпользователя (Root) и активный Xposed Framework.\n\nПожалуйста, установите Magisk/KernelSU и предоставьте права.</string>
@@ -312,9 +437,322 @@
 
     <string name="os_desc_anchor">Точка привязки трансформации.</string>
 
+    <!-- Delta Normalization (Compose Smoothing) -->
+    <string name="os_group_norm">Нормализация дельт Compose</string>
+    <string name="os_desc_norm_group">Интеллектуальная система нормализации для прокрутки Jetpack Compose.\n\nCompose передаёт увеличенные дельты по сравнению с классической прокруткой View. Модуль автоматически определяет экземпляры Compose и плавно уменьшает их дельты до уровня стандартного View.\n\nОткалиброван эмпирически: дельты Compose примерно в 5 раз больше дельт View при одинаковых жестах.</string>
+    <string name="os_lbl_norm_enabled">Включить нормализацию</string>
+    <string name="os_desc_norm_enabled">Главный переключатель нормализации дельт.\n\nПри включении система анализирует каждый экземпляр EdgeEffect и применяет коррекцию к увеличенным дельтам Compose.\n\nБезопасно оставлять включённым — не влияет на приложения с нормальными дельтами.</string>
+    <string name="os_lbl_norm_ref_delta">Эталонная дельта</string>
+    <string name="os_desc_norm_ref_delta">Базовое «нормальное» значение дельты (доля от effectiveSize).\n\nОпределено эмпирически из View-приложений. Если скользящее среднее превышает это × Множитель, экземпляр считается усиленным.\n\nСтандарт: 0.00001 (очень чувствительно). Увеличьте, если бывают ложные срабатывания.</string>
+    <string name="os_lbl_norm_detect_mul">Множитель обнаружения</string>
+    <string name="os_desc_norm_detect_mul">Пороговый множитель для детектирования усиления.\n\nАктивация: скользящее_среднее &gt; эталонная_дельта × это.\n3.3 = надёжно ловит Compose (~5× от View), не срабатывает на View.\n\nУвеличьте при ложных срабатываниях, уменьшите если не ловит Compose.</string>
+    <string name="os_lbl_norm_factor">Корректирующий коэффициент</string>
+    <string name="os_desc_norm_factor">Во сколько раз множить усиленные дельты.\n\n0.2 = привести к уровню View (из анализа: ref/compose ≈ 0.195).\n0.5 = уменьшить вдвое. 1.0 = без изменений.\n\nМеньше = слабее отскок, больше = сильнее.</string>
+    <string name="os_lbl_norm_window">Размер окна</string>
+    <string name="os_desc_norm_window">Количество последних сэмплов |дельта| для анализа.\n\nМеньше = быстрее обнаружение, но чувствительнее к шуму.\nБольше = стабильнее, но медленнее.\n\nДиапазон: 2–64.</string>
+    <string name="os_lbl_norm_ramp">Событий разгона</string>
+    <string name="os_desc_norm_ramp">Сколько событий для перехода от 1.0 к коэффициенту.\n\n1–4 = почти мгновенно. 8–12 = плавный переход.\n\nПредотвращает визуальные скачки при активации нормализации.</string>
+    <string name="os_lbl_norm_detect_mode">Режим обнаружения</string>
+    <string name="os_desc_norm_detect_mode">Как определяются экземпляры Compose.\n\n0 = Только по поведению (скользящее окно дельт)\n1 = Гибрид: стек-трейс + окно для подтверждения\n2 = Только стек-трейс (без анализа окна)\n\nГибрид (1) рекомендуется для лучшей точности и скорости.</string>
+    <string name="os_norm_mode_behavior">Только поведение</string>
+    <string name="os_norm_mode_hybrid">Гибрид (рекомендуется)</string>
+    <string name="os_norm_mode_stacktrace">Только стек-трейс</string>
+
     <string name="ims_desc_activity">VoLTE, VoWiFi, 5G</string>
     <string name="ims_title_activity">IMS Конфиг</string>
 
+
+    <!-- Grid Sizer / App Drawer Customization -->
+    <string name="grid_group_homepage">Настройка главного экрана</string>
+    <string name="grid_lbl_home_enable">Настройка сетки главного экрана</string>
+    <string name="grid_desc_home_enable">Включает настройку столбцов и строк сетки главного экрана.</string>
+    
+    <string name="grid_lbl_columns">Столбцы</string>
+    <string name="grid_desc_home_cols">Количество столбцов на главном экране.</string>
+    
+    <string name="grid_lbl_rows">Строки</string>
+    <string name="grid_desc_home_rows">Количество строк на главном экране.</string>
+    
+    <string name="grid_lbl_hide_text">Скрыть текст иконок</string>
+    <string name="grid_desc_home_hide_text">Скрывает подписи иконок на главном экране.</string>
+
+    <string name="grid_lbl_icon_size">Размер иконок</string>
+    <string name="grid_desc_home_icon_size">Настройка размера иконок на главном экране (100%% — стандарт).</string>
+    <string name="grid_desc_drawer_icon_size">Настройка размера иконок в меню приложений (100%% — стандарт).</string>
+    <string name="grid_desc_dock_icon_size">Настройка размера иконок в доке (100%% — стандарт).</string>
+
+    <string name="grid_lbl_text_mode">Режим отображения текста</string>
+    <string name="grid_desc_text_mode">Как отображаются подписи при видимом тексте.</string>
+    <string name="grid_text_mode_default">Обрезка</string>
+    <string name="grid_text_mode_two_line">Две строки</string>
+    <string name="grid_text_mode_marquee">Бегущая строка</string>
+
+    <string name="grid_group_drawer">Настройка меню приложений</string>
+    <string name="grid_lbl_drawer_enable">Настройка меню приложений</string>
+    <string name="grid_desc_drawer_enable">Включает настройку сетки и компоновки меню приложений.</string>
+    
+    <string name="grid_lbl_drawer_cols">Столбцы меню</string>
+    <string name="grid_desc_drawer_cols">Количество столбцов в меню приложений.</string>
+    
+    <string name="grid_lbl_row_height">Высота строки</string>
+    <string name="grid_desc_row_height">Настройка вертикального расстояния между строками в меню (100% — стандарт).</string>
+    
+    <string name="grid_lbl_drawer_hide_text">Скрыть текст меню</string>
+    <string name="grid_desc_drawer_hide_text">Скрывает подписи иконок в меню приложений.</string>
+
+    <!-- Dock Grid Section -->
+    <string name="grid_group_dock">Настройка дока</string>
+    <string name="grid_lbl_dock_icons">Количество иконок в доке</string>
+    <string name="grid_desc_dock_icons">Количество иконок на панели дока.</string>
+    <string name="grid_lbl_dock_hide_text">Скрыть текст дока</string>
+    <string name="grid_desc_dock_hide_text">Скрывает подписи иконок в доке.</string>
+
+    <string name="grid_lbl_search_cols">Столбцы поиска</string>
+    <string name="grid_desc_search_cols">Количество столбцов для результатов поиска и подсказок в меню.</string>
+    <!-- Search Widget & Dock Section -->
+    <string name="search_widget_group_title">Виджет поиска и Док</string>
+    
+    <string name="search_widget_enable_dock">Настройка дока</string>
+    <string name="search_widget_desc_dock">Главный переключатель всех модификаций дока и строки поиска ниже.</string>
+    
+    <string name="search_widget_hide_search">Скрыть строку поиска</string>
+    <string name="search_widget_desc_hide_search">Скрывает виджет поиска внизу.</string>
+    
+    <string name="search_widget_hide_dock">Скрыть иконки дока</string>
+    <string name="search_widget_desc_hide_dock">Скрывает область иконок нижнего дока (hotseat).</string>
+    <string name="pref_recents_size_summary">pref_recents_size_summary</string>
+    <string name="info_recents_size">info_recents_size</string>
+    
+    <string name="search_widget_padding_home">Верхний отступ рабочего стола</string>
+    <string name="search_widget_desc_padding_home">Настройка верхнего отступа для иконок (растяжение сверху).</string>
+    
+    <string name="search_widget_padding_home_bottom">Нижний отступ рабочего стола</string>
+    <string name="search_widget_desc_padding_home_bottom">Настройка нижнего отступа для иконок (растяжение снизу).</string>
+    
+    <string name="search_widget_padding_dock">Отступ иконок дока</string>
+    <string name="search_widget_desc_padding_dock">Настройка вертикальной позиции иконок дока (+/-).</string>
+    
+    <string name="search_widget_padding_search">Отступ виджета поиска</string>
+    <string name="search_widget_desc_padding_search">Настройка вертикальной позиции виджета поиска (+/-).</string>
+
+    <string name="search_widget_padding_dots">Отступ точек</string>
+    <string name="search_widget_desc_padding_dots">Настройка вертикальной позиции индикатора страниц.</string>
+    <string name="search_widget_padding_dots_x">Горизонтальное смещение точек</string>
+    <string name="search_widget_desc_padding_dots_x">Настройка горизонтальной позиции индикатора страниц.</string>
+
+    <!-- Recents Size -->
+    <string name="title_recents_size">Размер карточек Recents</string>
+    <string name="desc_recents_size">Настройка размера карточек задач в обзоре</string>
+    <string name="pref_recents_size_enable">Свой размер</string>
+    <string name="pref_recents_size_scale">Масштаб (%)</string>
+    <string name="pref_recents_carousel_enable">Эффект карусели (стиль OnePlus)</string>
+    <string name="pref_recents_icons_enable">Строка иконок приложений</string>
+
+    <!-- Recents Menu Screen -->
+    <string name="recents_menu_screen_title">Меню Recents</string>
+    <string name="recents_group_general">Общее управление</string>
+    <string name="recents_enable_modding">Включить моддинг Recents</string>
+    <string name="recents_disable_live_tile">Отключить живые плитки</string>
+    <string name="recents_disable_live_tile_desc">Показывать снимок вместо живого превью</string>
+    <string name="recents_group_scaling">Базовое масштабирование</string>
+    <string name="recents_enable_static_scale">Статическое масштабирование</string>
+    <string name="recents_scale_percent">Масштаб (%)</string>
+    <string name="recents_group_carousel_geometry">Карусель: Геометрия</string>
+    <string name="recents_carousel_min_scale">Мин. масштаб (край)</string>
+    <string name="recents_carousel_spacing">Расстояние / Перекрытие</string>
+    <string name="recents_carousel_min_alpha">Мин. прозрачность (край)</string>
+    <string name="recents_group_carousel_blur">Карусель: Размытие</string>
+    <string name="recents_carousel_blur_radius">Макс. радиус размытия</string>
+    <string name="recents_blur_overflow">Размытие всей карточки</string>
+    <string name="recents_blur_overflow_desc">Применить ко всей карточке, а не только к миниатюре</string>
+    <string name="recents_group_carousel_tint">Карусель: Тонирование</string>
+    <string name="recents_tint_intensity">Интенсивность тонировки</string>
+    <string name="recents_select_tint_color">Выбрать цвет тонировки</string>
+    <string name="recents_group_icon_offset">Карусель: Смещение иконок</string>
+    <string name="recents_icon_offset_x">Смещение иконок X</string>
+    <string name="recents_icon_offset_y">Смещение иконок Y</string>
+
+    <!-- Gestures Screen -->
+    <string name="gestures_screen_title">Жесты</string>
+
+    <!-- Clear All Screen-->
+    <string name="clear_all_screen_title">Кнопка «Очистить всё»</string>
+
+    <!-- Grid Settings Screen -->
+    <string name="grid_screen_title">Настройки сетки</string>
+    <string name="grid_homepage_title">Главный экран</string>
+    <string name="grid_homepage_dock_title">Панель дока</string>
+    <string name="grid_menupage_title">Меню приложений</string>
+    <string name="grid_menupage_enable">Настройка меню приложений</string>
+    <string name="grid_menupage_search_title">Результаты поиска</string>
+    <string name="grid_menupage_suggestions_title">Список предложений</string>
+    <string name="grid_menupage_apps_title">Список приложений</string>
+    <string name="grid_menupage_suggestions_disable">Отключить список предложений</string>
+    <string name="grid_text_mode_hide">Скрыть текст</string>
+
+    <!-- Search &amp; Feed Screen -->
+    <string name="search_feed_screen_title">Поиск и Лента</string>
+
+    <!-- Quickstep Section -->
+    <string name="quickstep_warning_title">Экспериментальная функция</string>
+    <string name="quickstep_warning_text">Эта функция полностью заменяет стандартный вид Quickstep на пользовательскую реализацию. Могут быть визуальные артефакты или сбои. Используйте на свой страх и риск. Отключите эту опцию при возникновении проблем.</string>
+    <string name="quickstep_engine_title">Кастомный движок Quickstep</string>
+    <string name="quickstep_engine_summary">Заменить стандартный Recents на пользовательскую реализацию</string>
+    <string name="quickstep_engine_info">Включает полностью кастомный вид Recents с различными стилями и анимациями. Полностью заменяет стандартный Recents Pixel Launcher.</string>
+    <string name="quickstep_style_title">Стиль Recents</string>
+    <string name="quickstep_style_stock">Стандартный</string>
+    <string name="quickstep_style_stock_desc">Классические горизонтальные карточки</string>
+    <string name="quickstep_style_ios">Стиль iOS</string>
+    <string name="quickstep_style_ios_desc">Вертикальные карточки стопкой с 3D-эффектом</string>
+    <string name="quickstep_style_oneplus">Стиль OnePlus</string>
+    <string name="quickstep_style_oneplus_desc">Карусель с фокусом на центральной карточке</string>
+    <string name="quickstep_style_minimal">Минималистичный</string>
+    <string name="quickstep_style_minimal_desc">Маленькие карточки только с иконками</string>
+    <string name="content_desc_selected">Выбрано</string>
+
+    
+    <string name="launcher_feed_title">Отключить ленту Google</string>
+    <string name="launcher_feed_desc">Отключает экран -1 (Google Discover/Лента) на главном экране.</string>
+
     <string name="launcher_top_widget_title">Отключить верхний виджет</string>
     <string name="launcher_top_widget_desc">Убирает неотключаемый виджет "Самое главное" с первого экрана и позволяет размещать там иконки.</string>
+
+    <!-- Animation Theme Manager -->
+    <string name="anim_theme_create_title">Создать тему анимации</string>
+    <string name="anim_theme_style_name">Имя стиля</string>
+    <string name="anim_theme_open_enter">Открытие — вход</string>
+    <string name="anim_theme_open_exit">Открытие — выход</string>
+    <string name="anim_theme_close_enter">Закрытие — вход</string>
+    <string name="anim_theme_close_exit">Закрытие — выход</string>
+    <string name="anim_theme_tap_to_select">Нажмите для выбора XML файла</string>
+    <string name="anim_theme_compile_btn">Собрать и установить</string>
+    <string name="anim_theme_log_title">Лог сборки</string>
+    <string name="anim_theme_installed_title">Установленные темы</string>
+    <string name="anim_theme_none_installed">Нет установленных тем анимации</string>
+    <string name="anim_theme_paste_xml">Вставить XML</string>
+    <string name="anim_theme_xml_hint">Вставьте XML анимации здесь…</string>
+    <string name="anim_theme_input_mode_file">Файл</string>
+    <string name="anim_theme_input_mode_xml">XML текст</string>
+
+    <!-- Built-in Animations -->
+    <string name="anim_builtin_title">Встроенные анимации</string>
+    <string name="anim_builtin_disabled">Отключено</string>
+    <string name="anim_builtin_custom">Пользовательская тема</string>
+    <string name="anim_preview_open">Открытие</string>
+    <string name="anim_preview_close">Закрытие</string>
+    <string name="anim_apply_both">Применить оба</string>
+    <string name="anim_apply_open">Применить открытие</string>
+    <string name="anim_apply_close">Применить закрытие</string>
+    <string name="anim_current_open">Текущее открытие: %s</string>
+    <string name="anim_current_close">Текущее закрытие: %s</string>
+
+    <!-- Animation type names -->
+    <string name="anim_group_slide">Сдвиг</string>
+    <string name="anim_group_card_stack">Стопка карт</string>
+    <string name="anim_group_train">Поезд</string>
+    <string name="anim_group_ios">iOS Параллакс</string>
+    <string name="anim_group_fade">Затухание</string>
+    <string name="anim_group_zoom">Зум</string>
+    <string name="anim_group_modal">Модальное</string>
+    <string name="anim_group_depth">Глубина</string>
+    <string name="anim_group_pivot">Поворот</string>
+
+    <!-- Direction names -->
+    <string name="anim_dir_right">Вправо</string>
+    <string name="anim_dir_left">Влево</string>
+    <string name="anim_dir_top">Вверх</string>
+    <string name="anim_dir_bottom">Вниз</string>
+
+    <!-- Activity Transition Settings -->
+    <string name="anim_transition_title">Анимации переходов</string>
+    <string name="anim_transition_subtitle">Пользовательские темы и встроенные переходы</string>
+    <string name="anim_predictive_back_title">Отключить предиктивный жест «назад»</string>
+    <string name="anim_predictive_back_desc">Убирает системную анимацию свайпа назад</string>
+    <string name="anim_no_animation_title">Без анимации</string>
+    <string name="anim_no_animation_desc">Полностью отключает анимацию переходов</string>
+    <string name="anim_constructor_title">Конструктор анимаций</string>
+    <string name="anim_constructor_preview">Предпросмотр</string>
+    <string name="anim_constructor_style_name">Имя стиля</string>
+    <string name="anim_constructor_build_theme">Собрать тему</string>
+    <string name="anim_constructor_hide">Скрыть</string>
+    <string name="anim_constructor_show_xml">Показать XML</string>
+    <string name="anim_constructor_hide_xml">Скрыть XML</string>
+    <string name="anim_dialog_cancel">Отмена</string>
+    <string name="anim_active_open_close">Открытие + Закрытие</string>
+    <string name="anim_installing">Установка…</string>
+    <string name="anim_install_success">✓ Тема успешно установлена!</string>
+    <string name="anim_install_failed">Ошибка установки</string>
+    <string name="anim_install_failed_log">✗ Ошибка установки</string>
+    <string name="anim_compile_failed">Ошибка компиляции</string>
+    <string name="anim_cd_delete">Удалить</string>
+    <string name="anim_cd_confirm_delete">Подтвердить удаление</string>
+    <string name="anim_cd_reset">Сбросить</string>
+    <string name="anim_cd_copy">Копировать</string>
+    <string name="anim_param_translate">Сдвиг</string>
+    <string name="anim_param_scale">Масштаб</string>
+    <string name="anim_param_alpha">Прозрачность</string>
+    <string name="anim_param_rotate">Вращение</string>
+    <string name="anim_param_pivot">Точка опоры</string>
+    <string name="anim_param_timing">Тайминг</string>
+    <string name="anim_param_interpolator">Интерполятор</string>
+
+    <!-- Addon Manager -->
+    <string name="addon_title">Аддоны Pine</string>
+    <string name="addon_desc">Управление внешними модулями хуков</string>
+    <string name="addon_count">Модулей установлено: %d</string>
+    <string name="addon_active_count">Активно: %1$d из %2$d</string>
+    <string name="addon_safe_mode_title">Безопасный режим</string>
+    <string name="addon_safe_mode_desc">Аддоны были отключены из-за повторяющихся сбоев. Если проблема вызвана неисправным аддоном, вы можете отключить его перед выходом из безопасного режима.</string>
+    <string name="addon_safe_mode_exit">Выйти из безопасного режима</string>
+    <string name="addon_section_system">Системные модули</string>
+    <string name="addon_section_user">Установленные модули</string>
+    <string name="addon_system_empty_title">Системные модули отсутствуют</string>
+    <string name="addon_system_empty_desc">Системные модули поставляются с прошивкой</string>
+    <string name="addon_user_empty_title">Пользовательские модули не установлены</string>
+    <string name="addon_user_empty_desc">Импортируйте .jar аддон для начала</string>
+    <string name="addon_import">Импортировать</string>
+    <string name="addon_import_desc">Выберите .jar файл аддона</string>
+    <string name="addon_import_success">Аддон импортирован</string>
+    <string name="addon_import_failed">Ошибка импорта</string>
+    <string name="addon_empty_title">Аддоны не установлены</string>
+    <string name="addon_empty_desc">Импортируйте .jar аддон для начала</string>
+    <string name="addon_delete_title">Удалить аддон</string>
+    <string name="addon_delete_confirm">Удалить "%s"?\n\nJAR-файл будет удалён и все настройки сброшены.</string>
+    <string name="addon_scope_default">Целевые по умолчанию</string>
+    <string name="addon_scope_custom">Только пользовательские</string>
+    <string name="addon_scope_merge">Объединить оба</string>
+    <string name="addon_scope_label_default">Область по умолчанию</string>
+    <string name="addon_scope_label_custom">Пользовательская область</string>
+    <string name="addon_scope_label_merge">Объединённая область</string>
+    <string name="addon_target_scope">Область действия</string>
+    <string name="addon_targets_default">Цели по умолчанию</string>
+    <string name="addon_targets_custom">Пользовательские цели</string>
+    <string name="addon_builtin_badge">встроенный</string>
+    <string name="addon_builtin_plus_addon">Встроенный + Аддон</string>
+    <string name="addon_enabled">Включён</string>
+    <string name="addon_btn_save">Сохранить</string>
+    <string name="addon_btn_cancel">Отмена</string>
+    <string name="addon_btn_remove">Удалить</string>
+    <string name="addon_settings_title">Настройки модуля</string>
+    <string name="addon_range_format">Диапазон: %1$s — %2$s</string>
+    <string name="addon_file_not_set">Не указано</string>
+    <string name="addon_file_saved">Файл сохранён</string>
+    <string name="addon_file_copy_failed">Ошибка копирования файла</string>
+    <string name="addon_apps_selected">Выбрано приложений: %d</string>
+    <string name="addon_select_apps">Выбрать приложения</string>
+    <string name="addon_selected_count">Выбрано: %d</string>
+    <string name="addon_confirm_count">Подтвердить (%d)</string>
+    <string name="addon_search_apps">Поиск приложений\u2026</string>
+    <string name="addon_show_system">Показать системные</string>
+    <string name="addon_hide_system">Скрыть системные</string>
+    <string name="addon_no_apps_match">Нет приложений по запросу "%s"</string>
+    <string name="addon_no_apps_available">Нет доступных приложений</string>
+    <string name="addon_default_target_badge">Цель по умолчанию</string>
+    <string name="addon_author_unknown">Неизвестный</string>
+
+    <!-- Addon Manager: Active Apps -->
+    <string name="addon_active_apps_title">Активные приложения</string>
+    <string name="addon_active_apps_desc">%d приложение(й) с активными хуками</string>
+    <string name="addon_active_apps_empty">Нет активных хуков</string>
+    <string name="addon_active_apps_modules">%d модуль(ей)</string>
 </resources>

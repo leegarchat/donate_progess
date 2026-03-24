@@ -51,6 +51,10 @@ import org.pixel.customparts.activities.LauncherManager
 import org.pixel.customparts.ui.GenericSwitchRow
 import org.pixel.customparts.ui.RadioSelectionGroup
 import org.pixel.customparts.ui.SliderSetting
+import org.pixel.customparts.ui.SettingsGroupCard
+import org.pixel.customparts.ui.WeakDivider
+import org.pixel.customparts.ui.StrongDivider
+import org.pixel.customparts.ui.ExpandableSettingsGroupCard
 import org.pixel.customparts.utils.SettingsCompat
 import org.pixel.customparts.utils.dynamicStringResource
 
@@ -61,6 +65,7 @@ fun GridSizerSection(
     restartTrigger: Int,
     onSettingsChanged: (Boolean) -> Unit
 ) {
+    // Keys
     val keyHomeEnable = LauncherManager.KEY_HOME_ENABLE
     val keyHomeCols = LauncherManager.KEY_HOME_COLS
     val keyHomeRows = LauncherManager.KEY_HOME_ROWS
@@ -193,6 +198,9 @@ fun GridSizerSection(
         baselineSearchTextMode = searchTextMode
     }
 
+
+    // ... existing initialization code ...
+    
     val textModeOptions = listOf(
         dynamicStringResource(R.string.grid_text_mode_default),
         dynamicStringResource(R.string.grid_text_mode_two_line),
@@ -200,24 +208,13 @@ fun GridSizerSection(
         dynamicStringResource(R.string.grid_text_mode_hide)
     )
 
-    Column {
-        Card(
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            shape = MaterialTheme.shapes.extraLarge,
-            modifier = Modifier.fillMaxWidth()
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        SettingsGroupCard(
+            title = dynamicStringResource(R.string.grid_homepage_title)
         ) {
-            Column(modifier = Modifier.padding(vertical = 12.dp)) {
-                Text(
-                    text = dynamicStringResource(R.string.grid_homepage_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
-                )
-
-                SliderSetting(
-                    title = dynamicStringResource(R.string.grid_lbl_dock_icons),
-                    value = dockIcons,
+            SliderSetting(
+                title = dynamicStringResource(R.string.grid_lbl_dock_icons),
+                value = dockIcons,
                     range = 1..12,
                     unit = "",
                     enabled = true,
@@ -344,33 +341,22 @@ fun GridSizerSection(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Card(
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            shape = MaterialTheme.shapes.extraLarge,
-            modifier = Modifier.fillMaxWidth()
+        SettingsGroupCard(
+            title = dynamicStringResource(R.string.grid_menupage_title)
         ) {
-            Column(modifier = Modifier.padding(vertical = 12.dp)) {
-                Text(
-                    text = dynamicStringResource(R.string.grid_menupage_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
-                )
+            GenericSwitchRow(
+                title = dynamicStringResource(R.string.grid_menupage_enable),
+                checked = menuEnabled,
+                onCheckedChange = { checked ->
+                    menuEnabled = checked
+                    scope.launch(Dispatchers.IO) { SettingsCompat.putInt(context, keyMenuEnable, if (checked) 1 else 0) }
+                }
+            )
 
-                GenericSwitchRow(
-                    title = dynamicStringResource(R.string.grid_menupage_enable),
-                    checked = menuEnabled,
-                    onCheckedChange = { checked ->
-                        menuEnabled = checked
-                        scope.launch(Dispatchers.IO) { SettingsCompat.putInt(context, keyMenuEnable, if (checked) 1 else 0) }
-                    }
-                )
+            WeakDivider()
 
-                WeakDivider()
-
-                SliderSetting(
-                    title = dynamicStringResource(R.string.grid_lbl_drawer_cols),
+            SliderSetting(
+                title = dynamicStringResource(R.string.grid_lbl_drawer_cols),
                     value = menuCols,
                     range = 1..15,
                     unit = "",
@@ -553,90 +539,6 @@ fun GridSizerSection(
                 }
             }
         }
-    }
-}
+    
 
-@Composable
-private fun WeakDivider() {
-    HorizontalDivider(
-        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-        modifier = Modifier.padding(horizontal = 20.dp)
-    )
-}
 
-@Composable
-private fun StrongDivider() {
-    HorizontalDivider(
-        color = MaterialTheme.colorScheme.outlineVariant,
-        thickness = 2.dp,
-        modifier = Modifier.padding(horizontal = 20.dp)
-    )
-}
-
-@Composable
-private fun ExpandableSettingsGroupCard(
-    title: String,
-    enabled: Boolean = true,
-    expanded: Boolean,
-    onExpandChange: (Boolean) -> Unit,
-    containerColor: Color = MaterialTheme.colorScheme.surface,
-    contentColor: Color = MaterialTheme.colorScheme.onSurface,
-    content: @Composable ColumnScope.() -> Unit
-) {
-    val rotation by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f,
-        label = "arrow_rotation",
-        animationSpec = tween(300)
-    )
-
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = if (enabled) containerColor else containerColor.copy(alpha = 0.6f)
-        ),
-        shape = MaterialTheme.shapes.large,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessHigh
-                )
-            )
-    ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onExpandChange(!expanded) }
-                    .padding(16.dp),
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = if (enabled) contentColor else contentColor.copy(alpha = 0.5f)
-                )
-
-                Icon(
-                    imageVector = Icons.Rounded.ExpandMore,
-                    contentDescription = null,
-                    modifier = Modifier.rotate(rotation),
-                    tint = if (enabled) contentColor else contentColor.copy(alpha = 0.5f)
-                )
-            }
-
-            AnimatedVisibility(
-                visible = expanded,
-                enter = expandVertically(animationSpec = spring(stiffness = Spring.StiffnessLow)) + fadeIn(),
-                exit = shrinkVertically(animationSpec = spring(stiffness = Spring.StiffnessLow)) + fadeOut()
-            ) {
-                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp, bottom = 16.dp)) {
-                    content()
-                }
-            }
-        }
-    }
-}

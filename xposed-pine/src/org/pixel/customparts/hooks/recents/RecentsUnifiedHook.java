@@ -60,6 +60,7 @@ public class RecentsUnifiedHook extends BaseHook {
 
         // Clear All
         static boolean clearAllEnabled = false;
+        static boolean clearAllHideActionsRow = false;
         static int clearAllMode = 0;
         static float clearAllMargin = 3.0f;
     }
@@ -81,6 +82,7 @@ public class RecentsUnifiedHook extends BaseHook {
     
     // Clear All Keys
     private static final String KEY_CLEAR_ALL_ENABLED = "launcher_clear_all";
+    private static final String KEY_CLEAR_ALL_HIDE_ACTIONS_ROW = "launcher_clear_all_hide_actions_row";
     private static final String KEY_CLEAR_ALL_MODE = "launcher_replace_on_clear";
     private static final String KEY_CLEAR_ALL_MARGIN = "launcher_clear_all_bottom_margin";
 
@@ -152,6 +154,7 @@ public class RecentsUnifiedHook extends BaseHook {
         }
 
         if (Settings.clearAllEnabled) {
+            Settings.clearAllHideActionsRow = isSettingEnabled(context, KEY_CLEAR_ALL_HIDE_ACTIONS_ROW, false);
             Settings.clearAllMode = getIntSetting(context, KEY_CLEAR_ALL_MODE, CLEAR_MODE_BOTTOM);
             Settings.clearAllMargin = getFloatSetting(context, KEY_CLEAR_ALL_MARGIN, 3.0f);
         }
@@ -341,6 +344,10 @@ public class RecentsUnifiedHook extends BaseHook {
     // =========================================================================
 
     private boolean handlePreDraw(ViewGroup recentsView) {
+        if (Settings.clearAllEnabled && Settings.clearAllHideActionsRow) {
+            enforceActionsRowHiddenFromRecents(recentsView);
+        }
+
         if (!Settings.enabled) return true;
 
         if (!RecentsState.isInRecentsMode && !RecentsState.isAnimatingExit && !RecentsState.isGestureInProgress) {
@@ -505,8 +512,9 @@ public class RecentsUnifiedHook extends BaseHook {
         XposedHelpers.findAndHookMethod(overviewActionsClass, "onFinishInflate", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) {
-                if (!Settings.clearAllEnabled) return;
                 final ViewGroup view = (ViewGroup) param.thisObject;
+                if (!Settings.loaded) loadSettings(view.getContext());
+                if (!Settings.clearAllEnabled) return;
                 final Context context = view.getContext();
                 
                 view.post(new Runnable() {
@@ -517,6 +525,39 @@ public class RecentsUnifiedHook extends BaseHook {
                 });
             }
         });
+
+        String[] refreshMethods = {
+            "updateHiddenFlags",
+            "updateDisabledFlags",
+            "updateDimension",
+            "updateForGroupedTask",
+            "updateVerticalMargin",
+            "onConfigurationChanged"
+        };
+        for (String methodName : refreshMethods) {
+            try {
+                XposedBridge.hookAllMethods(overviewActionsClass, methodName, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) {
+                        if (!(param.thisObject instanceof ViewGroup)) return;
+                        ViewGroup parent = (ViewGroup) param.thisObject;
+                        if (!Settings.loaded) loadSettings(parent.getContext());
+                        if (!Settings.clearAllEnabled) return;
+                        enforceActionsRowHidden(parent);
+                    }
+                });
+            } catch (Throwable ignored) {}
+        }
+    }
+
+    private void enforceActionsRowHiddenFromRecents(ViewGroup recentsView) {
+        if (!Settings.clearAllHideActionsRow) return;
+        try {
+            Object actionsObj = XposedHelpers.getObjectField(recentsView, "mActionsView");
+            if (actionsObj instanceof ViewGroup) {
+                enforceActionsRowHidden((ViewGroup) actionsObj);
+            }
+        } catch (Throwable ignored) {}
     }
 
     @SuppressLint("DiscouragedApi")
@@ -537,15 +578,28 @@ public class RecentsUnifiedHook extends BaseHook {
             }
             if (container == null) return;
 
-            View oldBtn = container.findViewWithTag(TAG_CLEAR_ALL_BTN);
-            if (oldBtn != null) container.removeView(oldBtn);
-            View oldParentBtn = parent.findViewWithTag(TAG_CLEAR_ALL_BTN);
-            if (oldParentBtn != null) parent.removeView(oldParentBtn);
-
             int screenshotId = res.getIdentifier("action_screenshot", "id", pkg);
             int selectId = res.getIdentifier("action_select", "id", pkg);
             Button screenshotBtn = (screenshotId != 0) ? (Button) container.findViewById(screenshotId) : null;
             Button selectBtn = (selectId != 0) ? (Button) container.findViewById(selectId) : null;
+
+            if (Settings.clearAllHideActionsRow) {
+                View oldBtn = container.findViewWithTag(TAG_CLEAR_ALL_BTN);
+                if (oldBtn != null) container.removeView(oldBtn);
+                View oldParentBtn = parent.findViewWithTag(TAG_CLEAR_ALL_BTN);
+                if (oldParentBtn != null) parent.removeView(oldParentBtn);
+
+                if (Settings.clearAllMode == CLEAR_MODE_BOTTOM) {
+                    addButtonToBottom(context, parent, container, selectBtn != null ? selectBtn : screenshotBtn);
+                }
+                enforceActionsRowHidden(parent);
+                return;
+            }
+
+            View oldBtn = container.findViewWithTag(TAG_CLEAR_ALL_BTN);
+            if (oldBtn != null) container.removeView(oldBtn);
+            View oldParentBtn = parent.findViewWithTag(TAG_CLEAR_ALL_BTN);
+            if (oldParentBtn != null) parent.removeView(oldParentBtn);
 
             switch (Settings.clearAllMode) {
                 case CLEAR_MODE_REPLACE_SCREENSHOT:
@@ -563,6 +617,42 @@ public class RecentsUnifiedHook extends BaseHook {
         } catch (Throwable e) {
             logError("Failed to update ClearAll", e);
         }
+    }
+
+    @SuppressLint("DiscouragedApi")
+    private void enforceActionsRowHidden(ViewGroup parent) {
+        if (!Settings.clearAllHideActionsRow) return;
+        Context context = parent.getContext();
+        Resources res = context.getResources();
+        String pkg = context.getPackageName();
+
+        int screenshotId = res.getIdentifier("action_screenshot", "id", pkg);
+        int selectId = res.getIdentifier("action_select", "id", pkg);
+        int[] nativeButtons = new int[] { screenshotId, selectId };
+        for (int buttonId : nativeButtons) {
+            if (buttonId == 0) continue;
+            View nativeButton = parent.findViewById(buttonId);
+            if (nativeButton == null) continue;
+            if (nativeButton instanceof Button) {
+                applyPlaceholderButton((Button) nativeButton);
+            } else {
+                nativeButton.setVisibility(View.INVISIBLE);
+                nativeButton.setEnabled(false);
+                nativeButton.setClickable(false);
+                nativeButton.setAlpha(0f);
+            }
+        }
+    }
+
+    private void applyPlaceholderButton(Button btn) {
+        btn.setText("");
+        btn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        btn.setEnabled(false);
+        btn.setClickable(false);
+        btn.setLongClickable(false);
+        btn.setOnClickListener(null);
+        btn.setAlpha(0f);
+        btn.setVisibility(View.INVISIBLE);
     }
 
     private void transformButton(final Context context, Button btn) {

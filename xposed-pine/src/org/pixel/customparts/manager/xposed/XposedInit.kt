@@ -15,6 +15,9 @@ import org.pixel.customparts.hooks.recents.*
 
 import org.pixel.customparts.hooks.systemui.DozeTapDozeHook
 import org.pixel.customparts.hooks.systemui.DozeTapShadeHook
+import org.pixel.customparts.hooks.systemui.KeyguardBatteryPowerHook
+import org.pixel.customparts.hooks.systemui.ShadeCompactMediaHook
+import org.pixel.customparts.hooks.systemui.ShadeUnifiedSurfaceHook
 
 class XposedInit : IXposedHookLoadPackage {
 
@@ -34,6 +37,7 @@ class XposedInit : IXposedHookLoadPackage {
         
         if (lpparam.packageName != null) {
             initEdgeEffectHook(lpparam.classLoader)
+            initGlobalHooks(lpparam.classLoader)
         }
 
         
@@ -46,6 +50,7 @@ class XposedInit : IXposedHookLoadPackage {
             val hooks: List<BaseHook> = listOf(
                 GridSizeAppMenuHook(),
                 UnifiedLauncherHook(),
+                // OxygenRecentsIconStripHook(),
                 RecentsUnifiedHook()
             ).sortedByDescending { it.priority }
 
@@ -58,7 +63,10 @@ class XposedInit : IXposedHookLoadPackage {
 
             val hooks: List<BaseHook> = listOf(
                 DozeTapDozeHook(),
-                DozeTapShadeHook()
+                DozeTapShadeHook(),
+                KeyguardBatteryPowerHook(),
+                ShadeUnifiedSurfaceHook(),
+                ShadeCompactMediaHook()
             ).sortedByDescending { it.priority }
 
             applyHooks(hooks, lpparam.classLoader)
@@ -83,6 +91,15 @@ class XposedInit : IXposedHookLoadPackage {
         }
     }
 
+    private fun initGlobalHooks(classLoader: ClassLoader) {
+        val hooks: List<BaseHook> = listOf(
+            MagnifierHook(),
+            ActivityTransitionHook(),
+            PredictiveBackDisableHook()
+        )
+        applyHooks(hooks, classLoader)
+    }
+
     private fun applyHooks(hooks: List<BaseHook>, classLoader: ClassLoader) {
         hooks.forEach { hook ->
             try {
@@ -100,6 +117,25 @@ class XposedInit : IXposedHookLoadPackage {
 
     private fun hookModuleStatus(lpparam: XC_LoadPackage.LoadPackageParam) {
         try {
+            // Check Settings.Global if we should override the hook
+            val activityThreadClass = Class.forName("android.app.ActivityThread")
+            val currentApplicationMethod = activityThreadClass.getMethod("currentApplication")
+            val context = currentApplicationMethod.invoke(null) as? android.content.Context
+            
+            if (context != null) {
+                 val value = android.provider.Settings.Global.getInt(
+                    context.contentResolver, 
+                    "pixelparts_xposed_to_pine", 
+                    0
+                )
+                
+                // If setting is enabled, let the internal check handle it
+                if (value == 1) {
+                    environment.log(TAG, "ModuleStatus hook skipped due to pixelparts_xposed_to_pine=1")
+                    return
+                }
+            }
+
             val targetClass = "org.pixel.customparts.ui.ModuleStatus"
 
             XposedHelpers.findAndHookMethod(

@@ -14,6 +14,7 @@ import org.pixel.customparts.R
 import org.pixel.customparts.activities.LauncherManager
 import org.pixel.customparts.ui.GenericSwitchRow
 import org.pixel.customparts.ui.SettingsGroupCard
+import org.pixel.customparts.ui.WeakDivider
 import org.pixel.customparts.utils.dynamicStringResource
 import org.pixel.customparts.utils.SettingsCompat
 
@@ -43,10 +44,7 @@ fun NativeSearchSection(
             onInfoClick = onInfoClick
         )
 
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-            modifier = Modifier.padding(vertical = 4.dp)
-        )
+        WeakDivider()
         GenericSwitchRow(
             title = dynamicStringResource(R.string.launcher_feed_title),
             checked = feedDisabled,
@@ -67,10 +65,7 @@ fun NativeSearchSection(
             onInfoClick = onInfoClick
         )
 
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-            modifier = Modifier.padding(vertical = 4.dp)
-        )
+        WeakDivider()
         GenericSwitchRow(
             title = dynamicStringResource(R.string.launcher_top_widget_title),
             checked = topWidgetDisabled,

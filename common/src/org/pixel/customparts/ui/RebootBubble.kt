@@ -3,10 +3,12 @@ package org.pixel.customparts.ui
 import android.app.ActivityManager
 import android.content.Context
 import android.os.PowerManager
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
@@ -14,25 +16,25 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.pixel.customparts.AppConfig
 import org.pixel.customparts.R
+import org.pixel.customparts.utils.restartSystemUI
+import org.pixel.customparts.utils.runRootCommand
 import org.pixel.customparts.utils.dynamicStringResource
-import java.io.DataOutputStream
-import android.os.Process
-import android.util.Log
-import java.lang.reflect.Method
 
-private const val TAG = "SystemUI_Restarter"
+val REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING = 96.dp
 
+private const val MORPH_DURATION = 300
 
 @Composable
 fun RebootBubble(modifier: Modifier = Modifier) {
@@ -41,104 +43,184 @@ fun RebootBubble(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var confirmAction by remember { mutableStateOf<RebootAction?>(null) }
 
-    val rotation by animateFloatAsState(
-        targetValue = if (expanded) 45f else 0f,
-        animationSpec = tween(220, easing = FastOutSlowInEasing),
-        label = "fab_rotation"
+    // Shape morph: circle (28dp on 56dp = circle) → rounded card (22dp)
+    val cornerRadius by animateDpAsState(
+        targetValue = if (expanded) 22.dp else 28.dp,
+        animationSpec = tween(MORPH_DURATION, easing = FastOutSlowInEasing),
+        label = "corner"
     )
-    val density = LocalDensity.current
-    val fabSize = 56.dp
-    val fabPx = with(density) { fabSize.roundToPx() }
+    // Color morph: primary (FAB) → surfaceContainerHigh (card)
+    val containerColor by animateColorAsState(
+        targetValue = if (expanded)
+            MaterialTheme.colorScheme.surfaceContainerHigh
+        else
+            MaterialTheme.colorScheme.primary,
+        animationSpec = tween(MORPH_DURATION),
+        label = "color"
+    )
+    // Elevation morph
+    val elevation by animateDpAsState(
+        targetValue = if (expanded) 16.dp else 6.dp,
+        animationSpec = tween(MORPH_DURATION),
+        label = "elevation"
+    )
 
-    Box(modifier = modifier, contentAlignment = Alignment.BottomEnd) {
-        
-        AnimatedVisibility(
-            visible = expanded,
-            enter = expandIn(
-                expandFrom = Alignment.BottomEnd,
-                initialSize = { IntSize(fabPx, fabPx) },
-                animationSpec = tween(220, easing = FastOutSlowInEasing)
-            ) + fadeIn(animationSpec = tween(120)),
-            exit = shrinkOut(
-                shrinkTowards = Alignment.BottomEnd,
-                targetSize = { IntSize(fabPx, fabPx) },
-                animationSpec = tween(180, easing = FastOutSlowInEasing)
-            ) + fadeOut(animationSpec = tween(90))
-        ) {
-            Card(
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+    // Dismiss expanded menu on system back
+    BackHandler(enabled = expanded) { expanded = false }
+
+    // Custom layout: always report 56dp to the parent Scaffold so the FAB
+    // position stays fixed at bottom-end.  The expanded Surface overflows
+    // upward / leftward from the anchored bottom-right corner.
+    Box(
+        modifier = modifier.layout { measurable, constraints ->
+            // Let child measure with full screen so the scrim can fill it
+            val placeable = measurable.measure(
+                constraints.copy(minWidth = 0, minHeight = 0)
+            )
+            val fabSizePx = 56.dp.roundToPx()
+            layout(fabSizePx, fabSizePx) {
+                placeable.place(
+                    x = fabSizePx - placeable.width,
+                    y = fabSizePx - placeable.height
+                )
+            }
+        },
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        // Dismiss-on-outside-tap scrim — lives inside the custom layout Box,
+        // placed before the Surface so it sits behind it in z-order.
+        if (expanded) {
+            Box(
                 modifier = Modifier
-                    .padding(bottom = 64.dp)
-                    .width(IntrinsicSize.Max)
-            ) {
-                Column(modifier = Modifier.padding(8.dp)) {
-                    AnimatedRebootMenuItem(visible = expanded, delayMs = 30) {
-                        RebootMenuItem(
+                    .fillMaxSize()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = { expanded = false }
+                    )
+            )
+        }
+
+        Surface(
+            onClick = { if (!expanded) expanded = true },
+            shape = RoundedCornerShape(cornerRadius),
+            color = containerColor,
+            shadowElevation = elevation,
+        ) {
+            AnimatedContent(
+                targetState = expanded,
+                transitionSpec = {
+                    val contentIn = fadeIn(
+                        tween(
+                            durationMillis = if (targetState) MORPH_DURATION else 180,
+                            delayMillis = if (targetState) 120 else 60
+                        )
+                    )
+                    val contentOut = fadeOut(
+                        tween(durationMillis = if (targetState) 120 else 100)
+                    )
+                    val sizeAnim = SizeTransform(clip = true) { _: IntSize, _: IntSize ->
+                        tween(MORPH_DURATION, easing = FastOutSlowInEasing)
+                    }
+                    contentIn togetherWith contentOut using sizeAnim
+                },
+                contentAlignment = Alignment.BottomEnd,
+                label = "bubble_morph"
+            ) { isExpanded ->
+                if (isExpanded) {
+                    Column(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .width(IntrinsicSize.Max)
+                    ) {
+                        StaggeredMenuItem(
                             icon = Icons.Rounded.Home,
                             label = dynamicStringResource(R.string.reboot_launcher),
                             containerColor = MaterialTheme.colorScheme.primaryContainer,
                             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            delayMs = 40,
                             onClick = {
                                 expanded = false
-                                scope.launch(Dispatchers.IO) {
-                                    performRebootLauncher(context)
-                                }
+                                scope.launch(Dispatchers.IO) { performRebootLauncher(context) }
                             }
                         )
-                    }
-                    AnimatedRebootMenuItem(visible = expanded, delayMs = 80) {
-                        RebootMenuItem(
+                        StaggeredMenuItem(
                             icon = Icons.Rounded.SettingsApplications,
                             label = dynamicStringResource(R.string.reboot_systemui),
                             containerColor = MaterialTheme.colorScheme.secondaryContainer,
                             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            delayMs = 90,
                             onClick = {
                                 expanded = false
                                 confirmAction = RebootAction.SYSTEMUI
                             }
                         )
-                    }
-                    AnimatedRebootMenuItem(visible = expanded, delayMs = 130) {
-                        RebootMenuItem(
+                        StaggeredMenuItem(
                             icon = Icons.Rounded.RestartAlt,
                             label = dynamicStringResource(R.string.reboot_system),
                             containerColor = MaterialTheme.colorScheme.errorContainer,
                             contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                            delayMs = 140,
                             onClick = {
                                 expanded = false
                                 confirmAction = RebootAction.SYSTEM
                             }
                         )
+                        // Close button — left-aligned, bold icon + bold text
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 4.dp, end = 4.dp, top = 4.dp, bottom = 0.dp)
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null,
+                                    onClick = { expanded = false }
+                                )
+                                .padding(horizontal = 16.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Icon(
+                                Icons.Rounded.Close,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(Modifier.width(10.dp))
+                            Text(
+                                text = dynamicStringResource(R.string.btn_close),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                } else {
+                    // Collapsed: 56×56 circle with icon
+                    Box(
+                        modifier = Modifier.size(56.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Build,
+                            contentDescription = "Reboot menu",
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                        )
                     }
                 }
             }
         }
-
-        FloatingActionButton(
-            onClick = { expanded = !expanded },
-            shape = CircleShape,
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Build,
-                contentDescription = "Reboot menu",
-                modifier = Modifier.rotate(rotation)
-            )
-        }
     }
 
+    // --- confirm dialog ---
     if (confirmAction != null) {
         val action = confirmAction!!
         AlertDialog(
             onDismissRequest = { confirmAction = null },
             icon = {
                 Icon(
-                    imageVector = if (action == RebootAction.SYSTEM) Icons.Rounded.RestartAlt else Icons.Rounded.SettingsApplications,
+                    imageVector = if (action == RebootAction.SYSTEM) Icons.Rounded.RestartAlt
+                                  else Icons.Rounded.SettingsApplications,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.error
                 )
@@ -165,7 +247,7 @@ fun RebootBubble(modifier: Modifier = Modifier) {
                         scope.launch(Dispatchers.IO) {
                             when (action) {
                                 RebootAction.SYSTEM -> performRebootSystem(context)
-                                RebootAction.SYSTEMUI -> performRebootSystemUI(context)
+                                RebootAction.SYSTEMUI -> restartSystemUI(context)
                             }
                         }
                         confirmAction = null
@@ -188,136 +270,24 @@ fun RebootBubble(modifier: Modifier = Modifier) {
 }
 
 
-private fun performRebootLauncher(context: Context) {
-    if (AppConfig.IS_XPOSED) {
-        runRootCommand("am force-stop com.google.android.apps.nexuslauncher")
-    } else {
-        try {
-            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            am.forceStopPackage("com.google.android.apps.nexuslauncher")
-            am.forceStopPackage("com.android.launcher3")
-            am.forceStopPackage("com.google.android.apps.pixel.launcher")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-}
-
-private fun performRebootSystemUI(context: Context) {
-    if (AppConfig.IS_XPOSED) {
-        runRootCommand("killall com.android.systemui")
-    } else {
-        Log.d(TAG, "Starting SystemUI restart sequence...")
-
-        // --- Попытка №1: ActivityManager.forceStopPackage (через Reflection) ---
-        // Это самый "чистый" системный метод.
-        // try {
-        //     Log.d(TAG, "Attempt 1: forceStopPackage via Reflection")
-        //     val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        //     val forceStopPackage: Method = am.javaClass.getMethod("forceStopPackage", String::class.java)
-        //     forceStopPackage.invoke(am, "com.android.systemui")
-        //     Log.d(TAG, "Attempt 1 success (invoked)")
-        //     return 
-        // } catch (e: Exception) {
-        //     Log.e(TAG, "Attempt 1 failed: ${e.message}")
-        // }
-
-        // --- Попытка №2: IActivityManager.killApplicationProcess ---
-        // Прямое обращение к системному сервису.
-        try {
-            Log.d(TAG, "Attempt 2: IActivityManager.killApplicationProcess")
-            val amNative = Class.forName("android.app.ActivityManagerNative")
-            val getDefault = amNative.getMethod("getDefault")
-            val iam = getDefault.invoke(null)
-            
-            // В разных версиях Android сигнатура может отличаться (наличие userId)
-            val killMethod = iam.javaClass.getMethod("killApplicationProcess", String::class.java, Int::class.javaPrimitiveType)
-            killMethod.invoke(iam, "com.android.systemui", 0) // 0 - USER_SYSTEM
-            Log.d(TAG, "Attempt 2 success")
-            return
-        } catch (e: Exception) {
-            Log.e(TAG, "Attempt 2 failed: ${e.message}")
-        }
-
-        // --- Попытка №3: Прямой поиск PID и Process.killProcess ---
-        // Самый надежный способ, если есть системный UID.
-        try {
-            Log.d(TAG, "Attempt 3: Manual PID hunt and killProcess")
-            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            val processes = am.runningAppProcesses
-            processes?.forEach { info ->
-                if (info.processName == "com.android.systemui") {
-                    Log.d(TAG, "Found SystemUI PID: ${info.pid}. Killing...")
-                    Process.killProcess(info.pid)
-                    // Можно также попробовать Process.sendSignal(info.pid, 9)
-                    Log.d(TAG, "Attempt 3 success")
-                    return
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Attempt 3 failed: ${e.message}")
-        }
-
-        // --- Попытка №4: Альтернативный IActivityManager (через ServiceManager) ---
-        try {
-            Log.d(TAG, "Attempt 4: IActivityManager via ServiceManager")
-            val serviceManager = Class.forName("android.os.ServiceManager")
-            val getService = serviceManager.getMethod("getService", String::class.java)
-            val binder = getService.invoke(null, Context.ACTIVITY_SERVICE) as android.os.IBinder
-            val iAmStub = Class.forName("android.app.IActivityManager\$Stub")
-            val asInterface = iAmStub.getMethod("asInterface", android.os.IBinder::class.java)
-            val iam = asInterface.invoke(null, binder)
-            
-            iam.javaClass.getMethod("forceStopPackage", String::class.java, Int::class.javaPrimitiveType)
-                .invoke(iam, "com.android.systemui", 0)
-            Log.d(TAG, "Attempt 4 success")
-            return
-        } catch (e: Exception) {
-            Log.e(TAG, "Attempt 4 failed: ${e.message}")
-        }
-
-        Log.e(TAG, "All restart attempts failed. Check SELinux or UID.")
-    }
-}
-
-private fun performRebootSystem(context: Context) {
-    if (AppConfig.IS_XPOSED) {
-        runRootCommand("svc power reboot")
-    } else {
-        try {
-            val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-            pm.reboot(null)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-}
-
 @Composable
-private fun AnimatedRebootMenuItem(
-    visible: Boolean,
-    delayMs: Int,
-    content: @Composable () -> Unit
-) {
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn(animationSpec = tween(160, delayMs)) +
-            slideInVertically(animationSpec = tween(200, delayMs)) { height -> -height / 2 },
-        exit = fadeOut(animationSpec = tween(120)) +
-            slideOutVertically(animationSpec = tween(120)) { height -> height / 2 }
-    ) {
-        content()
-    }
-}
-
-@Composable
-private fun RebootMenuItem(
+private fun StaggeredMenuItem(
     icon: ImageVector,
     label: String,
     containerColor: androidx.compose.ui.graphics.Color,
     contentColor: androidx.compose.ui.graphics.Color,
+    delayMs: Int,
     onClick: () -> Unit
 ) {
+    val offsetY = remember { Animatable(28f) }
+    val alpha = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        delay(delayMs.toLong())
+        launch { offsetY.animateTo(0f, spring(dampingRatio = 0.65f, stiffness = 320f)) }
+        launch { alpha.animateTo(1f, tween(260)) }
+    }
+
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(14.dp),
@@ -325,6 +295,10 @@ private fun RebootMenuItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
+            .graphicsLayer {
+                this.alpha = alpha.value
+                translationY = offsetY.value
+            }
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -342,23 +316,32 @@ private fun RebootMenuItem(
     }
 }
 
-private enum class RebootAction { SYSTEM, SYSTEMUI }
-
-private fun runRootCommand(command: String) {
-    try {
-        val process = Runtime.getRuntime().exec("su")
-        val os = DataOutputStream(process.outputStream)
-        os.writeBytes("$command\n")
-        os.writeBytes("exit\n")
-        os.flush()
-        process.waitFor()
-        os.close()
-    } catch (e: Exception) {
-        e.printStackTrace()
+private fun performRebootLauncher(context: Context) {
+    if (AppConfig.IS_XPOSED) {
+        runRootCommand("am force-stop com.google.android.apps.nexuslauncher")
+    } else {
         try {
-            Runtime.getRuntime().exec(arrayOf("sh", "-c", command))
-        } catch (ex: Exception) {
-            ex.printStackTrace()
+            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            am.forceStopPackage("com.google.android.apps.nexuslauncher")
+            am.forceStopPackage("com.android.launcher3")
+            am.forceStopPackage("com.google.android.apps.pixel.launcher")
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }
+
+private fun performRebootSystem(context: Context) {
+    if (AppConfig.IS_XPOSED) {
+        runRootCommand("svc power reboot")
+    } else {
+        try {
+            val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
+            pm.reboot(null)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
+
+private enum class RebootAction { SYSTEM, SYSTEMUI }

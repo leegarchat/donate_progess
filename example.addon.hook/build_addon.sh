@@ -276,7 +276,7 @@ echo "  [4/4] Packaging JAR..."
 cd "$BUILD_DIR/dex"
 
 mkdir -p META-INF
-cp "$META_DIR/addon.json" META-INF/
+cp "$META_DIR/"* META-INF/
 
 jar -J-Dfile.encoding=UTF-8 cf "$OUT_DIR/$ADDON_NAME.jar" classes.dex META-INF/
 

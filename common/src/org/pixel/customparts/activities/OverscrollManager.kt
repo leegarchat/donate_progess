@@ -10,6 +10,8 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.FileOutputStream
 import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 import org.pixel.customparts.AppConfig
 
 data class SavedProfile(val name: String, val jsonData: JSONObject)
@@ -74,6 +76,15 @@ object OverscrollManager {
     val KEY_ANIMATION_SPEED get() = "overscroll_anim_speed$SUFFIX"
     val KEY_LERP_MAIN_IDLE get() = "overscroll_lerp_main_idle$SUFFIX"
     val KEY_LERP_MAIN_RUN get() = "overscroll_lerp_main_run$SUFFIX"
+
+    // Delta Normalization (Compose intelligent smoothing)
+    val KEY_NORM_ENABLED get() = "overscroll_norm_enabled$SUFFIX"
+    val KEY_NORM_REF_DELTA get() = "overscroll_norm_ref_delta$SUFFIX"
+    val KEY_NORM_DETECT_MUL get() = "overscroll_norm_detect_mul$SUFFIX"
+    val KEY_NORM_FACTOR get() = "overscroll_norm_factor$SUFFIX"
+    val KEY_NORM_WINDOW get() = "overscroll_norm_window$SUFFIX"
+    val KEY_NORM_RAMP get() = "overscroll_norm_ramp$SUFFIX"
+    val KEY_NORM_DETECT_MODE get() = "overscroll_norm_detect_mode$SUFFIX"
 
     fun isMasterEnabled(context: Context) = Settings.Global.getInt(context.contentResolver, KEY_ENABLED, 1) == 1
     
@@ -140,6 +151,9 @@ object OverscrollManager {
         Settings.Global.putString(context.contentResolver, KEY_SAVED_PROFILES, arr.toString())
     }
 
+    /** Убирает платформенный суффикс _pine/_xposed из ключа для кросс-платформенного JSON */
+    private fun stripSuffix(key: String): String = key.removeSuffix("_pine").removeSuffix("_xposed")
+
     fun getAppConfigs(context: Context): List<AppConfigItem> {
         val raw = Settings.Global.getString(context.contentResolver, KEY_PACKAGES_CONFIG) ?: return emptyList()
         val list = mutableListOf<AppConfigItem>()
@@ -167,27 +181,43 @@ object OverscrollManager {
 
     private fun collectCurrentSettingsJson(context: Context): JSONObject {
         val json = JSONObject()
-        json.put(KEY_ENABLED, Settings.Global.getInt(context.contentResolver, KEY_ENABLED, 1))
-        json.put(KEY_LOGGING, Settings.Global.getInt(context.contentResolver, KEY_LOGGING, 0))
-        json.put(KEY_INVERT_ANCHOR, Settings.Global.getInt(context.contentResolver, KEY_INVERT_ANCHOR, 1))
-        json.put(KEY_PACKAGES_CONFIG, Settings.Global.getString(context.contentResolver, KEY_PACKAGES_CONFIG) ?: "")
+        // Ключи в JSON хранятся БЕЗ суффикса _pine/_xposed — кросс-платформенный формат.
+        // Для чтения из Settings.Global используем полный ключ (с суффиксом),
+        // а для записи в JSON — stripSuffix(key).
+        json.put(stripSuffix(KEY_ENABLED), Settings.Global.getInt(context.contentResolver, KEY_ENABLED, 1))
+        json.put(stripSuffix(KEY_LOGGING), Settings.Global.getInt(context.contentResolver, KEY_LOGGING, 0))
+        json.put(stripSuffix(KEY_INVERT_ANCHOR), Settings.Global.getInt(context.contentResolver, KEY_INVERT_ANCHOR, 1))
+        json.put(stripSuffix(KEY_PACKAGES_CONFIG), Settings.Global.getString(context.contentResolver, KEY_PACKAGES_CONFIG) ?: "")
 
-        val floatKeys = listOf(
-            KEY_PULL_COEFF, KEY_STIFFNESS, KEY_DAMPING, KEY_FLING, KEY_RESISTANCE_EXPONENT,
-            KEY_PHYSICS_MIN_VEL, KEY_PHYSICS_MIN_VAL, KEY_ANIMATION_SPEED, KEY_INPUT_SMOOTH_FACTOR,
-            KEY_LERP_MAIN_IDLE, KEY_LERP_MAIN_RUN, KEY_COMPOSE_SCALE 
+        val floatKeysDefaults = mapOf(
+            KEY_PULL_COEFF to 1.5141f, KEY_STIFFNESS to 148.6191f, KEY_DAMPING to 0.9976f,
+            KEY_FLING to 1.3679f, KEY_RESISTANCE_EXPONENT to 4.0f,
+            KEY_PHYSICS_MIN_VEL to 8.0f, KEY_PHYSICS_MIN_VAL to 0.6f,
+            KEY_ANIMATION_SPEED to 168.5232f, KEY_INPUT_SMOOTH_FACTOR to 0.5f,
+            KEY_LERP_MAIN_IDLE to 0.4f, KEY_LERP_MAIN_RUN to 0.6999f, KEY_COMPOSE_SCALE to 3.3299f,
+            KEY_NORM_REF_DELTA to 9.9999f, KEY_NORM_DETECT_MUL to 0f, KEY_NORM_FACTOR to 0.33f
         )
-        for (k in floatKeys) json.put(k, Settings.Global.getFloat(context.contentResolver, k, 0f).toDouble())
+        for ((k, def) in floatKeysDefaults) json.put(stripSuffix(k), Settings.Global.getFloat(context.contentResolver, k, def).toDouble())
 
         val modeKeys = listOf(KEY_SCALE_MODE, KEY_ZOOM_MODE, KEY_H_SCALE_MODE)
-        for (k in modeKeys) json.put(k, Settings.Global.getInt(context.contentResolver, k, 0))
+        for (k in modeKeys) json.put(stripSuffix(k), Settings.Global.getInt(context.contentResolver, k, 0))
 
-        val scaleFloatKeys = listOf(
-            KEY_SCALE_INTENSITY, KEY_SCALE_INTENSITY_HORIZ, KEY_SCALE_LIMIT_MIN, KEY_SCALE_ANCHOR_X, KEY_SCALE_ANCHOR_Y, KEY_SCALE_ANCHOR_X_HORIZ, KEY_SCALE_ANCHOR_Y_HORIZ,
-            KEY_ZOOM_INTENSITY, KEY_ZOOM_INTENSITY_HORIZ, KEY_ZOOM_LIMIT_MIN, KEY_ZOOM_ANCHOR_X, KEY_ZOOM_ANCHOR_Y, KEY_ZOOM_ANCHOR_X_HORIZ, KEY_ZOOM_ANCHOR_Y_HORIZ,
-            KEY_H_SCALE_INTENSITY, KEY_H_SCALE_INTENSITY_HORIZ, KEY_H_SCALE_LIMIT_MIN, KEY_H_SCALE_ANCHOR_X, KEY_H_SCALE_ANCHOR_Y, KEY_H_SCALE_ANCHOR_X_HORIZ, KEY_H_SCALE_ANCHOR_Y_HORIZ
+        // Delta normalization int keys (normEnabled, normDetectMode are true ints)
+        json.put(stripSuffix(KEY_NORM_ENABLED), Settings.Global.getInt(context.contentResolver, KEY_NORM_ENABLED, 1))
+        json.put(stripSuffix(KEY_NORM_DETECT_MODE), Settings.Global.getInt(context.contentResolver, KEY_NORM_DETECT_MODE, 1))
+        // normWindow and normRamp stored as float (UI slider), hook reads via getFloatSetting
+        json.put(stripSuffix(KEY_NORM_WINDOW), Settings.Global.getFloat(context.contentResolver, KEY_NORM_WINDOW, 2f).toDouble())
+        json.put(stripSuffix(KEY_NORM_RAMP), Settings.Global.getFloat(context.contentResolver, KEY_NORM_RAMP, 1f).toDouble())
+
+        val scaleFloatDefaults = mapOf(
+            KEY_SCALE_INTENSITY to 0.31f, KEY_SCALE_INTENSITY_HORIZ to 0.3786f, KEY_SCALE_LIMIT_MIN to 0.1f,
+            KEY_SCALE_ANCHOR_X to 0.5f, KEY_SCALE_ANCHOR_Y to 0.5f, KEY_SCALE_ANCHOR_X_HORIZ to 0.5f, KEY_SCALE_ANCHOR_Y_HORIZ to 0.5f,
+            KEY_ZOOM_INTENSITY to 0.2f, KEY_ZOOM_INTENSITY_HORIZ to 0.2f, KEY_ZOOM_LIMIT_MIN to 0.1f,
+            KEY_ZOOM_ANCHOR_X to 0.5f, KEY_ZOOM_ANCHOR_Y to 0.5f, KEY_ZOOM_ANCHOR_X_HORIZ to 0.5f, KEY_ZOOM_ANCHOR_Y_HORIZ to 0.5f,
+            KEY_H_SCALE_INTENSITY to 0.2f, KEY_H_SCALE_INTENSITY_HORIZ to 0.0f, KEY_H_SCALE_LIMIT_MIN to 0.1f,
+            KEY_H_SCALE_ANCHOR_X to 0.5f, KEY_H_SCALE_ANCHOR_Y to 0.5f, KEY_H_SCALE_ANCHOR_X_HORIZ to 0.5f, KEY_H_SCALE_ANCHOR_Y_HORIZ to 0.5f
         )
-        for (k in scaleFloatKeys) json.put(k, Settings.Global.getFloat(context.contentResolver, k, 0f).toDouble())
+        for ((k, def) in scaleFloatDefaults) json.put(stripSuffix(k), Settings.Global.getFloat(context.contentResolver, k, def).toDouble())
         
         return json
     }
@@ -214,7 +244,8 @@ object OverscrollManager {
                     val isInt = key.endsWith("_mode") || 
                                key.contains("enabled") || 
                                key.contains("logging") || 
-                               key.contains("invert_anchor")
+                               key.contains("invert_anchor") ||
+                               key.contains("norm_detect_mode")
                     
                     if (isInt) {
                         Settings.Global.putInt(context.contentResolver, key, valObj.toInt())
@@ -239,42 +270,50 @@ object OverscrollManager {
         Settings.Global.putInt(cr, KEY_LOGGING, 0)
         Settings.Global.putString(cr, KEY_ACTIVE_PROFILE, null)
         Settings.Global.putInt(cr, KEY_INVERT_ANCHOR, 1)
-        Settings.Global.putFloat(cr, KEY_PULL_COEFF, 0.5f)
-        Settings.Global.putFloat(cr, KEY_STIFFNESS, 450f)
-        Settings.Global.putFloat(cr, KEY_DAMPING, 0.7f)
-        Settings.Global.putFloat(cr, KEY_FLING, 0.6f)
+        Settings.Global.putFloat(cr, KEY_PULL_COEFF, 1.5141f)
+        Settings.Global.putFloat(cr, KEY_STIFFNESS, 148.6191f)
+        Settings.Global.putFloat(cr, KEY_DAMPING, 0.9976f)
+        Settings.Global.putFloat(cr, KEY_FLING, 1.3679f)
         Settings.Global.putFloat(cr, KEY_RESISTANCE_EXPONENT, 4.0f)
         Settings.Global.putFloat(cr, KEY_PHYSICS_MIN_VEL, 8.0f)
         Settings.Global.putFloat(cr, KEY_PHYSICS_MIN_VAL, 0.6f)
-        Settings.Global.putFloat(cr, KEY_ANIMATION_SPEED, 100.0f)
+        Settings.Global.putFloat(cr, KEY_ANIMATION_SPEED, 168.5232f)
         Settings.Global.putFloat(cr, KEY_INPUT_SMOOTH_FACTOR, 0.5f)
         Settings.Global.putFloat(cr, KEY_LERP_MAIN_IDLE, 0.4f)
-        Settings.Global.putFloat(cr, KEY_LERP_MAIN_RUN, 0.7f)
-        Settings.Global.putFloat(cr, KEY_COMPOSE_SCALE, 3.33f)
+        Settings.Global.putFloat(cr, KEY_LERP_MAIN_RUN, 0.6999f)
+        Settings.Global.putFloat(cr, KEY_COMPOSE_SCALE, 3.3299f)
         Settings.Global.putInt(cr, KEY_SCALE_MODE, 0)
-        Settings.Global.putFloat(cr, KEY_SCALE_INTENSITY, 0.0f)
-        Settings.Global.putFloat(cr, KEY_SCALE_INTENSITY_HORIZ, 0.0f)
-        Settings.Global.putFloat(cr, KEY_SCALE_LIMIT_MIN, 0.3f)
+        Settings.Global.putFloat(cr, KEY_SCALE_INTENSITY, 0.31f)
+        Settings.Global.putFloat(cr, KEY_SCALE_INTENSITY_HORIZ, 0.3786f)
+        Settings.Global.putFloat(cr, KEY_SCALE_LIMIT_MIN, 0.1f)
         Settings.Global.putFloat(cr, KEY_SCALE_ANCHOR_X, 0.5f)
         Settings.Global.putFloat(cr, KEY_SCALE_ANCHOR_Y, 0.5f)
         Settings.Global.putFloat(cr, KEY_SCALE_ANCHOR_X_HORIZ, 0.5f)
         Settings.Global.putFloat(cr, KEY_SCALE_ANCHOR_Y_HORIZ, 0.5f)
         Settings.Global.putInt(cr, KEY_ZOOM_MODE, 0)
-        Settings.Global.putFloat(cr, KEY_ZOOM_INTENSITY, 0.0f)
-        Settings.Global.putFloat(cr, KEY_ZOOM_INTENSITY_HORIZ, 0.0f)
-        Settings.Global.putFloat(cr, KEY_ZOOM_LIMIT_MIN, 0.3f)
+        Settings.Global.putFloat(cr, KEY_ZOOM_INTENSITY, 0.2f)
+        Settings.Global.putFloat(cr, KEY_ZOOM_INTENSITY_HORIZ, 0.2f)
+        Settings.Global.putFloat(cr, KEY_ZOOM_LIMIT_MIN, 0.1f)
         Settings.Global.putFloat(cr, KEY_ZOOM_ANCHOR_X, 0.5f)
         Settings.Global.putFloat(cr, KEY_ZOOM_ANCHOR_Y, 0.5f)
         Settings.Global.putFloat(cr, KEY_ZOOM_ANCHOR_X_HORIZ, 0.5f)
         Settings.Global.putFloat(cr, KEY_ZOOM_ANCHOR_Y_HORIZ, 0.5f)
         Settings.Global.putInt(cr, KEY_H_SCALE_MODE, 0)
-        Settings.Global.putFloat(cr, KEY_H_SCALE_INTENSITY, 0.0f)
+        Settings.Global.putFloat(cr, KEY_H_SCALE_INTENSITY, 0.2f)
         Settings.Global.putFloat(cr, KEY_H_SCALE_INTENSITY_HORIZ, 0.0f)
-        Settings.Global.putFloat(cr, KEY_H_SCALE_LIMIT_MIN, 0.3f)
+        Settings.Global.putFloat(cr, KEY_H_SCALE_LIMIT_MIN, 0.1f)
         Settings.Global.putFloat(cr, KEY_H_SCALE_ANCHOR_X, 0.5f)
         Settings.Global.putFloat(cr, KEY_H_SCALE_ANCHOR_Y, 0.5f)
         Settings.Global.putFloat(cr, KEY_H_SCALE_ANCHOR_X_HORIZ, 0.5f)
         Settings.Global.putFloat(cr, KEY_H_SCALE_ANCHOR_Y_HORIZ, 0.5f)
+        // Delta normalization
+        Settings.Global.putInt(cr, KEY_NORM_ENABLED, 1)
+        Settings.Global.putFloat(cr, KEY_NORM_REF_DELTA, 9.9999f)
+        Settings.Global.putFloat(cr, KEY_NORM_DETECT_MUL, 0f)
+        Settings.Global.putFloat(cr, KEY_NORM_FACTOR, 0.33f)
+        Settings.Global.putFloat(cr, KEY_NORM_WINDOW, 2f)
+        Settings.Global.putFloat(cr, KEY_NORM_RAMP, 1f)
+        Settings.Global.putInt(cr, KEY_NORM_DETECT_MODE, 1)
     }
 
     suspend fun exportSettings(context: Context, uri: Uri) = withContext(Dispatchers.IO) {
@@ -301,6 +340,79 @@ object OverscrollManager {
         } catch (e: Exception) { 
             e.printStackTrace()
             false 
+        }
+    }
+
+    // ── Network configs from GitHub ──
+
+    private const val GITHUB_API_URL = "https://api.github.com/repos/leegarchat/PixelExtraParts/contents/overscroll.configs"
+    
+    data class NetworkConfig(val name: String, val downloadUrl: String)
+
+    /**
+     * Fetches the list of .json files from the GitHub repo directory.
+     * Returns list of NetworkConfig with display name (filename without .json) and raw download URL.
+     */
+    suspend fun fetchNetworkConfigs(): Result<List<NetworkConfig>> = withContext(Dispatchers.IO) {
+        try {
+            val url = URL(GITHUB_API_URL)
+            val conn = url.openConnection() as HttpURLConnection
+            conn.requestMethod = "GET"
+            conn.setRequestProperty("Accept", "application/vnd.github.v3+json")
+            conn.connectTimeout = 10_000
+            conn.readTimeout = 10_000
+
+            if (conn.responseCode != 200) {
+                return@withContext Result.failure(Exception("HTTP ${conn.responseCode}"))
+            }
+
+            val body = conn.inputStream.bufferedReader().use { it.readText() }
+            conn.disconnect()
+
+            val arr = JSONArray(body)
+            val configs = mutableListOf<NetworkConfig>()
+            for (i in 0 until arr.length()) {
+                val obj = arr.getJSONObject(i)
+                val fileName = obj.getString("name")
+                if (fileName.endsWith(".json", ignoreCase = true)) {
+                    val displayName = fileName.removeSuffix(".json").removeSuffix(".JSON")
+                    val rawUrl = obj.getString("download_url")
+                    configs.add(NetworkConfig(displayName, rawUrl))
+                }
+            }
+            Result.success(configs)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Downloads a config JSON from URL, applies it, and saves as a profile.
+     */
+    suspend fun applyNetworkConfig(context: Context, config: NetworkConfig): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val url = URL(config.downloadUrl)
+            val conn = url.openConnection() as HttpURLConnection
+            conn.connectTimeout = 10_000
+            conn.readTimeout = 10_000
+
+            val body = conn.inputStream.bufferedReader().use { it.readText() }
+            conn.disconnect()
+
+            val json = JSONObject(body)
+            applySettingsFromJson(context, json)
+
+            // Save as profile
+            val profiles = getSavedProfiles(context).toMutableList()
+            profiles.removeAll { it.name == config.name }
+            profiles.add(SavedProfile(config.name, json))
+            saveProfilesToGlobal(context, profiles)
+            Settings.Global.putString(context.contentResolver, KEY_ACTIVE_PROFILE, config.name)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
     }
 }

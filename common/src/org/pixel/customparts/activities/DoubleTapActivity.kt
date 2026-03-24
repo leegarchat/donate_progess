@@ -3,12 +3,16 @@ package org.pixel.customparts.activities
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -23,27 +27,34 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import androidx.compose.material3.HorizontalDivider
 import org.pixel.customparts.AppConfig
 import org.pixel.customparts.R
 import org.pixel.customparts.dynamicDarkColorScheme
 import org.pixel.customparts.dynamicLightColorScheme
-import org.pixel.customparts.ui.ExpandableWarningCard
 import org.pixel.customparts.ui.GenericSwitchRow
 import org.pixel.customparts.ui.InfoDialog
 import org.pixel.customparts.ui.ModuleStatus
+import org.pixel.customparts.ui.REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING
 import org.pixel.customparts.ui.RebootBubble
 import org.pixel.customparts.ui.SettingsGroupCard
 import org.pixel.customparts.ui.SliderSetting
+import org.pixel.customparts.ui.TopBarBlurOverlay
+import org.pixel.customparts.ui.recordLayer
+import org.pixel.customparts.ui.rememberGraphicsLayerRecordingState
 import org.pixel.customparts.ui.launcher.Dt2sUiSection
 import org.pixel.customparts.utils.dynamicStringResource
 
@@ -51,6 +62,7 @@ class DoubleTapActivity : ComponentActivity() {
 	@androidx.compose.material3.ExperimentalMaterial3Api
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		enableEdgeToEdge()
 		setContent {
 			val darkTheme = isSystemInDarkTheme()
 			val context = androidx.compose.ui.platform.LocalContext.current
@@ -73,6 +85,9 @@ class DoubleTapActivity : ComponentActivity() {
 fun DoubleTapScreen(onBack: () -> Unit) {
 	val context = androidx.compose.ui.platform.LocalContext.current
 	val scope = rememberCoroutineScope()
+	val blurState = rememberGraphicsLayerRecordingState()
+	val lazyListState = rememberLazyListState()
+	val isScrolled by remember { derivedStateOf { lazyListState.canScrollBackward } }
 
 	var infoDialogTitle by remember { mutableStateOf<String?>(null) }
 	var infoDialogText by remember { mutableStateOf<String?>(null) }
@@ -106,24 +121,29 @@ fun DoubleTapScreen(onBack: () -> Unit) {
 					IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") }
 				},
 				colors = TopAppBarDefaults.topAppBarColors(
-					containerColor = MaterialTheme.colorScheme.surfaceContainer
+					containerColor = Color.Transparent,
+					scrolledContainerColor = Color.Transparent
 				)
 			)
 		}
 	) { innerPadding ->
-		LazyColumn(
-			modifier = Modifier.padding(innerPadding).fillMaxSize(),
-			contentPadding = PaddingValues(16.dp),
-			verticalArrangement = Arrangement.spacedBy(16.dp)
-		) {
+		Box(modifier = Modifier.fillMaxSize()) {
+			LazyColumn(
+				state = lazyListState,
+				modifier = Modifier
+					.fillMaxSize()
+					.recordLayer(blurState)
+					.background(MaterialTheme.colorScheme.surfaceContainer),
+				contentPadding = PaddingValues(
+					start = 16.dp,
+					top = innerPadding.calculateTopPadding() + 16.dp,
+					end = 16.dp,
+					bottom = innerPadding.calculateBottomPadding() + REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING
+				),
+				verticalArrangement = Arrangement.spacedBy(16.dp)
+			) {
 			item {
 				SettingsGroupCard(title = dynamicStringResource(R.string.dt_sec_wake)) {
-					ExpandableWarningCard(
-						title = dynamicStringResource(R.string.dt2w_info_title),
-						text = dynamicStringResource(R.string.dt2w_info_desc),
-						modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-					)
-
 					val dt2wDesc = if (AppConfig.IS_XPOSED) {
 						dynamicStringResource(R.string.dt2w_desc_xposed)
 					} else {
@@ -151,7 +171,7 @@ fun DoubleTapScreen(onBack: () -> Unit) {
 						}
 					)
 
-					Divider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+					HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
 
 					SliderSetting(
 						title = dynamicStringResource(R.string.dt2w_timeout_title),
@@ -183,6 +203,14 @@ fun DoubleTapScreen(onBack: () -> Unit) {
 					}
 				)
 			}
+		}
+
+			TopBarBlurOverlay(
+				modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
+				topBarHeight = innerPadding.calculateTopPadding(),
+				blurState = blurState,
+				isScrolled = isScrolled
+			)
 		}
 	}
 

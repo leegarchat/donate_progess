@@ -78,4 +78,11 @@ public abstract class BaseHook {
         }
         return defaultValue;
     }
+
+    protected String getStringSetting(Context context, String key, String defaultValue) {
+        if (env != null) {
+            return env.getString(context, key, defaultValue);
+        }
+        return defaultValue;
+    }
 }

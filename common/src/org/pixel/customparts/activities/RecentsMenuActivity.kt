@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.HorizontalDivider
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import org.pixel.customparts.AppConfig
@@ -28,10 +31,13 @@ import org.pixel.customparts.ui.launcher.ClearAllSection
 import org.pixel.customparts.utils.RecentsScaleOverlay
 import org.pixel.customparts.utils.SettingsCompat
 import org.pixel.customparts.utils.dynamicStringResource
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Alignment
 
 class RecentsMenuActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             val darkTheme = isSystemInDarkTheme()
             val context = LocalContext.current
@@ -145,6 +151,10 @@ fun RecentsMenuScreen(onBack: () -> Unit) {
         mutableFloatStateOf(Settings.Global.getInt(context.contentResolver, keyCarouselIconOffsetY, 0).toFloat()) 
     }
 
+    val blurState = rememberGraphicsLayerRecordingState()
+    val lazyListState = androidx.compose.foundation.lazy.rememberLazyListState()
+    val isScrolled by remember { derivedStateOf { lazyListState.canScrollBackward } }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         floatingActionButton = { RebootBubble() },
@@ -171,15 +181,28 @@ fun RecentsMenuScreen(onBack: () -> Unit) {
                         }
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent
+                )
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(innerPadding).fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .recordLayer(blurState)
+                    .background(MaterialTheme.colorScheme.surfaceContainer),
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    top = 16.dp + innerPadding.calculateTopPadding(),
+                    end = 16.dp,
+                    bottom = REBOOT_BUBBLE_CONTENT_BOTTOM_PADDING + innerPadding.calculateBottomPadding()
+                ),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
             
             
             item {
@@ -425,12 +448,18 @@ fun RecentsMenuScreen(onBack: () -> Unit) {
                         )
                  }
             }
-            
-            item {
-                Spacer(Modifier.height(32.dp))
-            }
         }
+        
+        TopBarBlurOverlay(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter),
+            blurState = blurState,
+            topBarHeight = innerPadding.calculateTopPadding(),
+            isScrolled = isScrolled
+        )
     }
+}
     
     if (showColorPicker) {
         ColorPickerDialog(

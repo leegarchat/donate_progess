@@ -15,6 +15,7 @@ import org.pixel.customparts.R
 import org.pixel.customparts.activities.LauncherManager
 import org.pixel.customparts.ui.GenericSwitchRow
 import org.pixel.customparts.ui.SettingsGroupCard
+import org.pixel.customparts.ui.WeakDivider
 import org.pixel.customparts.ui.SliderSetting
 import org.pixel.customparts.ui.ModuleStatus
 import org.pixel.customparts.utils.SettingsCompat
@@ -79,7 +80,7 @@ fun SearchWidgetSection(
             onInfoClick = onInfoClick
         )
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        WeakDivider()
         
         GenericSwitchRow(
             title = dynamicStringResource(R.string.search_widget_hide_search),
@@ -97,7 +98,7 @@ fun SearchWidgetSection(
             onInfoClick = onInfoClick
         )
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        WeakDivider()
         
         GenericSwitchRow(
             title = dynamicStringResource(R.string.search_widget_hide_dock),
@@ -115,7 +116,7 @@ fun SearchWidgetSection(
             onInfoClick = onInfoClick
         )
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        WeakDivider()
         
         SliderSetting(
             title = dynamicStringResource(R.string.search_widget_padding_home),
@@ -142,7 +143,7 @@ fun SearchWidgetSection(
             onInfoClick = onInfoClick
         )
         
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        WeakDivider()
         
         SliderSetting(
             title = dynamicStringResource(R.string.search_widget_padding_dock),
@@ -169,7 +170,7 @@ fun SearchWidgetSection(
             onInfoClick = onInfoClick
         )
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        WeakDivider()
         
         SliderSetting(
             title = dynamicStringResource(R.string.search_widget_padding_search),
@@ -196,7 +197,7 @@ fun SearchWidgetSection(
             onInfoClick = onInfoClick
         )
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        WeakDivider()
 
         
         SliderSetting(
@@ -224,7 +225,7 @@ fun SearchWidgetSection(
             onInfoClick = onInfoClick
         )
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        WeakDivider()
 
         SliderSetting(
             title = dynamicStringResource(R.string.search_widget_padding_dots_x),

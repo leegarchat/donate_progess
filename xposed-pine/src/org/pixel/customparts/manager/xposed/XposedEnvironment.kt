@@ -67,6 +67,17 @@ class XposedEnvironment : IHookEnvironment {
         }
     }
 
+    override fun getString(context: Context?, key: String, default: String?): String? {
+        if (context == null) return default
+        val finalKey = resolveKey(key)
+        return try {
+            Settings.Global.getString(context.contentResolver, finalKey) ?: default
+        } catch (t: Throwable) {
+            logError("Env", "Failed to read string setting $finalKey", t)
+            default
+        }
+    }
+
     override fun log(tag: String, message: String) {
         XposedBridge.log("[$tag] $message")
     }

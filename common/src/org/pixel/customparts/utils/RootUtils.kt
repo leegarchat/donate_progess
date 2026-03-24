@@ -83,3 +83,29 @@ object RootUtils {
         }
     }
 }
+
+/**
+ * Execute a shell command via su (root).
+ * Used by Xposed/root builds for operations that require root access.
+ */
+fun runRootCommand(command: String) {
+    var process: Process? = null
+    try {
+        process = Runtime.getRuntime().exec("su")
+        val os = DataOutputStream(process.outputStream)
+        os.writeBytes("$command\n")
+        os.writeBytes("exit\n")
+        os.flush()
+        os.close()
+        process.waitFor()
+    } catch (e: Exception) {
+        Log.e("RootUtils", "runRootCommand failed: $command", e)
+        try {
+            Runtime.getRuntime().exec(arrayOf("sh", "-c", command))
+        } catch (ex: Exception) {
+            Log.e("RootUtils", "Fallback sh -c also failed", ex)
+        }
+    } finally {
+        try { process?.destroy() } catch (ignored: Exception) {}
+    }
+}

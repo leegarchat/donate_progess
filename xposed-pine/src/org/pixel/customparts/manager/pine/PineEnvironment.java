@@ -65,6 +65,19 @@ public class PineEnvironment implements IHookEnvironment {
     }
 
     @Override
+    public String getString(Context context, String key, String def) {
+        if (context == null) return def;
+        String finalKey = resolveKey(key);
+        try {
+            String val = Settings.Global.getString(context.getContentResolver(), finalKey);
+            return val != null ? val : def;
+        } catch (Throwable t) {
+            logError("Env", "Failed to read string setting " + finalKey, t);
+            return def;
+        }
+    }
+
+    @Override
     public void log(String tag, String message) {
         Log.d(TAG_PREFIX, "[" + tag + "] " + message);
     }

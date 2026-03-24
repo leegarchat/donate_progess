@@ -1,38 +1,111 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <!-- General / Navigation -->
     <string name="os_title_activity">Фізика прокрутки</string>
-    <string name="os_title_playground">Пісочниця</string>
+    <string name="os_title_playground">Ігровий майданчик (Тест)</string>
     <string name="os_btn_back">Назад</string>
     <string name="btn_back">Назад</string>
     <string name="os_btn_reset">Скинути налаштування</string>
-    <string name="os_msg_reset_done">Налаштування скинуто до стандартних</string>
+    <string name="os_msg_reset_done">Повернуто до стандартних значень</string>
     <string name="os_msg_import_success">Налаштування успішно імпортовано</string>
-    <string name="os_msg_app_exists">Ця програма вже є у списку</string>
+    <string name="os_msg_app_exists">Цей додаток вже є у списку</string>
 
     <!-- Master Switch (Dynamic) -->
     <!-- Xposed Mode -->
     <string name="os_label_master_xposed">Модуль Xposed</string>
-    <string name="os_desc_master_xposed">Використовує Xposed Framework для підміни системного класу EdgeEffect.\n\nДозволяє впровадити фізику у всі додатки без модифікації системи. Якщо модуль не активний в LSPosed, ефекти працюватимуть тільки в цьому додатку (демо-режим).</string>
+    <string name="os_desc_master_xposed">Використовує фреймворк Xposed для хуку системного класу EdgeEffect.\n\nДозволяє впроваджувати фізику в усі додатки без модифікації системи. Якщо модуль неактивний у LSPosed, ефекти працюватимуть лише в цьому додатку (демо-режим).</string>
     
     <!-- Native Mode -->
     <string name="os_label_master_native">Системна інтеграція</string>
-    <string name="os_desc_master_native">Вмикає вбудовану в прошивку реалізацію фізики.\n\nПрацює безпосередньо через системні класи Pixel Parts без використання хуків, забезпечуючи максимальну продуктивність та сумісність.</string>
+    <string name="os_desc_master_native">Активує вбудовану в прошивку реалізацію фізики (Native).\n\nПрацює безпосередньо через системні класи Pixel Parts без хуків, забезпечуючи максимальну продуктивність та сумісність.</string>
 
-    <string name="os_status_active">Активно</string>
+    <!-- SystemUI Settings -->
+    <string name="sysui_settings_title">Налаштування SystemUI</string>
+    <string name="sysui_lockscreen_title">Налаштування екрана блокування</string>
+    <string name="sysui_lockscreen_subtitle">Налаштувати інформацію про заряджання та жести на екрані блокування</string>
+
+    <string name="sysui_shade_title">Панель сповіщень</string>
+    <string name="sysui_shade_subtitle">Компактний плеєр та скрім</string>
+
+    <!-- Magnifier (text loupe) -->
+    <string name="magnifier_section_title">Текстова лупа</string>
+    <string name="magnifier_enable_title">Користувацький зум</string>
+    <string name="magnifier_enable_summary">Змінити рівень збільшення текстової лупи</string>
+    <string name="magnifier_zoom_title">Рівень збільшення</string>
+    <string name="magnifier_size_title">Розмір вікна</string>
+    <string name="magnifier_shape_title">Форма вікна</string>
+    <string name="magnifier_shape_default">За замовчуванням</string>
+    <string name="magnifier_shape_square">Квадрат</string>
+    <string name="magnifier_shape_circle">Коло</string>
+    <string name="magnifier_offset_y_title">Вертикальний зсув</string>
+    <string name="magnifier_xposed_warning_title">Потрібен модуль Xposed</string>
+    <string name="magnifier_xposed_warning_desc">Модифікація лупи працює для кожного додатка окремо. Увімкніть модуль Xposed для кожного додатка, в якому має з\'являтися модифікована лупа.</string>
+    <string name="overscroll_xposed_warning_title">Потрібен модуль Xposed</string>
+    <string name="overscroll_xposed_warning_desc">Модифікація overscroll працює для кожного додатка окремо. Увімкніть модуль Xposed для кожного додатка, в якому має з\'являтися модифікований ефект краю.</string>
+
+    <string name="sysui_media_player_title">Медіаплеєр</string>
+    <string name="sysui_media_compact_mode_title">Компактний режим</string>
+    <string name="sysui_media_compact_mode_off">Вимкнено</string>
+    <string name="sysui_media_compact_mode_small">Компактний</string>
+    <string name="sysui_media_compact_mode_header">Лише заголовок</string>
+    <string name="sysui_media_compact_mode_very_small">Дуже компактний</string>
+
+    <string name="sysui_media_bg_alpha_title">Прозорість фону плеєра</string>
+
+    <string name="sysui_media_hide_title">Приховати медіаплеєр</string>
+    <string name="sysui_media_hide_qs">Приховати в швидких налаштуваннях</string>
+    <string name="sysui_media_hide_notifications">Приховати в сповіщеннях</string>
+    <string name="sysui_media_hide_lockscreen">Приховати на екрані блокування</string>
+
+    <string name="sysui_shade_surface_title">Фон панелі</string>
+    <string name="sysui_shade_surface_solid">Суцільна панель (без скріму)</string>
+    <string name="sysui_shade_blur_title">Розмитий фон</string>
+    <string name="sysui_shade_zoom_title">Зум фону</string>
+    <string name="sysui_shade_disable_scale_threshold_title">Вимкнути поріг масштабування</string>
+    <string name="sysui_shade_scrim_title">Налаштування скріму</string>
+    <string name="sysui_shade_notif_scrim_alpha_title">Альфа скріму сповіщень</string>
+    <string name="sysui_shade_main_scrim_alpha_title">Альфа головного скріму</string>
+    <string name="sysui_shade_notif_scrim_tint_title">Відтінок скріму сповіщень</string>
+    <string name="sysui_shade_notif_scrim_tint_color">Колір відтінку</string>
+    <string name="sysui_shade_main_scrim_tint_title">Відтінок головного скріму</string>
+    <string name="sysui_shade_main_scrim_tint_color">Колір відтінку</string>
+    <string name="sysui_shade_override_enable">Відносний альфа-множник</string>
+
+    <string name="sysui_charging_info_title">Інформація про заряджання</string>
+    <string name="sysui_charging_info_enable">Увімкнути власну інформацію про заряджання</string>
+    <string name="sysui_show_wattage">Показувати потужність</string>
+    <string name="sysui_show_voltage">Показувати напругу</string>
+    <string name="sysui_show_current">Показувати струм (мА)</string>
+    <string name="sysui_show_temp">Показувати температуру акумулятора</string>
+    <string name="sysui_show_percent">Показувати рівень заряду</string>
+    <string name="sysui_show_standard">Показувати стандартний текст (Швидко/Повільно)</string>
+    <string name="sysui_show_custom_symbol">Показувати власний символ</string>
+    <string name="sysui_custom_symbol">Власний символ (напр.: ⚡)</string>
+    <string name="sysui_sensor_interval_title">Інтервал оновлення сенсора</string>
+    <string name="sysui_average_mode_title">Показувати усереднені значення заряджання</string>
+
+
+    <string name="os_status_active">Активний</string>
     <string name="os_status_disabled">Вимкнено</string>
     
     <!-- Xposed Dialogs -->
-    <string name="os_dialog_xposed_title">Xposed не активний</string>
-    <string name="os_dialog_xposed_msg">Хуки не можуть бути встановлені.\n\nДодаток не виявив активний фреймворк LSPosed. Без нього перехоплення системних викликів неможливе, налаштування працюватимуть лише всередині цього додатка.</string>
+    <string name="os_dialog_xposed_title">Xposed неактивний</string>
+    <string name="os_dialog_xposed_msg">Неможливо встановити хуки.\n\nДодаток не виявив активного фреймворку LSPosed. Без нього перехоплення системних викликів неможливе; налаштування працюватимуть лише в межах цього додатка.</string>
 
     <!-- Profiles UI -->
-    <string name="os_group_profiles">Профілі налаштувань</string>
-    <string name="os_prof_btn_export">Експорт у файл</string>
-    <string name="os_prof_btn_import">Імпорт з файлу</string>
+    <string name="os_group_profiles">Профілі</string>
+    <string name="os_prof_btn_export">Експорт</string>
+    <string name="os_prof_btn_import">Імпорт</string>
+    <string name="os_prof_btn_network">Онлайн-конфігурації</string>
     <string name="os_prof_btn_create">Зберегти новий профіль</string>
     <string name="os_prof_header_list">Збережені профілі</string>
+    <string name="os_net_dialog_title">Онлайн-конфігурації</string>
+    <string name="os_net_loading">Завантаження…</string>
+    <string name="os_net_empty">Конфігурації не знайдено</string>
+    <string name="os_net_error">Не вдалося завантажити</string>
+    <string name="os_net_applied">Конфігурацію застосовано: %s</string>
     <string name="os_prof_item_active">Активний</string>
-    <string name="os_prof_item_tap">Натисніть, щоб завантажити</string>
+    <string name="os_prof_item_tap">Натисніть для завантаження</string>
     <string name="os_prof_dialog_title">Новий профіль</string>
     <string name="os_prof_dialog_hint">Введіть назву профілю</string>
     <string name="os_prof_btn_save">Зберегти</string>
@@ -42,241 +115,317 @@
     <!-- Physics Group -->
     <string name="os_group_physics">Фізика пружини</string>
 
-    <string name="os_lbl_physics_pull">Тяга</string>
-    <string name="os_desc_physics_pull">Множник відстані при ручному витягуванні.\n\n• Значення &gt;= 1.0: Лінійне слідування за пальцем.\n• Значення &lt; 1.0: Вмикає нелінійний опір (гумку) — чим далі тягнете, тим сильніший опір.</string>
+    <string name="os_lbl_physics_pull">Фактор тяги</string>
+    <string name="os_desc_physics_pull">Множник відстані при ручному тягненні (onPull).\n\n• Значення &gt;= 1.0: лінійне слідування за пальцем.\n• Значення &lt; 1.0: активує нелінійний опір (гумова стрічка) — чим далі тягнеш, тим більший опір.</string>
 
     <string name="os_lbl_physics_stiffness">Жорсткість</string>
-    <string name="os_desc_physics_stiffness">Константа пружності пружини.\n\nВизначає силу, що повертає список у вихідне положення. Впливає на частоту коливань під час відскоку.</string>
+    <string name="os_desc_physics_stiffness">Стала пружини (k).\n\nВизначає силу, що повертає список до початкової позиції. Впливає на частоту коливань при відскоку.</string>
 
     <string name="os_lbl_physics_damping">Затухання</string>
-    <string name="os_desc_physics_damping">Коефіцієнт демпфування.\n\nГасить енергію пружини. Визначає, як швидко затухнуть коливання після відпускання пальця або удару об межу.</string>
+    <string name="os_desc_physics_damping">Коефіцієнт затухання (ζ).\n\nРозсіює енергію пружини. Визначає, як швидко коливання загасають після відпускання або удару об край.</string>
 
-    <string name="os_lbl_physics_fling">Імпульс</string>
-    <string name="os_desc_physics_fling">Множник вхідної швидкості при інерційному ударі.\n\nЗбільшує амплітуду відскоку при різкому прокручуванні.\nПримітка: При високих значеннях (&gt;1.0) код динамічно знижує жорсткість пружини, щоб удар відчувався "м\'якшим".</string>
+    <string name="os_lbl_physics_fling">Імпульс кидка</string>
+    <string name="os_desc_physics_fling">Множник вхідної швидкості при onAbsorb (інерційний удар).\n\nЗбільшує амплітуду відскоку при швидкій прокрутці.\nПримітка: при високих значеннях (&gt;1.0) код динамічно знижує жорсткість пружини, щоб удар відчувався "м\'якше".</string>
 
     <string name="os_lbl_physics_res_exp">Крива опору</string>
-    <string name="os_desc_physics_res_exp">Ступінь експоненти для формули опору.\n\nПрацює тільки якщо Тяга &lt; 1.0. Задає крутизну наростання зусилля при відтягуванні краю.</string>
+    <string name="os_desc_physics_res_exp">Значення показника формули опору.\n\nПрацює лише при факторі тяги &lt; 1.0. Визначає крутизну зростання сили при тягненні по краю.</string>
 
     <!-- Visual Scales -->
-    <string name="os_mode_off">Немає (Вимк)</string>
+    <string name="os_mode_off">Вимкнено</string>
     <string name="os_mode_shrink">Стиснення</string>
     <string name="os_mode_grow">Розтягнення</string>
     <string name="os_lbl_scale_mode">Режим деформації</string>
     <string name="os_lbl_scale_int">Інтенсивність</string>
-    <string name="os_lbl_scale_limit">Межа</string>
-    <string name="os_lbl_anchor_x">Точка опори X</string>
-    <string name="os_lbl_anchor_y">Точка опори Y</string>
+    <string name="os_lbl_scale_limit">Ліміт</string>
+    <string name="os_lbl_anchor_x">Точка прив\'язки X</string>
+    <string name="os_lbl_anchor_y">Точка прив\'язки Y</string>
 
     <string name="os_group_visual_vert">Вертикальна деформація</string>
-    <string name="os_desc_visual_vert">Змінює масштаб (ScaleY) вмісту RenderNode по вертикалі.\n\n• Стиснення: сплющує контент при ударі.\n• Розтягнення: подовжує контент (ефект гуми).</string>
+    <string name="os_desc_visual_vert">Змінює масштаб (ScaleY) вмісту RenderNode по вертикалі.\n\n• Стиснення: сплющує вміст при ударі.\n• Розтягнення: подовжує вміст (ефект гуми).</string>
 
-    <string name="os_group_visual_zoom">Зум</string>
-    <string name="os_desc_visual_zoom">Змінює загальний масштаб (ScaleX та ScaleY) всього контейнера.\n\nСтворює ефект наближення/віддалення списку при взаємодії з межею.</string>
+    <string name="os_group_visual_zoom">Зум (масштаб XY)</string>
+    <string name="os_desc_visual_zoom">Змінює загальний масштаб (ScaleX та ScaleY) всього контейнера.\n\nСтворює ефект зуму при взаємодії з краєм.</string>
 
     <string name="os_group_visual_horz">Горизонтальна деформація</string>
-    <string name="os_desc_visual_horz">Змінює масштаб (ScaleX) по ширині.\n\nДозволяє зробити ефект "бочки" або звуження списку при натягуванні.</string>
+    <string name="os_desc_visual_horz">Змінює масштаб (ScaleX) по ширині.\n\nДозволяє створити "бочкоподібний ефект" або звуження списку при тягненні.</string>
 
-    <string name="os_desc_scale_intensity">Коефіцієнт впливу зміщення на масштаб. Чим вище значення, тим сильніше спотворення при тому ж зсуві.</string>
-    <string name="os_desc_scale_limit">Жорсткий ліміт спотворення (мін/макс масштаб), щоб запобігти візуальним артефактам при сильних ривках.</string>
-    <string name="os_desc_scale_anchor">Координата точки, навколо якої відбувається масштабування (0.0 - 1.0). 0.5 - центр.</string>
+    <string name="misc_group_title">Різне</string>
+
+    <string name="os_desc_scale_intensity">Коефіцієнт впливу переміщення на масштаб. Чим вище значення, тим сильніше спотворення при тому ж переміщенні.</string>
+    <string name="os_desc_scale_limit">Жорстка межа спотворення (мін/макс масштабу) для запобігання візуальних артефактів при сильних тягненнях.</string>
+    <string name="os_desc_scale_anchor">Координата точки, навколо якої виконується масштабування (0.0 - 1.0). 0.5 — це центр.</string>
 
     <string name="os_lbl_min_vel">Відсічка швидкості</string>
-    <string name="os_desc_min_vel">Поріг швидкості затухання пружини.\n\nВизначає момент, коли обчислення фізики примусово зупиняються. Якщо швидкість пружини падає нижче цього значення, анімація завершується. Допомагає прибрати мікро-тремтіння в кінці.</string>
+    <string name="os_desc_min_vel">Поріг згасання швидкості пружини.\n\nВизначає, коли фізичні обчислення примусово зупиняться. Якщо швидкість пружини падає нижче цього значення, анімація завершується. Допомагає уникнути мікротремтіння в кінці.</string>
 
-    <string name="os_lbl_min_val">Відсічка зміщення</string>
-    <string name="os_desc_min_val">Поріг амплітуди затухання.\n\nЯкщо залишкове зміщення (у пікселях) стає меншим за це значення, анімація вважається завершеною. Збільшення значення робить повернення у вихідний стан візуально більш різким та швидким.</string>
+    <string name="os_lbl_min_val">Відсічка амплітуди</string>
+    <string name="os_desc_min_val">Поріг згасання амплітуди.\n\nЯкщо залишкове переміщення (в пікселях) стає менше цього значення, анімація вважається завершеною. Збільшення робить повернення до початкового стану візуально різкішим та швидшим.</string>
 
     <!-- Anchor Logic -->
-    <string name="os_lbl_invert_anchor">Інверсія якоря</string>
-    <string name="os_desc_invert_anchor">Автоматично дзеркалить координати якоря при взаємодії з правою або нижньою межею.\n\n• УВІМК: Координата 0.0 завжди означає "край, за який тягнуть".\n• ВИМК: Координати абсолютні (0.0 — завжди ліво/верх, 1.0 — завжди право/низ), незалежно від напрямку свайпа.</string>
+    <string name="os_lbl_invert_anchor">Розумний якір</string>
+    <string name="os_desc_invert_anchor">Автоматично дзеркалить координати якоря при взаємодії з правим або нижнім краєм.\n\n• УВІМК: координата 0.0 завжди означає "край, за який тягнуть".\n• ВИМК: координати абсолютні (0.0 завжди ліворуч/зверху, 1.0 завжди праворуч/знизу), незалежно від напрямку свайпу.</string>
 
     <!-- Horizontal Specific Anchors -->
-    <string name="os_lbl_anchor_x_horiz">Якір X (Горизонт.)</string>
-    <string name="os_desc_anchor_x_horiz">Точка масштабування по головній осі (вздовж скролла) для горизонтальних списків.\n\nВизначає, в якій частині екрана по ширині відбуватиметься основне спотворення при натягуванні.</string>
+    <string name="os_lbl_anchor_x_horiz">Якір X (Горизонтальний)</string>
+    <string name="os_desc_anchor_x_horiz">Точка масштабу вздовж головної осі (напрямок прокрутки) для горизонтальних списків.\n\nВизначає, яка частина ширини екрану переважно спотворюється при тягненні.</string>
 
-    <string name="os_lbl_anchor_y_horiz">Якір Y (Горизонт.)</string>
-    <string name="os_desc_anchor_y_horiz">Точка масштабування по поперечній осі (висоті) для горизонтальних списків.\n\nДозволяє змістити центр ефекту вгору або вниз відносно центру списку.</string>
-    <string name="os_lbl_scale_int_horiz">Інтенсивність (Гориз.)</string>
-    <string name="os_desc_scale_int_horiz">Визначає силу ефекту виключно для горизонтальних списків (LazyRow, ViewPager). Дозволяє налаштувати поведінку окремо від вертикального прокручування.</string>
+    <string name="os_lbl_anchor_y_horiz">Якір Y (Горизонтальний)</string>
+    <string name="os_desc_anchor_y_horiz">Точка масштабу вздовж поперечної осі (висота) для горизонтальних списків.\n\nДозволяє зміщувати центр ефекту вгору або вниз відносно центру списку.</string>
+    <string name="os_lbl_scale_int_horiz">Інтенсивність (Горизонтальна)</string>
+    <string name="os_desc_scale_int_horiz">Визначає силу ефекту виключно для горизонтальних списків (LazyRow, ViewPager). Дозволяє окреме налаштування від вертикальної прокрутки.</string>
 
 
     <!-- Advanced -->
     <string name="os_group_advanced">Системні параметри</string>
     
     <string name="os_lbl_input_smooth">Фільтр введення</string>
-    <string name="os_desc_input_smooth">Low-pass фільтр для координат пальця.\n\nЗгладжує шум сенсора перед передачею даних фізичній моделі. Високі значення роблять реакцію "в\'язкою".</string>
+    <string name="os_desc_input_smooth">Фільтр низьких частот для координат пальця при onPull.\n\nЗгладжує шум сенсора перед передачею до фізичної моделі. Високі значення роблять відгук "в\'язким".</string>
+    <string name="os_lbl_anim_speed">Швидкість анімації (%)</string>
+    <string name="os_desc_anim_speed">Глобальний множник швидкості анімації.\n\nЗастосовується до всіх фізичних та візуальних налаштувань.\n100%% = стандартна швидкість, нижче 100%% уповільнює, вище 100%% прискорює.</string>
     <string name="os_lbl_lerp_idle">Згладжування: ПАЛЕЦЬ</string>
-    <string name="os_desc_lerp_idle">Швидкість інтерполяції (LERP) при прямій взаємодії.\n\nВизначає, як швидко візуал наздоганяє палець, поки пружина НЕ запущена (вимкнена). Менше = плавніше, але із затримкою.</string>
+    <string name="os_desc_lerp_idle">Швидкість інтерполяції (LERP) при прямій взаємодії (onPull).\n\nВизначає, як швидко графіка слідує за пальцем, поки пружина НЕ працює (вимкнена). Нижче = плавніше, але з затримкою.</string>
 
     <string name="os_lbl_lerp_run">Згладжування: ПРУЖИНА</string>
-    <string name="os_desc_lerp_run">Швидкість інтерполяції (LERP) при активній анімації.\n\nВизначає плавність руху, коли працює фізична модель (пружина запущена).</string>
+    <string name="os_desc_lerp_run">Швидкість інтерполяції (LERP) під час активної анімації (onRelease/onAbsorb).\n\nВизначає плавність руху, коли фізична модель працює (пружина активна).</string>
 
     <string name="os_lbl_compose_scale">Дільник Compose</string>
-    <string name="os_desc_compose_scale">Коефіцієнт нормалізації для Jetpack Compose.\n\nCompose передає дельти прокручування в інших одиницях або підсумовує їх інакше. Цей дільник зменшує вхідні значення, щоб привести фізику у відповідність до View-системи.</string>
+    <string name="os_desc_compose_scale">Нормалізуючий коефіцієнт для Jetpack Compose.\n\nCompose передає дельти прокрутки в інших одиницях або акумулює їх по-іншому. Цей дільник зменшує вхідні значення onPull для вирівнювання фізики з системою View.</string>
 
     <!-- Apps -->
-    <string name="os_group_apps">Налаштування програм</string>
-    <string name="os_btn_add_app">Додати програму</string>
+    <string name="os_group_apps">Конфігурація додатків</string>
+    <string name="os_btn_add_app">Додати додаток</string>
     <string name="os_btn_cancel">Скасувати</string>
     <string name="btn_cancel">Скасувати</string>
+    <string name="btn_restart_launcher">Застосувати та перезапустити лаунчер</string>
     
     <!-- App Config Items -->
     <string name="os_app_filter">Згладжування</string>
     <string name="os_app_ignore">Вимкнути</string>
-    <string name="os_app_scale">Індив. множник</string>
-    <string name="os_app_select_title">Вибір програми</string>
+    <string name="os_app_scale">Індивідуальний множник</string>
+    <string name="os_app_select_title">Обрати додаток</string>
     <string name="os_app_search_hint">Пошук за назвою або пакетом...</string>
     
     <!-- Other -->
-    <string name="os_card_example_text">Приклад контенту для тесту фізики.</string>
+    <string name="os_card_example_text">Приклад вмісту для тестування фізики.</string>
 
     <!-- THERMAL MANAGER -->
     <string name="thermal_title">Термальні профілі</string>
     
     <!-- Info Header -->
-    <string name="thermal_info_title">Принцип роботи</string>
-    <string name="thermal_info_summary">На відміну від чіпів Qualcomm, управління нагріванням у Google Tensor здійснюється не через прямі параметри ядра, а через файли конфігурації (thermal_info_config.json).\n\nЦей модуль працює на системному рівні: він змінює спеціальну властивість, яка змушує службу Thermal HAL завантажувати альтернативний файл конфігурації з іншими порогами тротлінгу.\n\nЦе безпечний, "нативний" метод регулювання, передбачений архітектурою Pixel. Для застосування змін потрібне перезавантаження.</string>
+    <string name="thermal_info_title">Як працює (Tensor)</string>
+    <string name="thermal_info_summary">На відміну від чіпів Qualcomm, управління нагрівом Google Tensor здійснюється не через прямі параметри ядра, а через конфігураційні файли (thermal_info_config.json).\n\nЦей модуль працює на системному рівні: змінює спеціальну властивість (prop), яка змушує службу Thermal HAL завантажити альтернативний конфігураційний файл з іншими порогами дроселювання.\n\nЦе безпечний, "рідний" метод налаштування, передбачений архітектурою Pixel. Для застосування змін потрібне перезавантаження.</string>
 
     <!-- Sections -->
     <string name="thermal_sec_battery">Акумулятор</string>
-    <string name="thermal_sec_soc">Процесор</string>
+    <string name="thermal_sec_soc">Процесор (SoC)</string>
 
     <!-- Modes -->
     <string name="thermal_mode_stock">Заводський</string>
     <string name="thermal_mode_soft">М\'який (+5°C)</string>
     <string name="thermal_mode_medium">Середній (+9°C)</string>
     <string name="thermal_mode_hard">Агресивний (+15°C)</string>
-    <string name="thermal_mode_off">Екстрим (Вимк)</string>
+    <string name="thermal_mode_off">Екстремальний (Вимк.)</string>
 
     <!-- Battery Descriptions -->
     <string name="thermal_desc_bat_stock">Стандартні заводські ліміти. Забезпечують максимальну безпеку та термін служби акумулятора.</string>
-    <string name="thermal_desc_bat_soft">Невелике підвищення порогу (+5°C). Допомагає уникнути уповільнення зарядки при помірному нагріванні.</string>
-    <string name="thermal_desc_bat_medium">Збалансований профіль (+9°C). Компроміс між швидкістю зарядки та нагріванням корпусу.</string>
-    <string name="thermal_desc_bat_hard">УВАГА: Високі ліміти (+15°C). Можливий відчутний нагрів при швидкій зарядці. Прискорює знос хімії батареї.</string>
-    <string name="thermal_desc_bat_off">НЕБЕЗПЕЧНО: Практично повне відключення термозахисту (+90°C). Високий ризик здуття батареї та пошкодження пристрою.</string>
+    <string name="thermal_desc_bat_soft">Невелике підвищення порогу (+5°C). Допомагає уникнути уповільнення заряджання при помірному нагріві.</string>
+    <string name="thermal_desc_bat_medium">Збалансований профіль (+9°C). Компроміс між швидкістю заряджання та нагрівом корпусу.</string>
+    <string name="thermal_desc_bat_hard">УВАГА: Високі ліміти (+15°C). Можливий відчутний нагрів при швидкому заряджанні. Прискорює знос хімії акумулятора.</string>
+    <string name="thermal_desc_bat_off">НЕБЕЗПЕКА: Практично повне вимкнення теплового захисту (+90°C). Високий ризик здуття акумулятора та пошкодження пристрою.</string>
 
     <!-- SoC Descriptions -->
-    <string name="thermal_desc_soc_stock">Стандартний алгоритм. Агресивне зниження частот (тротлінг) для утримання низької температури корпусу.</string>
+    <string name="thermal_desc_soc_stock">Стандартний алгоритм. Агресивне зниження частоти (дроселювання) для підтримки низької температури корпусу.</string>
     <string name="thermal_desc_soc_soft">М\'який профіль (+5°C). Дозволяє процесору довше утримувати високі частоти під навантаженням.</string>
-    <string name="thermal_desc_soc_medium">Оптимальний для ігор (+9°C). Значно знижує частоту просадок FPS, корпус буде теплим.</string>
-    <string name="thermal_desc_soc_hard">Максимальна продуктивність (+15°C). Пристрій може стати гарячим на дотик. Рекомендується тільки для короткочасних завдань.</string>
-    <string name="thermal_desc_soc_off">ЕКСТРЕМАЛЬНО: Відключення тротлінгу. Процесор буде грітися до аварійного відключення живлення. Тільки для бенчмарків.</string>
+    <string name="thermal_desc_soc_medium">Оптимальний для ігор (+9°C). Значно зменшує просідання FPS, корпус буде теплим.</string>
+    <string name="thermal_desc_soc_hard">Максимальна продуктивність (+15°C). Пристрій може стати гарячим. Рекомендується лише для короткочасних задач.</string>
+    <string name="thermal_desc_soc_off">ЕКСТРЕМАЛЬНИЙ: Дроселювання вимкнено. Процесор нагрівається до аварійного вимкнення. Лише для бенчмарків.</string>
 
     <!-- Dialogs -->
     <string name="thermal_dialog_reboot_title">Потрібне перезавантаження</string>
-    <string name="thermal_dialog_safe_msg">Новий термальний профіль обрано.\n\nСлужба Thermal HAL зчитає нові налаштування тільки при наступному запуску системи. Перезавантажити пристрій зараз?</string>
-    <string name="thermal_dialog_risk_msg">УВАГА: Ви обрали агресивний температурний режим!\n\nЦе може призвести до сильного нагрівання корпусу та прискореної деградації компонентів.\n\nДля застосування налаштувань потрібне перезавантаження.</string>
+    <string name="thermal_dialog_safe_msg">Обрано новий термальний профіль.\n\nСлужба Thermal HAL прочитає нові налаштування при наступному запуску системи. Перезавантажити пристрій зараз?</string>
+    <string name="thermal_dialog_risk_msg">УВАГА: Ви обрали агресивний температурний режим!\n\nЦе може призвести до сильного нагріву корпусу та прискореної деградації компонентів.\n\nДля застосування налаштувань потрібне перезавантаження.</string>
     
     <string name="btn_ok">Зрозуміло</string>
     <string name="btn_reboot">Перезавантажити</string>
+    <string name="btn_confirm">Підтвердити</string>
+
+    <!-- Reboot Bubble -->
+    <string name="reboot_launcher">Перезапустити лаунчер</string>
+    <string name="reboot_systemui">Перезапустити SystemUI</string>
+    <string name="reboot_system">Перезавантажити систему</string>
+    <string name="reboot_confirm_system_title">Перезавантажити пристрій?</string>
+    <string name="reboot_confirm_system_msg">Пристрій буде негайно перезавантажено. Збережіть свою роботу перед продовженням.</string>
+    <string name="reboot_confirm_sysui_title">Перезапустити SystemUI?</string>
+    <string name="reboot_confirm_sysui_msg">SystemUI буде перезапущено. Панель навігації, рядок стану та сповіщення зникнуть на мить.</string>
 
     <!-- IMS MANAGER -->
     <string name="ims_category_title">Конфігурація IMS</string>
-    <string name="warning_info">Ці налаштування примусово активують можливості оператора (Carrier Config). За замовчуванням більшість цих функцій приховано або вимкнено для несертифікованих регіонів.\n\nДля застосування змін необхідно увімкнути та вимкнути "Режим польоту".</string>
-    <string name="ims_footer_info">Ці налаштування примусово активують можливості оператора (Carrier Config). За замовчуванням більшість цих функцій приховано або вимкнено для несертифікованих регіонів.\n\nДля застосування змін необхідно увімкнути та вимкнути "Режим польоту".</string>
+    <string name="warning_info">Ці налаштування примусово активують функції конфігурації оператора. За замовчуванням більшість цих функцій приховано або вимкнено для несертифікованих регіонів.\n\nДля застосування змін потрібно увімкнути та вимкнути режим польоту.</string>
+    <string name="ims_footer_info">Ці налаштування примусово активують функції конфігурації оператора. За замовчуванням більшість цих функцій приховано або вимкнено для несертифікованих регіонів.\n\nДля застосування змін потрібно увімкнути та вимкнути режим польоту.</string>
 
     <!-- Section Headers -->
-    <string name="ims_sec_voice">Голосові сервіси</string>
-    <string name="ims_sec_network">Мережа та 5G</string>
+    <string name="ims_sec_voice">Голосові послуги</string>
+    <string name="ims_sec_network">Мережа &amp; 5G</string>
     <string name="ims_sec_advanced">Розширені налаштування</string>
 
     <!-- VoLTE -->
     <string name="ims_lbl_volte">VoLTE</string>
-    <string name="ims_desc_volte">Примусово вмикає підтримку VoLTE в конфігурації оператора.\n\nДозволяє здійснювати голосові виклики через мережу 4G/LTE без перемикання в 3G/2G. Забезпечує швидке з\'єднання, HD-якість звуку та одночасну роботу інтернету під час розмови. Виправляє відсутність перемикача VoLTE в налаштуваннях.</string>
+    <string name="ims_desc_volte">Примусово активує підтримку VoLTE в конфігурації оператора.\n\nДозволяє голосові виклики через мережу 4G/LTE без перемикання на 3G/2G. Забезпечує швидке з\'єднання, якість звуку HD та одночасне використання інтернету під час розмови. Виправляє відсутній перемикач VoLTE в налаштуваннях.</string>
 
     <!-- VoWiFi -->
-    <string name="ims_lbl_vowifi">Дзвінки через Wi-Fi</string>
-    <string name="ims_desc_vowifi">Примусово вмикає підтримку дзвінків через Wi-Fi.\n\nДозволяє телефону реєструватися в IMS-мережі оператора через будь-який доступний Wi-Fi. Незамінне в місцях з поганим прийомом стільникової мережі (підвали, товсті стіни), але наявністю інтернету. Активує приховане меню "Дзвінки через Wi-Fi".</string>
+    <string name="ims_lbl_vowifi">Виклики через Wi-Fi</string>
+    <string name="ims_desc_vowifi">Примусово активує підтримку викликів через Wi-Fi (Wi-Fi Calling).\n\nДозволяє телефону реєструватися в мережі IMS оператора через будь-який доступний Wi-Fi. Незамінний у місцях з поганим мобільним зв\'язком (підвали, товсті стіни) за наявності інтернету. Активує приховане меню "Виклики через Wi-Fi".</string>
 
     <!-- Video Calling (ViLTE) -->
     <string name="ims_lbl_vt">Відеовиклики</string>
-    <string name="ims_desc_vt">Вмикає нативну підтримку відеодзвінків через оператора.\n\nЦе вбудована в "дзвонилку" функція відеозв\'язку (не через месенджери, а через стандартний протокол IR.94). Працює, якщо оператор підтримує Video over LTE.</string>
+    <string name="ims_desc_vt">Активує нативну підтримку відеовикликів через оператора.\n\nЦе вбудована в додаток Телефон відеофункція (не через месенджер, а через стандартний протокол IR.94). Працює, якщо оператор підтримує Video over LTE.</string>
 
     <!-- Cross-SIM -->
     <string name="ims_lbl_cross_sim">Резервні виклики</string>
-    <string name="ims_desc_cross_sim">Технологія резервного виклику через іншу SIM-карту.\n\nДозволяє використовувати інтернет-трафік другої SIM-карти для реєстрації IMS-сервісів першої SIM-карти. Корисно, коли основна SIM-карта втратила мережу (наприклад, у роумінгу або "сліпій зоні"), а друга SIM-карта має доступ до інтернету.</string>
+    <string name="ims_desc_cross_sim">Технологія резервних викликів через іншу SIM-карту.\n\nДозволяє використовувати трафік даних другої SIM для IMS-реєстрації першої. Корисно, коли основна SIM втратила мережу (роумінг або мертва зона), але друга SIM має доступ до інтернету.</string>
 
     <!-- VoNR -->
-    <string name="ims_lbl_vonr">VoNR (Дзвінки через 5G)</string>
-    <string name="ims_desc_vonr">Voice over New Radio. Голосові виклики в чистих мережах 5G.\n\nНайсучасніший стандарт передачі голосу. Забезпечує наднизьку затримку та кращу якість, ніж VoLTE. Працює тільки в мережах 5G SA і вимагає Android 14+.</string>
+    <string name="ims_lbl_vonr">VoNR (Виклики через 5G)</string>
+    <string name="ims_desc_vonr">Voice over New Radio. Голосові виклики в чистих 5G мережах (Standalone).\n\nНайсучасніший стандарт передачі голосу. Забезпечує надзвичайно низьку затримку та кращу якість ніж VoLTE. Працює лише в 5G SA мережах і потребує Android 14+.</string>
 
     <!-- 5G Enable -->
-    <string name="ims_lbl_5g">Розблокування 5G</string>
-    <string name="ims_desc_5g">Знімає програмне блокування 5G з боку конфігурації.\n\nБагато операторів блокують доступ до 5G для пристроїв Pixel, яких немає в їхньому "білому списку", навіть якщо апаратна підтримка є. Цей перемикач примусово додає діапазони NR NSA та SA до списку дозволених.</string>
+    <string name="ims_lbl_5g">Розблокувати 5G</string>
+    <string name="ims_desc_5g">Знімає програмне блокування 5G в конфігурації.\n\nБагато операторів блокують доступ до 5G для пристроїв Pixel, яких немає в їхньому "білому списку", навіть за наявності апаратної підтримки. Цей перемикач примусово додає смуги NR NSA та SA до списку дозволених.</string>
 
     <!-- 5G Thresholds -->
     <string name="ims_lbl_5g_thresh">Агресивний сигнал 5G</string>
-    <string name="ims_desc_5g_thresh">Змінює пороги рівня сигналу для перемикання мереж.\n\nЗанижує вимоги до якості сигналу для відображення значка 5G та утримання в мережі 5G. Допомагає, якщо телефон занадто охоче звалюється в 4G/LTE, навіть коли 5G доступний.</string>
+    <string name="ims_desc_5g_thresh">Змінює пороги сигналу для перемикання мереж.\n\nЗнижує вимоги до якості сигналу для відображення значка 5G та перебування в мережі 5G. Допомагає, коли телефон занадто швидко повертається на 4G/LTE за наявності 5G.</string>
 
     <!-- UT Interface -->
     <string name="ims_lbl_ut">Інтерфейс UT</string>
-    <string name="ims_desc_ut">Управління додатковими послугами через IMS.\n\nДозволяє налаштовувати переадресацію, очікування виклику та АОН через меню налаштувань телефону, використовуючи IP-канал замість застарілих USSD-кодів. Виправляє помилки типу "Помилка мережі або SIM-карти" при спробі увійти в налаштування викликів у мережах LTE-only.</string>
+    <string name="ims_desc_ut">Управління додатковими послугами через IMS.\n\nДозволяє налаштовувати переадресацію викликів, очікування виклику та ідентифікацію абонента через меню налаштувань телефону, використовуючи IP-канал замість застарілих USSD-кодів. Виправляє помилки типу "Помилка мережі або SIM-карти" при спробі доступу до налаштувань викликів у режимі LTE-only.</string>
 
     <!-- LAUNCHER SETTINGS -->
-    <string name="launcher_settings_title">Налаштування Лаунчера</string>
-    <string name="launcher_search_section">Пошук та навігація</string>
+    <string name="launcher_settings_title">Налаштування лаунчера</string>
+    <string name="launcher_search_section">Пошук &amp; Навігація</string>
+
+    <!-- Launcher Navigation Items -->
+    <string name="launcher_group_general">Загальне</string>
+    <string name="launcher_search_feed_title">Пошук &amp; Стрічка</string>
+    <string name="launcher_search_feed_subtitle">Налаштувати нативний пошук та Google Feed</string>
+    <string name="launcher_group_appearance">Зовнішній вигляд</string>
+    <string name="launcher_grid_title">Налаштування сітки</string>
+    <string name="launcher_grid_subtitle">Налаштувати рядки та стовпці</string>
+    <string name="launcher_group_recents_features">Функції Recents</string>
+    <string name="launcher_clear_all_nav_title">Кнопка очищення</string>
+    <string name="launcher_clear_all_nav_subtitle">Налаштувати поведінку кнопки очищення</string>
+    <string name="launcher_group_gestures">Жести</string>
+    <string name="launcher_gestures_title">Жести</string>
+    <string name="launcher_gestures_subtitle">Подвійний дотик для сну та інше</string>
+    <string name="launcher_group_recents_customization">Кастомізація Recents</string>
+    <string name="launcher_recents_menu_title">Меню Recents</string>
+    <string name="launcher_recents_menu_subtitle">Налаштувати карусель, масштаб, розмиття та інше</string>
     
     <string name="launcher_search_title">Нативний пошук</string>
-    <string name="launcher_search_desc">Примусово вмикає вбудований інтерфейс пошуку в Pixel Launcher.\n\nGoogle часто змінює поведінку пошуку на "серверній стороні", замінюючи швидкий локальний пошук на повільний запуск додатка Google. Ця опція фіксує прапорець \'device_config\', повертаючи швидкий пошук програм та контактів.</string>
+    <string name="launcher_search_desc">Примусово активує вбудований інтерфейс пошуку в Pixel Launcher.\n\nGoogle часто змінює поведінку пошуку "серверно" замінюючи швидкий локальний пошук повільним запуском додатка Google. Ця опція фіксує прапорець \'device_config\' та відновлює швидкий пошук додатків та контактів.</string>
 
+
+    <!-- //// -->
+    <string name="donate_progress_title">Прогрес донатів</string>
+    <string name="menu_refresh">Оновити</string>
+    <string name="donate_open_target">Відкрити сторінку донатів</string>
+    <string name="donate_error_loading">Помилка завантаження даних</string>
+    <string name="donate_retry">Повторити</string>
+    <string name="donate_title">Підтримка та посилання</string>
+    <string name="donate_desc_short">GitHub, Telegram, Boosty</string>
+    <string name="donate_header">Підтримати проєкт</string>
+    <string name="donate_desc_long">Якщо вам подобається цей модуль і ви хочете підтримати його розвиток, ви можете зробити це через Boosty.</string>
+    <string name="donate_btn_boosty">На Boosty</string>
+    <string name="donate_links_header">Корисні посилання</string>
+    <string name="error_network">Помилка мережі</string>
+    <string name="refresh_strings">Рядки сторінки оновлено</string>
+    <string name="donate_page_updated">Сторінку оновлено</string>
+    <string name="donate_page_updated_error">Помилка завантаження даних</string>
+
+    <string name="launcher_clear_all_title">Кнопка очищення</string>
+    <string name="launcher_clear_all_desc">Додає кнопку для закриття всіх додатків у меню Recents.\n\nПідтримує кілька режимів відображення для інтеграції в стандартний інтерфейс.</string>
+    <string name="launcher_clear_all_enable_title">Увімкнути кнопку очищення</string>
+    <string name="launcher_ca_hide_actions_row_title">Приховати стандартні кнопки дій</string>
+
+    <string name="launcher_ca_mode_float">Знизу по центру</string>
+    <string name="launcher_ca_mode_screenshot">Замінити "Знімок екрана"</string>
+    <string name="launcher_ca_mode_select">Замінити "Обрати"</string>
+
+    <string name="launcher_ca_margin">Позиція (відступ знизу)</string>
+    <string name="launcher_btn_restart">Перезапустити лаунчер</string>
+    <string name="launcher_ca_margin_desc">Регулює вертикальну позицію плаваючої кнопки. Значення є множником стандартного відступу.</string>
+    <string name="launcher_ca_hide_actions_row_desc">Приховує системні кнопки "Знімок екрана" та "Обрати" в Recents, зберігаючи логіку контейнера та вашу власну кнопку очищення.</string>
+    <!-- ///// -->
     <!-- DOUBLE TAP (DT) SETTINGS -->
     <string name="dt_category_title">Жести подвійного дотику</string>
-    <string name="dt_sec_wake">Пробудження</string>
-    <string name="dt_sec_sleep">Сон</string>
+    <string name="dt_sec_wake">Прокидання</string>
+    <string name="dt_sec_sleep">Засинання</string>
 
     <!-- DT2W (Wake) -->
-    <string name="dt2w_title">Пробудження дотиком</string>
+    <string name="dt2w_title">Подвійний дотик для прокидання</string>
     
-    <string name="dt2w_desc_xposed">Xposed-хук для SystemUI.\n\nПерехоплює події сенсора в класі DozeTriggers та емулює пробудження, оскільки апаратна підтримка на Pixel часто вимкнена або обмежена.</string>
-    <string name="dt2w_desc_native">Системна інтеграція.\n\nВикористовує вбудований у прошивку код для обробки сенсорних подій у режимі Doze, забезпечуючи пробудження без сторонніх хуків.</string>
+    <string name="dt2w_desc_xposed">Xposed-хук для SystemUI.\n\nПерехоплює події сенсора в класі DozeTriggers та емулює прокидання, оскільки апаратна підтримка часто вимкнена або обмежена на пристроях Pixel.</string>
+    <string name="dt2w_desc_native">Системна інтеграція (Нативна).\n\nВикористовує вбудований у прошивку код для обробки подій дотику в режимі Doze, забезпечуючи прокидання без хуків сторонніх розробників.</string>
     
-    <string name="dt2w_info_title">Як це працює</string>
-    <string name="dt2w_info_desc">Це програмна емуляція, а не апаратна функція ядра.\n\n<b>Принцип роботи:</b>\nСистема тримає сенсор активним у режимі AOD/Doze та аналізує дотики. \n\n<b>Важливо:</b>\n• Через програмну обробку можлива невелика затримка.\n• Може незначно впливати на витрату батареї (Deep Sleep).</string>
+    <string name="dt2w_info_title">Як працює</string>
+    <string name="dt2w_info_desc">Це програмна емуляція, а не апаратна функція ядра.\n\n<b>Принцип:</b>\nСистема тримає дігітайзер активним у режимі AOD/Doze та аналізує дотики.\n\n<b>Важливо:</b>\n• Можлива невелика затримка через програмну обробку.\n• Може трохи вплинути на споживання батареї (Deep Sleep).</string>
 
     <string name="dt2w_timeout_title">Інтервал дотику</string>
-    <string name="dt2w_timeout_desc">Максимальний час між двома дотиками (в мс), щоб вони зарахувалися як подвійний тап.</string>
+    <string name="dt2w_timeout_desc">Максимальний час між двома дотиками (в мс), щоб вони були визнані подвійним дотиком.</string>
 
     <!-- DT2S (Sleep) -->
-    <string name="dt2s_title">Сон на робочому столі</string>
+    <string name="dt2s_title">Подвійний дотик для засинання</string>
     
-    <string name="dt2s_desc_xposed">Xposed-хук для Pixel Launcher.\n\nПерехоплює метод \'onTouchEvent\' у класі Workspace лаунчера, дозволяючи блокувати екран дотиком по порожньому місцю.</string>
-    <string name="dt2s_desc_native">Нативна ін\'єкція коду.\n\nВикористовує модифікований фреймворк для реєстрації эActivityLifecycleCallbacks\' у процесі Launcher3. При запуску актівіті автоматично знаходиться кореневе View робочого столу (Workspace) і до нього прив\'язується кастомний \'OnTouchListener\'. Це працює без Xposed і не вимагає прав суперкористувача для самого лаунчера.</string>
+    <string name="dt2s_desc_xposed">Xposed-хук для Pixel Launcher.\n\nПерехоплює метод \'onTouchEvent\' у класі Workspace лаунчера та дозволяє блокувати екран натисканням на порожнє місце.</string>
+    <string name="dt2s_desc_native">Нативна ін\'єкція коду.\n\nВикористовує модифікований фреймворк для реєстрації \'ActivityLifecycleCallbacks\' у процесі Launcher3. При запуску Activity автоматично знаходиться кореневий View Workspace та приєднується власний \'OnTouchListener\'. Працює без Xposed і не потребує прав root для самого лаунчера.</string>
 
     <string name="dt2s_info_title">Особливості DT2S</string>
-    <string name="dt2s_info_desc">Дозволяє вимкнути екран подвійним тапом по порожній області робочого столу.\n\n<b>Обмеження:</b>\n• Працює тільки в Pixel Launcher.\n• Не спрацьовує на віджетах або іконках.\n• Може конфліктувати зі свайпами, якщо "Допуск зміщення" налаштований занадто агресивно.</string>
+    <string name="dt2s_info_desc">Дозволяє вимкнути екран подвійним дотиком на порожню ділянку робочого столу.\n\n<b>Обмеження:</b>\n• Працює лише в Pixel Launcher.\n• Не реагує на віджети або іконки.\n• Може конфліктувати з жестами свайпу, якщо "допуск зміщення" налаштовано занадто агресивно.</string>
 
     <string name="dt2s_timeout_title">Інтервал дотику</string>
     <string name="dt2s_slop_title">Допуск зміщення</string>
-    <string name="dt2s_slop_desc">Максимальна відстань (у пікселях), на яку може зміститися палець між натисканнями. Зменшіть, якщо тапи часто розпізнаються як свайпи.</string>
+    <string name="dt2s_slop_desc">Максимальна відстань (у пікселях), яку палець може пройти між двома дотиками. Зменшіть значення, якщо дотики часто розпізнаються як свайпи.</string>
 
     <!-- COMPONENTS UI -->
     <string name="common_range_format">Діапазон: %1$d - %2$d</string>
     <string name="common_input_label">Введіть значення</string>
-    <string name="common_video_placeholder">Демонстрація відео</string>
+    <string name="common_video_placeholder">Відеодемонстрація</string>
 
     <!-- GLOBAL COMMON -->
+    <string name="app_name">Pixel Extra Parts</string>
     <string name="btn_apply">Застосувати</string>
     <string name="btn_default">За замовчуванням</string>
     <string name="btn_close">Закрити</string>
-    <string name="btn_exit">Вихід</string>
+    <string name="btn_exit">Вийти</string>
+    <string name="btn_restart">Перезапуск</string>
+    <string name="nav_back">Назад</string>
+
+    <!-- Shared Dialogs -->
+    <string name="xposed_required_title">Потрібен Xposed</string>
+    <string name="xposed_required_message">Ця функція потребує активного модуля Xposed.</string>
     
-    <string name="status_active">Активно</string>
+    <string name="status_active">Активний</string>
     <string name="status_disabled">Вимкнено</string>
     <string name="status_error">Помилка</string>
 
     <!-- MAIN ACTIVITY -->
-    <string name="main_desc">Кастомні модулі та твіки</string>
+    <string name="main_title">Pixel Extra Parts</string>
+    <string name="main_desc">Користувацькі модулі та твіки</string>
     
-    <string name="main_header_gesture">Жести та введення</string>
+    <string name="main_header_gesture">Жести &amp; Введення</string>
     <string name="main_header_system">Система</string>
-    <string name="main_header_network">Мережа та зв\'язок</string>
-    
-    <string name="main_root_title">Немає Root доступу</string>
-    <string name="main_root_desc">Для роботи програми необхідні права суперкористувача (Root) та активний Xposed Framework.\n\nБудь ласка, встановіть Magisk/KernelSU та надайте права.</string>
+    <string name="main_header_network">Мережа &amp; Підключення</string>
 
-    <string name="dt_desc_activity">Управління жестами пробудження та сну</string>
+    <!-- Test things (debug section, hidden by default) -->
+    <string name="test_things_title">Тестові функції</string>
+    <string name="test_things_desc">Експериментальні функції в розробці</string>
+    
+    <string name="main_root_title">Немає доступу Root</string>
+    <string name="main_root_desc">Додаток потребує прав суперкористувача (Root) та активного фреймворку Xposed.\n\nБудь ласка, встановіть Magisk/KernelSU та надайте дозвіл.</string>
+
+    <string name="dt_desc_activity">Управління жестами прокидання та засинання</string>
     <string name="launcher_title_activity">Лаунчер</string>
-    <string name="os_desc_activity">Налаштування пружності та інерції скролла</string>
+    <string name="os_desc_activity">Налаштування еластичності та інерції прокрутки</string>
     
     <string name="dt_title_activity">Подвійний дотик</string>
     
@@ -284,10 +433,326 @@
     
     <string name="thermal_title_activity">Термальні профілі</string>
     
-    <string name="thermal_desc_activity">Управління тротлінгом</string>
+    <string name="thermal_desc_activity">Управління дроселюванням (Tensor)</string>
 
     <string name="os_desc_anchor">Точка прив\'язки трансформації.</string>
 
+    <!-- Delta Normalization (Compose Smoothing) -->
+    <string name="os_group_norm">Згладжування дельт Compose</string>
+    <string name="os_desc_norm_group">Інтелектуальна система нормалізації для реалізацій прокрутки Jetpack Compose.\n\nCompose передає посилені дельти порівняно з класичною View-прокруткою. Цей модуль автоматично виявляє інстанси Compose та плавно зменшує їх дельти до стандартного View-рівня.\n\nЕмпірично калібровано: дельти Compose ~5× більші за дельти View при ідентичних жестах.</string>
+    <string name="os_lbl_norm_enabled">Увімкнути нормалізацію</string>
+    <string name="os_desc_norm_enabled">Головний перемикач інтелектуальної нормалізації дельт.\n\nПри увімкненні система аналізує кожен інстанс EdgeEffect та застосовує корекційні фактори до посилених дельт Compose.\n\nМожна безпечно залишити увімкненим — не впливає на додатки з нормальними дельтами.</string>
+    <string name="os_lbl_norm_ref_delta">Еталонна дельта</string>
+    <string name="os_desc_norm_ref_delta">Базове значення "нормальної" дельти (частка від effectiveSize).\n\nВизначено емпірично з View-додатків. Якщо ковзне середнє перевищує це × множник виявлення, інстанс вважається посиленим.\n\nЗа замовчуванням: 0.00001 (дуже чутливо). Збільште при хибних спрацюваннях для нормальних додатків.</string>
+    <string name="os_lbl_norm_detect_mul">Множник виявлення</string>
+    <string name="os_desc_norm_detect_mul">Пороговий множник для виявлення посилення.\n\nАктивація: ковзне_середнє &gt; еталон × це значення.\n3.3 = надійно виявляє Compose (~5× від View), не спрацьовує на View-додатках.\n\nЗбільште при хибних спрацюваннях, зменште якщо Compose не виявляється.</string>
+    <string name="os_lbl_norm_factor">Корекційний фактор</string>
+    <string name="os_desc_norm_factor">Множник для посилених дельт.\n\n0.2 = привести до View-рівня (з аналізу: ref/compose ≈ 0.195).\n0.5 = вдвічі зменшити. 1.0 = без змін.\n\nМенше = слабший відскок, більше = сильніший.</string>
+    <string name="os_lbl_norm_window">Розмір вікна</string>
+    <string name="os_desc_norm_window">Кількість останніх зразків |дельти| для аналізу.\n\nМенше = швидше виявлення, але чутливіший до шуму.\nБільше = стабільніший, але повільніша адаптація.\n\nДіапазон: 2–64.</string>
+    <string name="os_lbl_norm_ramp">Розгінні події</string>
+    <string name="os_desc_norm_ramp">Скільки подій для переходу від 1.0 до фактора.\n\n1–4 = майже миттєво. 8–12 = плавний перехід.\n\nЗапобігає візуальним стрибкам при активації нормалізації.</string>
+    <string name="os_lbl_norm_detect_mode">Режим виявлення</string>
+    <string name="os_desc_norm_detect_mode">Як ідентифікуються інстанси Compose.\n\n0 = Лише поведінка (ковзне вікно дельт)\n1 = Гібрид: стек-трейс дає миттєвий ID, вікно підтверджує\n2 = Лише стек-трейс (без аналізу вікна)\n\nГібрид (1) рекомендовано для найкращої точності + швидкості.</string>
+    <string name="os_norm_mode_behavior">Лише поведінка</string>
+    <string name="os_norm_mode_hybrid">Гібрид (рекомендовано)</string>
+    <string name="os_norm_mode_stacktrace">Лише стек-трейс</string>
+
     <string name="ims_desc_activity">VoLTE, VoWiFi, 5G</string>
-    <string name="ims_title_activity">IMS Конфіг</string>
+    <string name="ims_title_activity">Конфіг IMS</string>
+
+
+    <!-- Grid Sizer / App Drawer Customization -->
+    <string name="grid_group_homepage">Кастомізація головного екрана</string>
+    <string name="grid_lbl_home_enable">Налаштувати сітку головного екрана</string>
+    <string name="grid_desc_home_enable">Активує кастомізацію стовпців та рядків сітки головного екрана.</string>
+    
+    <string name="grid_lbl_columns">Стовпці</string>
+    <string name="grid_desc_home_cols">Кількість стовпців на головному екрані.</string>
+    
+    <string name="grid_lbl_rows">Рядки</string>
+    <string name="grid_desc_home_rows">Кількість рядків на головному екрані.</string>
+    
+    <string name="grid_lbl_hide_text">Приховати підписи</string>
+    <string name="grid_desc_home_hide_text">Приховує підписи іконок на головному екрані.</string>
+
+    <string name="grid_lbl_icon_size">Розмір іконок</string>
+    <string name="grid_desc_home_icon_size">Налаштовує розмір іконок на головному екрані (100%% — стандарт).</string>
+    <string name="grid_desc_drawer_icon_size">Налаштовує розмір іконок у шухляді додатків (100%% — стандарт).</string>
+    <string name="grid_desc_dock_icon_size">Налаштовує розмір іконок у доку (100%% — стандарт).</string>
+
+    <string name="grid_lbl_text_mode">Режим відображення тексту</string>
+    <string name="grid_desc_text_mode">Як відображаються підписи іконок, коли текст видимий.</string>
+    <string name="grid_text_mode_default">Обрізка</string>
+    <string name="grid_text_mode_two_line">Два рядки</string>
+    <string name="grid_text_mode_marquee">Біжучий рядок</string>
+
+    <string name="grid_group_drawer">Кастомізація шухляди додатків</string>
+    <string name="grid_lbl_drawer_enable">Налаштувати шухляду додатків</string>
+    <string name="grid_desc_drawer_enable">Активує кастомізацію сітки та макету шухляди додатків.</string>
+    
+    <string name="grid_lbl_drawer_cols">Стовпці меню</string>
+    <string name="grid_desc_drawer_cols">Кількість стовпців у шухляді додатків.</string>
+    
+    <string name="grid_lbl_row_height">Висота рядка</string>
+    <string name="grid_desc_row_height">Налаштовує вертикальний відступ між рядками в шухляді додатків (100% — стандарт).</string>
+    
+    <string name="grid_lbl_drawer_hide_text">Приховати текст меню</string>
+    <string name="grid_desc_drawer_hide_text">Приховує підписи іконок у шухляді додатків.</string>
+
+    <!-- Dock Grid Section -->
+    <string name="grid_group_dock">Кастомізація доку</string>
+    <string name="grid_lbl_dock_icons">Кількість іконок доку</string>
+    <string name="grid_desc_dock_icons">Кількість іконок у панелі доку.</string>
+    <string name="grid_lbl_dock_hide_text">Приховати текст доку</string>
+    <string name="grid_desc_dock_hide_text">Приховує підписи іконок у доку.</string>
+
+    <string name="grid_lbl_search_cols">Стовпці пошуку</string>
+    <string name="grid_desc_search_cols">Кількість стовпців для результатів пошуку та пропозицій у шухляді додатків.</string>
+    <!-- Search Widget & Dock Section -->
+    <string name="search_widget_group_title">Пошуковий віджет та Док</string>
+    
+    <string name="search_widget_enable_dock">Увімкнути кастомізацію доку</string>
+    <string name="search_widget_desc_dock">Головний перемикач для всіх модифікацій доку та пошукового рядка нижче.</string>
+    
+    <string name="search_widget_hide_search">Приховати пошуковий рядок</string>
+    <string name="search_widget_desc_hide_search">Приховує пошуковий віджет знизу.</string>
+    
+    <string name="search_widget_hide_dock">Приховати іконки доку</string>
+    <string name="search_widget_desc_hide_dock">Приховує область іконок нижнього доку (Hotseat).</string>
+    <string name="pref_recents_size_summary">pref_recents_size_summary</string>
+    <string name="info_recents_size">info_recents_size</string>
+    
+    <string name="search_widget_padding_home">Верхній відступ головного екрана</string>
+    <string name="search_widget_desc_padding_home">Налаштовує верхній відступ для іконок робочого столу (розтягує зверху).</string>
+    
+    <string name="search_widget_padding_home_bottom">Нижній відступ головного екрана</string>
+    <string name="search_widget_desc_padding_home_bottom">Налаштовує нижній відступ для іконок робочого столу (розтягує знизу).</string>
+    
+    <string name="search_widget_padding_dock">Відступ іконок доку</string>
+    <string name="search_widget_desc_padding_dock">Налаштовує вертикальну позицію іконок доку (+/-).</string>
+    
+    <string name="search_widget_padding_search">Відступ пошукового віджета</string>
+    <string name="search_widget_desc_padding_search">Налаштовує вертикальну позицію пошукового віджета (+/-).</string>
+
+    <string name="search_widget_padding_dots">Відступ точок</string>
+    <string name="search_widget_desc_padding_dots">Налаштовує вертикальну позицію точок-індикаторів сторінок.</string>
+    <string name="search_widget_padding_dots_x">Горизонтальний зсув точок</string>
+    <string name="search_widget_desc_padding_dots_x">Налаштовує горизонтальну позицію точок-індикаторів сторінок.</string>
+
+    <!-- Recents Size -->
+    <string name="title_recents_size">Розмір карток Recents</string>
+    <string name="desc_recents_size">Налаштувати розмір карток задач в огляді</string>
+    <string name="pref_recents_size_enable">Увімкнути власний розмір</string>
+    <string name="pref_recents_size_scale">Масштаб (%)</string>
+    <string name="pref_recents_carousel_enable">Ефект каруселі (стиль OnePlus)</string>
+    <string name="pref_recents_icons_enable">Рядок іконок додатків</string>
+
+    <!-- Recents Menu Screen -->
+    <string name="recents_menu_screen_title">Меню Recents</string>
+    <string name="recents_group_general">Загальне управління</string>
+    <string name="recents_enable_modding">Увімкнути моддинг Recents</string>
+    <string name="recents_disable_live_tile">Вимкнути живі плитки</string>
+    <string name="recents_disable_live_tile_desc">Показує знімок замість живого попереднього перегляду</string>
+    <string name="recents_group_scaling">Базове масштабування карток</string>
+    <string name="recents_enable_static_scale">Увімкнути статичне масштабування</string>
+    <string name="recents_scale_percent">Масштаб (%)</string>
+    <string name="recents_group_carousel_geometry">Карусель: Геометрія</string>
+    <string name="recents_carousel_min_scale">Мін. масштаб (край)</string>
+    <string name="recents_carousel_spacing">Відступ / Перекриття</string>
+    <string name="recents_carousel_min_alpha">Мін. альфа (край)</string>
+    <string name="recents_group_carousel_blur">Карусель: Розмиття</string>
+    <string name="recents_carousel_blur_radius">Макс. радіус розмиття</string>
+    <string name="recents_blur_overflow">Розмиття на всю картку</string>
+    <string name="recents_blur_overflow_desc">Застосувати до всієї картки, а не лише мініатюри</string>
+    <string name="recents_group_carousel_tint">Карусель: Відтінок</string>
+    <string name="recents_tint_intensity">Інтенсивність відтінку</string>
+    <string name="recents_select_tint_color">Обрати колір відтінку</string>
+    <string name="recents_group_icon_offset">Карусель: Зсув іконок</string>
+    <string name="recents_icon_offset_x">Зсув іконки X</string>
+    <string name="recents_icon_offset_y">Зсув іконки Y</string>
+
+    <!-- Gestures Screen -->
+    <string name="gestures_screen_title">Жести</string>
+
+    <!-- Clear All Screen-->
+    <string name="clear_all_screen_title">Кнопка очищення</string>
+
+    <!-- Grid Settings Screen -->
+    <string name="grid_screen_title">Налаштування сітки</string>
+    <string name="grid_homepage_title">Налаштування головного екрана</string>
+    <string name="grid_homepage_dock_title">Панель доку</string>
+    <string name="grid_menupage_title">Сторінка меню</string>
+    <string name="grid_menupage_enable">Налаштувати сторінку меню</string>
+    <string name="grid_menupage_search_title">Результати пошуку</string>
+    <string name="grid_menupage_suggestions_title">Список пропозицій</string>
+    <string name="grid_menupage_apps_title">Список додатків</string>
+    <string name="grid_menupage_suggestions_disable">Вимкнути список пропозицій</string>
+    <string name="grid_text_mode_hide">Приховати текст</string>
+
+    <!-- Search &amp; Feed Screen -->
+    <string name="search_feed_screen_title">Пошук &amp; Стрічка</string>
+
+    <!-- Quickstep Section -->
+    <string name="quickstep_warning_title">Експериментальна функція</string>
+    <string name="quickstep_warning_text">Ця функція повністю замінює нативний вигляд Quickstep на власну реалізацію. Можливі візуальні збої або вильоти. Використовуйте на свій ризик. Вимкніть цю опцію при проблемах.</string>
+    <string name="quickstep_engine_title">Власний двигун Quickstep</string>
+    <string name="quickstep_engine_summary">Замінити нативний Recents на власну реалізацію</string>
+    <string name="quickstep_engine_info">Активує повністю власне подання Recents з різними візуальними стилями та анімаціями. Повністю замінює стандартний Recents Pixel Launcher.</string>
+    <string name="quickstep_style_title">Стиль Recents</string>
+    <string name="quickstep_style_stock">Стандартний</string>
+    <string name="quickstep_style_stock_desc">Чистий горизонтальний макет карток</string>
+    <string name="quickstep_style_ios">Стиль iOS</string>
+    <string name="quickstep_style_ios_desc">Вертикально складені картки з 3D-ефектом</string>
+    <string name="quickstep_style_oneplus">Стиль OnePlus</string>
+    <string name="quickstep_style_oneplus_desc">Карусель з фокусом на центральну картку</string>
+    <string name="quickstep_style_minimal">Мінімальний</string>
+    <string name="quickstep_style_minimal_desc">Маленькі картки лише з іконками</string>
+    <string name="content_desc_selected">Обрано</string>
+
+    
+    <string name="launcher_feed_title">Вимкнути Google Feed</string>
+    <string name="launcher_feed_desc">Вимикає екран -1 (Google Discover/Feed) на головному екрані.</string>
+
+    <string name="launcher_top_widget_title">Вимкнути верхній віджет</string>
+    <string name="launcher_top_widget_desc">Видаляє постійний віджет "Миттєвий огляд" з головного екрана, дозволяючи розміщувати там іконки.</string>
+
+    <!-- Animation Theme Manager -->
+    <string name="anim_theme_create_title">Створити тему анімації</string>
+    <string name="anim_theme_style_name">Назва стилю</string>
+    <string name="anim_theme_open_enter">Відкриття — Вхід</string>
+    <string name="anim_theme_open_exit">Відкриття — Вихід</string>
+    <string name="anim_theme_close_enter">Закриття — Вхід</string>
+    <string name="anim_theme_close_exit">Закриття — Вихід</string>
+    <string name="anim_theme_tap_to_select">Натисніть для вибору XML-файлу</string>
+    <string name="anim_theme_compile_btn">Скомпілювати &amp; Встановити</string>
+    <string name="anim_theme_log_title">Журнал збірки</string>
+    <string name="anim_theme_installed_title">Встановлені теми</string>
+    <string name="anim_theme_none_installed">Жодної теми анімації не встановлено</string>
+    <string name="anim_theme_paste_xml">Вставити XML</string>
+    <string name="anim_theme_xml_hint">Вставте XML анімації сюди…</string>
+    <string name="anim_theme_input_mode_file">Файл</string>
+    <string name="anim_theme_input_mode_xml">XML текст</string>
+
+    <!-- Built-in Animations -->
+    <string name="anim_builtin_title">Вбудовані анімації</string>
+    <string name="anim_builtin_disabled">Вимкнено</string>
+    <string name="anim_builtin_custom">Користувацька тема</string>
+    <string name="anim_preview_open">Відкриття</string>
+    <string name="anim_preview_close">Закриття</string>
+    <string name="anim_apply_both">Застосувати обидва</string>
+    <string name="anim_apply_open">Застосувати відкриття</string>
+    <string name="anim_apply_close">Застосувати закриття</string>
+    <string name="anim_current_open">Поточне відкриття: %s</string>
+    <string name="anim_current_close">Поточне закриття: %s</string>
+
+    <!-- Animation type names -->
+    <string name="anim_group_slide">Сковзання</string>
+    <string name="anim_group_card_stack">Стопка карток</string>
+    <string name="anim_group_train">Потяг</string>
+    <string name="anim_group_ios">Паралакс iOS</string>
+    <string name="anim_group_fade">Затухання</string>
+    <string name="anim_group_zoom">Зум</string>
+    <string name="anim_group_modal">Модальне</string>
+    <string name="anim_group_depth">Глибина</string>
+    <string name="anim_group_pivot">Обертання</string>
+
+    <!-- Direction names -->
+    <string name="anim_dir_right">Праворуч</string>
+    <string name="anim_dir_left">Ліворуч</string>
+    <string name="anim_dir_top">Вгору</string>
+    <string name="anim_dir_bottom">Вниз</string>
+
+    <!-- Activity Transition Settings -->
+    <string name="anim_transition_title">Переходи активностей</string>
+    <string name="anim_transition_subtitle">Користувацькі теми та вбудовані переходи</string>
+    <string name="anim_predictive_back_title">Вимкнути передбачуваний жест "назад"</string>
+    <string name="anim_predictive_back_desc">Видаляє системну анімацію свайпу назад</string>
+    <string name="anim_no_animation_title">Без анімації</string>
+    <string name="anim_no_animation_desc">Повністю вимикає анімацію переходів</string>
+    <string name="anim_constructor_title">Конструктор анімацій</string>
+    <string name="anim_constructor_preview">Попередній перегляд</string>
+    <string name="anim_constructor_style_name">Назва стилю</string>
+    <string name="anim_constructor_build_theme">Зібрати тему</string>
+    <string name="anim_constructor_hide">Приховати</string>
+    <string name="anim_constructor_show_xml">Показати XML</string>
+    <string name="anim_constructor_hide_xml">Приховати XML</string>
+    <string name="anim_dialog_cancel">Скасувати</string>
+    <string name="anim_active_open_close">Відкриття + Закриття</string>
+    <string name="anim_installing">Встановлення…</string>
+    <string name="anim_install_success">✓ Тему успішно встановлено!</string>
+    <string name="anim_install_failed">Помилка встановлення</string>
+    <string name="anim_install_failed_log">✗ Помилка встановлення</string>
+    <string name="anim_compile_failed">Помилка компіляції</string>
+    <string name="anim_cd_delete">Видалити</string>
+    <string name="anim_cd_confirm_delete">Підтвердити видалення</string>
+    <string name="anim_cd_reset">Скинути</string>
+    <string name="anim_cd_copy">Копіювати</string>
+    <string name="anim_param_translate">Переміщення</string>
+    <string name="anim_param_scale">Масштаб</string>
+    <string name="anim_param_alpha">Альфа</string>
+    <string name="anim_param_rotate">Обертання</string>
+    <string name="anim_param_pivot">Точка обертання</string>
+    <string name="anim_param_timing">Таймінг</string>
+    <string name="anim_param_interpolator">Інтерполятор</string>
+
+    <!-- Addon Manager -->
+    <string name="addon_title">Аддони Pine</string>
+    <string name="addon_desc">Керування зовнішніми хук-модулями</string>
+    <string name="addon_count">Встановлено модулів: %d</string>
+    <string name="addon_active_count">Активних: %1$d з %2$d</string>
+    <string name="addon_safe_mode_title">Безпечний режим активний</string>
+    <string name="addon_safe_mode_desc">Аддони було вимкнено через повторювані вильоти. Якщо проблему спричинив несправний аддон, ви можете вимкнути його перед виходом з безпечного режиму.</string>
+    <string name="addon_safe_mode_exit">Вийти з безпечного режиму</string>
+    <string name="addon_section_system">Системні модулі</string>
+    <string name="addon_section_user">Встановлені модулі</string>
+    <string name="addon_system_empty_title">Немає системних модулів</string>
+    <string name="addon_system_empty_desc">Системні модулі передвстановлені з прошивкою</string>
+    <string name="addon_user_empty_title">Модулі користувача не встановлено</string>
+    <string name="addon_user_empty_desc">Імпортуйте .jar аддон, щоб почати</string>
+    <string name="addon_import">Імпортувати аддон</string>
+    <string name="addon_import_desc">Оберіть файл .jar аддона</string>
+    <string name="addon_import_success">Аддон імпортовано</string>
+    <string name="addon_import_failed">Помилка імпорту</string>
+    <string name="addon_empty_title">Аддони не встановлено</string>
+    <string name="addon_empty_desc">Імпортуйте .jar аддон, щоб почати</string>
+    <string name="addon_delete_title">Видалити аддон</string>
+    <string name="addon_delete_confirm">Видалити "%s"?\n\nJAR-файл буде видалено, а всі налаштування скинуто.</string>
+    <string name="addon_scope_default">Стандартні цілі</string>
+    <string name="addon_scope_custom">Лише користувацькі</string>
+    <string name="addon_scope_merge">Об\'єднати обидва</string>
+    <string name="addon_scope_label_default">Стандартна область</string>
+    <string name="addon_scope_label_custom">Користувацька область</string>
+    <string name="addon_scope_label_merge">Об\'єднана область</string>
+    <string name="addon_target_scope">Цільова область</string>
+    <string name="addon_targets_default">Стандартні цілі</string>
+    <string name="addon_targets_custom">Користувацькі цілі</string>
+    <string name="addon_builtin_badge">вбудований</string>
+    <string name="addon_builtin_plus_addon">Вбудований + Аддон</string>
+    <string name="addon_enabled">Увімкнено</string>
+    <string name="addon_btn_save">Зберегти</string>
+    <string name="addon_btn_cancel">Скасувати</string>
+    <string name="addon_btn_remove">Видалити</string>
+    <string name="addon_settings_title">Налаштування модуля</string>
+    <string name="addon_range_format">Діапазон: %1$s — %2$s</string>
+    <string name="addon_file_not_set">Не встановлено</string>
+    <string name="addon_file_saved">Файл збережено</string>
+    <string name="addon_file_copy_failed">Помилка копіювання</string>
+    <string name="addon_apps_selected">Обрано додатків: %d</string>
+    <string name="addon_select_apps">Обрати додатки</string>
+    <string name="addon_selected_count">Обрано: %d</string>
+    <string name="addon_confirm_count">Підтвердити (%d)</string>
+    <string name="addon_search_apps">Пошук додатків\u2026</string>
+    <string name="addon_show_system">Показати системні додатки</string>
+    <string name="addon_hide_system">Приховати системні додатки</string>
+    <string name="addon_no_apps_match">Додатків для "%s" не знайдено</string>
+    <string name="addon_no_apps_available">Додатки відсутні</string>
+    <string name="addon_default_target_badge">Стандартна ціль</string>
+    <string name="addon_author_unknown">Невідомий</string>
+
+    <!-- Addon Manager: Active Apps -->
+    <string name="addon_active_apps_title">Активні застосунки</string>
+    <string name="addon_active_apps_desc">%d застосунок(ів) з активними хуками</string>
+    <string name="addon_active_apps_empty">Немає активних хуків</string>
+    <string name="addon_active_apps_modules">%d модуль(ів)</string>
 </resources>

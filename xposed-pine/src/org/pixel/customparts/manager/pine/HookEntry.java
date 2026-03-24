@@ -6,8 +6,7 @@ import org.pixel.customparts.core.IHookEnvironment;
 // Импорты твоих хуков
 import org.pixel.customparts.hooks.*;
 import org.pixel.customparts.hooks.recents.*;
-import org.pixel.customparts.hooks.systemui.DozeTapDozeHook;
-import org.pixel.customparts.hooks.systemui.DozeTapShadeHook;
+import org.pixel.customparts.hooks.systemui.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +19,8 @@ public class HookEntry {
     private static final String TAG = "HookEntry";
     private static final String PACKAGE_SYSTEMUI = "com.android.systemui";
 
+    /** Hardcoded whitelist — packages that always get built-in hooks */
+    private static final Set<String> BUILTIN_WHITELIST = new HashSet<>();
     private static final Set<String> LAUNCHER_PACKAGES = new HashSet<>();
     private static final Set<String> initializedPackages = new HashSet<>();
     private static final IHookEnvironment environment = new PineEnvironment();
@@ -28,6 +29,18 @@ public class HookEntry {
         LAUNCHER_PACKAGES.add("com.google.android.apps.nexuslauncher");
         LAUNCHER_PACKAGES.add("com.google.android.apps.pixel.launcher");
         LAUNCHER_PACKAGES.add("com.android.launcher3");
+
+        // Built-in whitelist = launcher + systemui
+        BUILTIN_WHITELIST.addAll(LAUNCHER_PACKAGES);
+        BUILTIN_WHITELIST.add(PACKAGE_SYSTEMUI);
+    }
+
+    /**
+     * Check if a package is in the hardcoded built-in whitelist.
+     * Used externally by AddonLoader logic.
+     */
+    public static boolean isInBuiltinWhitelist(String packageName) {
+        return BUILTIN_WHITELIST.contains(packageName);
     }
 
     public static void init(Context context, ClassLoader classLoader, String packageName) {
@@ -36,14 +49,50 @@ public class HookEntry {
         }
         initializedPackages.add(packageName);
 
-        if (LAUNCHER_PACKAGES.contains(packageName)) {
-            environment.log(TAG, "MATCHED LAUNCHER PACKAGE: " + packageName);
-            initLauncherHooks(context, classLoader);
+        boolean inWhitelist = BUILTIN_WHITELIST.contains(packageName);
+        boolean hasAddons = false;
+
+        try {
+            hasAddons = AddonLoader.hasAddonsForPackage(context, packageName);
+        } catch (Throwable t) {
+            environment.logError(TAG, "Failed to check addons for " + packageName, t);
         }
 
-        if (PACKAGE_SYSTEMUI.equals(packageName)) {
-            environment.log(TAG, "MATCHED SYSTEMUI PACKAGE");
-            initSystemUIHooks(context, classLoader);
+        /*
+         * === Injection logic ===
+         * 1. Package in whitelist (launcher/systemui):
+         *    → Apply built-in hooks FIRST, then addon hooks
+         * 2. Package NOT in whitelist, but has addon:
+         *    → Apply ONLY addon hooks (no built-in)
+         * 3. Package NOT in whitelist, no addon:
+         *    → Should not happen (ActivityThread wouldn't inject), but skip gracefully
+         */
+
+        if (inWhitelist) {
+            // Built-in hooks first
+            // initGlobalHooks(context, classLoader);
+
+            if (LAUNCHER_PACKAGES.contains(packageName)) {
+                environment.log(TAG, "MATCHED LAUNCHER PACKAGE: " + packageName);
+                initLauncherHooks(context, classLoader);
+            }
+
+            if (PACKAGE_SYSTEMUI.equals(packageName)) {
+                environment.log(TAG, "MATCHED SYSTEMUI PACKAGE");
+                initSystemUIHooks(context, classLoader);
+            }
+        } else {
+            environment.log(TAG, "Addon-only package: " + packageName + " (not in built-in whitelist)");
+        }
+
+        // Addon hooks — always run after built-in (if package is in whitelist)
+        // or as sole hooks (if package is addon-only)
+        if (hasAddons) {
+            try {
+                AddonLoader.loadAndRunAddons(context, classLoader, packageName);
+            } catch (Throwable t) {
+                environment.logError(TAG, "Addon loading failed for " + packageName, t);
+            }
         }
     }
 
@@ -56,6 +105,9 @@ public class HookEntry {
         edgeHook.setUseGlobalSettings(true);
         hooks.add(edgeHook);
 
+        hooks.add(new MagnifierHook());
+        hooks.add(new ActivityTransitionHook());
+
         applyHooks(hooks, context, classLoader, "global");
     }
 
@@ -65,6 +117,7 @@ public class HookEntry {
         hooks.add(new GridSizeAppMenuHook());
         hooks.add(new UnifiedLauncherHook());
         hooks.add(new RecentsUnifiedHook());
+        // hooks.add(new OxygenRecentsIconStripHook());
 
         applyHooks(hooks, context, classLoader, "launcher");
     }
@@ -74,6 +127,10 @@ public class HookEntry {
 
         hooks.add(new DozeTapDozeHook());
         hooks.add(new DozeTapShadeHook());
+        hooks.add(new KeyguardBatteryPowerHook());
+        hooks.add(new ShadeUnifiedSurfaceHook());
+        hooks.add(new ShadeCompactMediaHook());
+        hooks.add(new SystemUIRestartHook());
 
         applyHooks(hooks, context, classLoader, "systemui");
     }

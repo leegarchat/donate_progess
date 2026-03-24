@@ -1,40 +1,113 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <!-- General / Navigation -->
     <string name="os_title_activity">Physique du défilement</string>
-    <string name="os_title_playground">Bac à sable (Test)</string>
+    <string name="os_title_playground">Terrain de jeu (Test)</string>
     <string name="os_btn_back">Retour</string>
     <string name="btn_back">Retour</string>
-    <string name="os_btn_reset">Réinitialiser</string>
-    <string name="os_msg_reset_done">Paramètres rétablis par défaut</string>
+    <string name="os_btn_reset">Réinitialiser les paramètres</string>
+    <string name="os_msg_reset_done">Remis aux valeurs par défaut</string>
     <string name="os_msg_import_success">Paramètres importés avec succès</string>
     <string name="os_msg_app_exists">Cette application est déjà dans la liste</string>
 
     <!-- Master Switch (Dynamic) -->
     <!-- Xposed Mode -->
     <string name="os_label_master_xposed">Module Xposed</string>
-    <string name="os_desc_master_xposed">Utilise le Framework Xposed pour intercepter la classe système EdgeEffect.\n\nPermet d\'injecter la physique dans toutes les applications sans modifier le système. Si le module n\'est pas actif dans LSPosed, les effets ne fonctionneront que dans cette application (mode démo).</string>
+    <string name="os_desc_master_xposed">Utilise le framework Xposed pour accrocher la classe système EdgeEffect.\n\nPermet d\'injecter la physique dans toutes les applications sans modifier le système. Si le module n\'est pas actif dans LSPosed, les effets ne fonctionneront que dans cette application (mode démo).</string>
     
     <!-- Native Mode -->
     <string name="os_label_master_native">Intégration système</string>
-    <string name="os_desc_master_native">Active l\'implémentation physique intégrée au firmware (Native).\n\nFonctionne directement via les classes système Pixel Parts sans hooks, garantissant des performances et une compatibilité maximales.</string>
+    <string name="os_desc_master_native">Active l\'implémentation physique intégrée au firmware (Native).\n\nFonctionne directement via les classes système de Pixel Parts sans hooks, offrant une performance et une compatibilité maximales.</string>
+
+    <!-- SystemUI Settings -->
+    <string name="sysui_settings_title">Paramètres SystemUI</string>
+    <string name="sysui_lockscreen_title">Paramètres de l\'écran de verrouillage</string>
+    <string name="sysui_lockscreen_subtitle">Configurer la charge et les gestes sur l\'écran de verrouillage</string>
+
+    <string name="sysui_shade_title">Panneau de notification</string>
+    <string name="sysui_shade_subtitle">Lecteur compact et scrim</string>
+
+    <!-- Magnifier (text loupe) -->
+    <string name="magnifier_section_title">Loupe de texte</string>
+    <string name="magnifier_enable_title">Zoom personnalisé</string>
+    <string name="magnifier_enable_summary">Modifier le niveau de grossissement de la loupe de texte</string>
+    <string name="magnifier_zoom_title">Niveau de grossissement</string>
+    <string name="magnifier_size_title">Taille de la fenêtre</string>
+    <string name="magnifier_shape_title">Forme de la fenêtre</string>
+    <string name="magnifier_shape_default">Par défaut</string>
+    <string name="magnifier_shape_square">Carré</string>
+    <string name="magnifier_shape_circle">Cercle</string>
+    <string name="magnifier_offset_y_title">Décalage vertical</string>
+    <string name="magnifier_xposed_warning_title">Module Xposed requis</string>
+    <string name="magnifier_xposed_warning_desc">La modification de la loupe fonctionne par application. Activez le module Xposed pour chaque application dans laquelle la loupe modifiée doit apparaître.</string>
+    <string name="overscroll_xposed_warning_title">Module Xposed requis</string>
+    <string name="overscroll_xposed_warning_desc">La modification du overscroll fonctionne par application. Activez le module Xposed pour chaque application dans laquelle l\'effet de bord modifié doit apparaître.</string>
+
+    <string name="sysui_media_player_title">Lecteur multimédia</string>
+    <string name="sysui_media_compact_mode_title">Mode compact</string>
+    <string name="sysui_media_compact_mode_off">Désactivé</string>
+    <string name="sysui_media_compact_mode_small">Compact</string>
+    <string name="sysui_media_compact_mode_header">En-tête uniquement</string>
+    <string name="sysui_media_compact_mode_very_small">Très compact</string>
+
+    <string name="sysui_media_bg_alpha_title">Opacité du fond du lecteur</string>
+
+    <string name="sysui_media_hide_title">Masquer le lecteur multimédia</string>
+    <string name="sysui_media_hide_qs">Masquer dans les réglages rapides</string>
+    <string name="sysui_media_hide_notifications">Masquer dans les notifications</string>
+    <string name="sysui_media_hide_lockscreen">Masquer sur l\'écran de verrouillage</string>
+
+    <string name="sysui_shade_surface_title">Fond du panneau</string>
+    <string name="sysui_shade_surface_solid">Panneau opaque (pas de scrim)</string>
+    <string name="sysui_shade_blur_title">Flou d\'arrière-plan</string>
+    <string name="sysui_shade_zoom_title">Zoom d\'arrière-plan</string>
+    <string name="sysui_shade_disable_scale_threshold_title">Désactiver le seuil de mise à l\'échelle</string>
+    <string name="sysui_shade_scrim_title">Personnalisation du scrim</string>
+    <string name="sysui_shade_notif_scrim_alpha_title">Alpha du scrim de notification</string>
+    <string name="sysui_shade_main_scrim_alpha_title">Alpha du scrim principal</string>
+    <string name="sysui_shade_notif_scrim_tint_title">Teinte du scrim de notification</string>
+    <string name="sysui_shade_notif_scrim_tint_color">Couleur de teinte</string>
+    <string name="sysui_shade_main_scrim_tint_title">Teinte du scrim principal</string>
+    <string name="sysui_shade_main_scrim_tint_color">Couleur de teinte</string>
+    <string name="sysui_shade_override_enable">Multiplicateur alpha relatif</string>
+
+    <string name="sysui_charging_info_title">Informations de charge</string>
+    <string name="sysui_charging_info_enable">Activer les informations de charge personnalisées</string>
+    <string name="sysui_show_wattage">Afficher la puissance</string>
+    <string name="sysui_show_voltage">Afficher la tension</string>
+    <string name="sysui_show_current">Afficher le courant (mA)</string>
+    <string name="sysui_show_temp">Afficher la température de la batterie</string>
+    <string name="sysui_show_percent">Afficher le niveau de la batterie</string>
+    <string name="sysui_show_standard">Afficher le texte standard (Rapide/Lent)</string>
+    <string name="sysui_show_custom_symbol">Afficher un symbole personnalisé</string>
+    <string name="sysui_custom_symbol">Symbole personnalisé (ex: ⚡)</string>
+    <string name="sysui_sensor_interval_title">Intervalle de mise à jour du capteur</string>
+    <string name="sysui_average_mode_title">Afficher les valeurs moyennes de charge</string>
+
 
     <string name="os_status_active">Actif</string>
     <string name="os_status_disabled">Désactivé</string>
     
     <!-- Xposed Dialogs -->
     <string name="os_dialog_xposed_title">Xposed n\'est pas actif</string>
-    <string name="os_dialog_xposed_msg">Les hooks ne peuvent pas être installés.\n\nL\'application n\'a pas détecté de framework LSPosed actif. Sans lui, l\'interception des appels système est impossible ; les paramètres ne fonctionneront qu\'à l\'intérieur de cette application.</string>
+    <string name="os_dialog_xposed_msg">Impossible d\'installer les hooks.\n\nL\'application n\'a détecté aucun framework LSPosed actif. Sans celui-ci, l\'interception des appels système est impossible ; les paramètres ne fonctionneront que dans cette application.</string>
 
     <!-- Profiles UI -->
     <string name="os_group_profiles">Profils</string>
-    <string name="os_prof_btn_export">Exporter vers un fichier</string>
-    <string name="os_prof_btn_import">Importer depuis un fichier</string>
+    <string name="os_prof_btn_export">Exporter</string>
+    <string name="os_prof_btn_import">Importer</string>
+    <string name="os_prof_btn_network">Configurations en ligne</string>
     <string name="os_prof_btn_create">Enregistrer un nouveau profil</string>
     <string name="os_prof_header_list">Profils enregistrés</string>
+    <string name="os_net_dialog_title">Configurations en ligne</string>
+    <string name="os_net_loading">Chargement…</string>
+    <string name="os_net_empty">Aucune configuration trouvée</string>
+    <string name="os_net_error">Échec du chargement</string>
+    <string name="os_net_applied">Configuration appliquée : %s</string>
     <string name="os_prof_item_active">Actif</string>
     <string name="os_prof_item_tap">Appuyer pour charger</string>
     <string name="os_prof_dialog_title">Nouveau profil</string>
-    <string name="os_prof_dialog_hint">Entrez le nom du profil</string>
+    <string name="os_prof_dialog_hint">Saisir le nom du profil</string>
     <string name="os_prof_btn_save">Enregistrer</string>
     <string name="btn_save">Enregistrer</string>
     <string name="os_prof_delete_desc">Supprimer le profil</string>
@@ -42,25 +115,25 @@
     <!-- Physics Group -->
     <string name="os_group_physics">Physique du ressort</string>
 
-    <string name="os_lbl_physics_pull">Traction</string>
-    <string name="os_desc_physics_pull">Multiplicateur de distance lors de la traction manuelle (onPull).\n\n• Valeur &gt;= 1.0 : Suivi linéaire du doigt.\n• Valeur &lt; 1.0 : Active une résistance non linéaire (élastique) — plus vous tirez, plus la résistance est forte.</string>
+    <string name="os_lbl_physics_pull">Facteur de traction</string>
+    <string name="os_desc_physics_pull">Multiplicateur de distance lors du glissement manuel (onPull).\n\n• Valeur &gt;= 1.0 : suivi linéaire du doigt.\n• Valeur &lt; 1.0 : active la résistance non linéaire (élastique) — plus on tire, plus la résistance augmente.</string>
 
-    <string name="os_lbl_physics_stiffness">Raideur</string>
-    <string name="os_desc_physics_stiffness">Constante de raideur du ressort (k).\n\nDétermine la force qui ramène la liste à sa position initiale. Influence la fréquence d\'oscillation lors du rebond.</string>
+    <string name="os_lbl_physics_stiffness">Rigidité</string>
+    <string name="os_desc_physics_stiffness">Constante du ressort (k).\n\nDétermine la force qui ramène la liste à sa position d\'origine. Influence la fréquence d\'oscillation lors du rebond.</string>
 
     <string name="os_lbl_physics_damping">Amortissement</string>
-    <string name="os_desc_physics_damping">Coefficient d\'amortissement (ζ).\n\nDissipe l\'énergie du ressort. Détermine la vitesse à laquelle les oscillations s\'atténuent après avoir relâché le doigt ou heurté un bord.</string>
+    <string name="os_desc_physics_damping">Taux d\'amortissement (ζ).\n\nDissipe l\'énergie du ressort. Détermine la vitesse à laquelle les oscillations s\'atténuent après le relâchement ou l\'impact au bord.</string>
 
-    <string name="os_lbl_physics_fling">Impulsion</string>
-    <string name="os_desc_physics_fling">Multiplicateur de la vitesse d\'entrée lors de l\'impact inertiel (onAbsorb).\n\nAugmente l\'amplitude du rebond lors d\'un défilement rapide.\nNote : Avec des valeurs élevées (&gt;1.0), le code réduit dynamiquement la raideur du ressort pour que l\'impact paraisse plus "doux".</string>
+    <string name="os_lbl_physics_fling">Impulsion de lancement</string>
+    <string name="os_desc_physics_fling">Multiplicateur de la vitesse d\'entrée lors de onAbsorb (impact inertiel).\n\nAugmente l\'amplitude du rebond lors d\'un défilement rapide.\nRemarque : pour les valeurs élevées (&gt;1.0), le code réduit dynamiquement la rigidité du ressort pour un impact plus « doux ».</string>
 
     <string name="os_lbl_physics_res_exp">Courbe de résistance</string>
-    <string name="os_desc_physics_res_exp">Puissance de l\'exposant pour la formule de résistance.\n\nFonctionne uniquement si Traction &lt; 1.0. Définit la rapidité de l\'augmentation de l\'effort lors de l\'étirement du bord.</string>
+    <string name="os_desc_physics_res_exp">Valeur de l\'exposant de la formule de résistance.\n\nFonctionne uniquement si le facteur de traction &lt; 1.0. Détermine la raideur de la croissance de la force lors du glissement au bord.</string>
 
     <!-- Visual Scales -->
-    <string name="os_mode_off">Aucun (Off)</string>
+    <string name="os_mode_off">Désactivé</string>
     <string name="os_mode_shrink">Compression</string>
-    <string name="os_mode_grow">Extension</string>
+    <string name="os_mode_grow">Étirement</string>
     <string name="os_lbl_scale_mode">Mode de déformation</string>
     <string name="os_lbl_scale_int">Intensité</string>
     <string name="os_lbl_scale_limit">Limite</string>
@@ -68,225 +141,618 @@
     <string name="os_lbl_anchor_y">Point d\'ancrage Y</string>
 
     <string name="os_group_visual_vert">Déformation verticale</string>
-    <string name="os_desc_visual_vert">Modifie l\'échelle (ScaleY) du contenu RenderNode verticalement.\n\n• Compression : aplatit le contenu à l\'impact.\n• Extension : allonge le contenu (effet caoutchouc).</string>
+    <string name="os_desc_visual_vert">Modifie l\'échelle (ScaleY) du contenu RenderNode verticalement.\n\n• Compression : aplatit le contenu lors de l\'impact.\n• Étirement : allonge le contenu (effet élastique).</string>
 
-    <string name="os_group_visual_zoom">Zoom (Échelle XY)</string>
-    <string name="os_desc_visual_zoom">Modifie l\'échelle globale (ScaleX et ScaleY) de tout le conteneur.\n\nCrée un effet de zoom avant/arrière lors de l\'interaction avec le bord.</string>
+    <string name="os_group_visual_zoom">Zoom (échelle XY)</string>
+    <string name="os_desc_visual_zoom">Modifie l\'échelle globale (ScaleX et ScaleY) de l\'ensemble du conteneur.\n\nCrée un effet de zoom lors de l\'interaction avec le bord.</string>
 
     <string name="os_group_visual_horz">Déformation horizontale</string>
-    <string name="os_desc_visual_horz">Modifie l\'échelle (ScaleX) sur la largeur.\n\nPermet un effet de "tonneau" ou de rétrécissement de la liste lors de la traction.</string>
+    <string name="os_desc_visual_horz">Modifie l\'échelle (ScaleX) le long de la largeur.\n\nPermet un « effet tonneau » ou un rétrécissement de la liste lors du glissement.</string>
+
+    <string name="misc_group_title">Divers</string>
 
     <string name="os_desc_scale_intensity">Coefficient d\'influence du déplacement sur l\'échelle. Plus la valeur est élevée, plus la distorsion est forte pour le même déplacement.</string>
-    <string name="os_desc_scale_limit">Limite stricte de distorsion (échelle min/max) pour éviter les artefacts visuels lors de fortes tractions.</string>
-    <string name="os_desc_scale_anchor">Coordonnée du point autour duquel la mise à l\'échelle se produit (0.0 - 1.0). 0.5 est le centre.</string>
+    <string name="os_desc_scale_limit">Limite stricte de distorsion (min/max de l\'échelle) pour éviter les artefacts visuels lors de tractions fortes.</string>
+    <string name="os_desc_scale_anchor">Coordonnée du point autour duquel la mise à l\'échelle s\'effectue (0.0 - 1.0). 0.5 est le centre.</string>
 
     <string name="os_lbl_min_vel">Seuil de vitesse</string>
-    <string name="os_desc_min_vel">Seuil de vitesse pour l\'arrêt du ressort.\n\nDétermine quand les calculs physiques sont forcés à s\'arrêter. Si la vitesse du ressort tombe en dessous de cette valeur, l\'animation se termine. Aide à supprimer les micro-tremblements à la fin.</string>
+    <string name="os_desc_min_vel">Seuil de décroissance de la vitesse du ressort.\n\nDétermine quand les calculs physiques sont arrêtés de force. Si la vitesse du ressort tombe sous cette valeur, l\'animation se termine. Aide à éviter les micro-tremblements en fin de course.</string>
 
     <string name="os_lbl_min_val">Seuil d\'amplitude</string>
-    <string name="os_desc_min_val">Seuil d\'amplitude pour l\'arrêt.\n\nSi le déplacement résiduel (en pixels) devient inférieur à cette valeur, l\'animation est considérée comme terminée. Augmenter cette valeur rend le retour à l\'état initial visuellement plus net et rapide.</string>
+    <string name="os_desc_min_val">Seuil de décroissance de l\'amplitude.\n\nSi le déplacement restant (en pixels) devient inférieur à cette valeur, l\'animation est considérée comme terminée. Augmenter rend le retour à l\'état initial visuellement plus net et plus rapide.</string>
 
     <!-- Anchor Logic -->
-    <string name="os_lbl_invert_anchor">Pivot intelligent</string>
-    <string name="os_desc_invert_anchor">Inverse automatiquement les coordonnées de l\'ancrage lors de l\'interaction avec le bord droit ou inférieur.\n\n• ON : La coordonnée 0.0 signifie toujours "le bord qui est tiré".\n• OFF : Les coordonnées sont absolues (0.0 est toujours gauche/haut, 1.0 est toujours droite/bas), quelle que soit la direction du geste.</string>
+    <string name="os_lbl_invert_anchor">Ancre intelligente</string>
+    <string name="os_desc_invert_anchor">Inverse automatiquement les coordonnées d\'ancrage lors de l\'interaction avec le bord droit ou inférieur.\n\n• ACTIVÉ : la coordonnée 0.0 signifie toujours « le bord qu\'on tire ».\n• DÉSACTIVÉ : les coordonnées sont absolues (0.0 est toujours gauche/haut, 1.0 est toujours droite/bas), quelle que soit la direction du balayage.</string>
 
     <!-- Horizontal Specific Anchors -->
-    <string name="os_lbl_anchor_x_horiz">Ancrage X (Horizontal)</string>
-    <string name="os_desc_anchor_x_horiz">Point de mise à l\'échelle sur l\'axe principal (défilement) pour les listes horizontales.\n\nDétermine quelle partie de la largeur de l\'écran est principalement déformée lors de la traction.</string>
+    <string name="os_lbl_anchor_x_horiz">Ancre X (Horizontal)</string>
+    <string name="os_desc_anchor_x_horiz">Point d\'échelle le long de l\'axe principal (direction de défilement) pour les listes horizontales.\n\nDétermine quelle partie de la largeur de l\'écran est principalement déformée lors du glissement.</string>
 
-    <string name="os_lbl_anchor_y_horiz">Ancrage Y (Horizontal)</string>
-    <string name="os_desc_anchor_y_horiz">Point de mise à l\'échelle sur l\'axe transversal (hauteur) pour les listes horizontales.\n\nPermet de décaler le centre de l\'effet vers le haut ou le bas par rapport au centre de la liste.</string>
+    <string name="os_lbl_anchor_y_horiz">Ancre Y (Horizontal)</string>
+    <string name="os_desc_anchor_y_horiz">Point d\'échelle le long de l\'axe transversal (hauteur) pour les listes horizontales.\n\nPermet de décaler le centre de l\'effet vers le haut ou le bas par rapport au centre de la liste.</string>
     <string name="os_lbl_scale_int_horiz">Intensité (Horizontal)</string>
-    <string name="os_desc_scale_int_horiz">Détermine la force de l\'effet exclusivement pour les listes horizontales (LazyRow, ViewPager). Permet de régler le comportement séparément du défilement vertical.</string>
+    <string name="os_desc_scale_int_horiz">Détermine la force de l\'effet exclusivement pour les listes horizontales (LazyRow, ViewPager). Permet un réglage séparé du défilement vertical.</string>
 
 
     <!-- Advanced -->
     <string name="os_group_advanced">Paramètres système</string>
     
     <string name="os_lbl_input_smooth">Filtre d\'entrée</string>
-    <string name="os_desc_input_smooth">Filtre passe-bas pour les coordonnées du doigt.\n\nLisse le bruit du capteur avant de transmettre les données au modèle physique. Des valeurs élevées rendent la réaction "visqueuse".</string>
+    <string name="os_desc_input_smooth">Filtre passe-bas pour les coordonnées du doigt lors de onPull.\n\nLisse le bruit du capteur avant de le transmettre au modèle physique. Des valeurs élevées rendent la réaction « visqueuse ».</string>
+    <string name="os_lbl_anim_speed">Vitesse d\'animation (%)</string>
+    <string name="os_desc_anim_speed">Multiplicateur global de la vitesse d\'animation.\n\nAppliqué à tous les paramètres physiques et visuels.\n100%% = vitesse normale, en dessous de 100%% ralentit, au-dessus de 100%% accélère.</string>
     <string name="os_lbl_lerp_idle">Lissage : DOIGT</string>
-    <string name="os_desc_lerp_idle">Vitesse d\'interpolation (LERP) lors de l\'interaction directe.\n\nDétermine la vitesse à laquelle le visuel rattrape le doigt tant que le ressort n\'est PAS lancé (désactivé). Moins = plus fluide, mais avec du retard.</string>
+    <string name="os_desc_lerp_idle">Vitesse d\'interpolation (LERP) lors de l\'interaction directe (onPull).\n\nDétermine à quelle vitesse le graphique suit le doigt tant que le ressort NE fonctionne PAS (désactivé). Plus bas = plus doux, mais avec un délai.</string>
 
     <string name="os_lbl_lerp_run">Lissage : RESSORT</string>
-    <string name="os_desc_lerp_run">Vitesse d\'interpolation (LERP) pendant l\'animation active.\n\nDétermine la fluidité du mouvement lorsque le modèle physique est en cours d\'exécution (ressort actif).</string>
+    <string name="os_desc_lerp_run">Vitesse d\'interpolation (LERP) pendant l\'animation active (onRelease/onAbsorb).\n\nDétermine la fluidité du mouvement lorsque le modèle physique fonctionne (ressort actif).</string>
 
     <string name="os_lbl_compose_scale">Diviseur Compose</string>
-    <string name="os_desc_compose_scale">Coefficient de normalisation pour Jetpack Compose.\n\nCompose transmet les deltas de défilement dans d\'autres unités ou les additionne différemment. Ce diviseur réduit les valeurs d\'entrée pour aligner la physique avec le système View classique.</string>
+    <string name="os_desc_compose_scale">Coefficient de normalisation pour Jetpack Compose.\n\nCompose transmet les deltas de défilement dans d\'autres unités ou les cumule différemment. Ce diviseur réduit les valeurs onPull entrantes pour aligner la physique sur le système View.</string>
 
     <!-- Apps -->
     <string name="os_group_apps">Configuration des applications</string>
     <string name="os_btn_add_app">Ajouter une application</string>
     <string name="os_btn_cancel">Annuler</string>
     <string name="btn_cancel">Annuler</string>
+    <string name="btn_restart_launcher">Appliquer et redémarrer le lanceur</string>
     
     <!-- App Config Items -->
     <string name="os_app_filter">Lissage</string>
     <string name="os_app_ignore">Désactiver</string>
-    <string name="os_app_scale">Multiplicateur indiv.</string>
-    <string name="os_app_select_title">Choisir une application</string>
-    <string name="os_app_search_hint">Recherche par nom ou paquet...</string>
+    <string name="os_app_scale">Multiplicateur individuel</string>
+    <string name="os_app_select_title">Sélectionner une application</string>
+    <string name="os_app_search_hint">Rechercher par nom ou package...</string>
     
     <!-- Other -->
-    <string name="os_card_example_text">Exemple de contenu pour le test physique.</string>
+    <string name="os_card_example_text">Contenu d\'exemple pour le test de physique.</string>
 
     <!-- THERMAL MANAGER -->
     <string name="thermal_title">Profils thermiques</string>
     
     <!-- Info Header -->
-    <string name="thermal_info_title">Fonctionnement</string>
-    <string name="thermal_info_summary">Contrairement aux puces Qualcomm, la gestion de la chaleur sur Google Tensor ne se fait pas via des paramètres directs du noyau, mais via des fichiers de configuration (thermal_info_config.json).\n\nCe module fonctionne au niveau système : il modifie une propriété spéciale (prop) qui force le service Thermal HAL à charger un fichier de configuration alternatif avec d\'autres seuils de limitation.\n\nC\'est une méthode d\'ajustement sûre et "native", prévue par l\'architecture Pixel. Un redémarrage est requis pour appliquer les changements.</string>
+    <string name="thermal_info_title">Fonctionnement (Tensor)</string>
+    <string name="thermal_info_summary">Contrairement aux puces Qualcomm, la gestion thermique de Google Tensor ne se fait pas via des paramètres kernel directs, mais via des fichiers de configuration (thermal_info_config.json).\n\nCe module fonctionne au niveau système : il modifie une propriété spéciale (prop) qui force le service Thermal HAL à charger un fichier de configuration alternatif avec des seuils de throttling différents.\n\nC\'est une méthode d\'ajustement sûre et « native » prévue par l\'architecture Pixel. Un redémarrage est nécessaire pour appliquer les modifications.</string>
 
     <!-- Sections -->
     <string name="thermal_sec_battery">Batterie</string>
-    <string name="thermal_sec_soc">Processeur</string>
+    <string name="thermal_sec_soc">Processeur (SoC)</string>
 
     <!-- Modes -->
-    <string name="thermal_mode_stock">Usine</string>
+    <string name="thermal_mode_stock">Par défaut</string>
     <string name="thermal_mode_soft">Doux (+5°C)</string>
     <string name="thermal_mode_medium">Moyen (+9°C)</string>
     <string name="thermal_mode_hard">Agressif (+15°C)</string>
-    <string name="thermal_mode_off">Extrême (Off)</string>
+    <string name="thermal_mode_off">Extrême (Désactivé)</string>
 
     <!-- Battery Descriptions -->
-    <string name="thermal_desc_bat_stock">Limites d\'usine standard. Assurent une sécurité maximale et une longue durée de vie de la batterie.</string>
-    <string name="thermal_desc_bat_soft">Légère augmentation du seuil (+5°C). Aide à éviter le ralentissement de la charge lors d\'une chauffe modérée.</string>
+    <string name="thermal_desc_bat_stock">Limites d\'usine par défaut. Assurent une sécurité et une durée de vie maximales de la batterie.</string>
+    <string name="thermal_desc_bat_soft">Légère augmentation du seuil (+5°C). Aide à éviter le ralentissement de la charge lors d\'un échauffement modéré.</string>
     <string name="thermal_desc_bat_medium">Profil équilibré (+9°C). Compromis entre vitesse de charge et chaleur du boîtier.</string>
-    <string name="thermal_desc_bat_hard">ATTENTION : Limites élevées (+15°C). Chauffe perceptible possible lors de la charge rapide. Accélère l\'usure chimique de la batterie.</string>
+    <string name="thermal_desc_bat_hard">ATTENTION : Limites élevées (+15°C). Échauffement perceptible lors de la charge rapide possible. Accélère l\'usure de la chimie de la batterie.</string>
     <string name="thermal_desc_bat_off">DANGER : Désactivation quasi totale de la protection thermique (+90°C). Risque élevé de gonflement de la batterie et de dommages à l\'appareil.</string>
 
     <!-- SoC Descriptions -->
-    <string name="thermal_desc_soc_stock">Algorithme standard. Réduction agressive des fréquences (throttling) pour maintenir la température du boîtier basse.</string>
+    <string name="thermal_desc_soc_stock">Algorithme par défaut. Réduction agressive de la fréquence (throttling) pour maintenir la température du boîtier basse.</string>
     <string name="thermal_desc_soc_soft">Profil doux (+5°C). Permet au processeur de maintenir des fréquences élevées plus longtemps sous charge.</string>
-    <string name="thermal_desc_soc_medium">Optimal pour les jeux (+9°C). Réduit considérablement les chutes de FPS, le boîtier sera tiède.</string>
-    <string name="thermal_desc_soc_hard">Performance maximale (+15°C). L\'appareil peut devenir chaud au toucher. Recommandé uniquement pour des tâches courtes.</string>
-    <string name="thermal_desc_soc_off">EXTRÊME : Limitation désactivée. Le processeur chauffera jusqu\'à l\'arrêt d\'urgence. Pour les benchmarks uniquement.</string>
+    <string name="thermal_desc_soc_medium">Optimal pour les jeux (+9°C). Réduit considérablement les chutes de FPS, le boîtier sera chaud.</string>
+    <string name="thermal_desc_soc_hard">Performance maximale (+15°C). L\'appareil peut devenir brûlant. Recommandé uniquement pour des tâches courtes.</string>
+    <string name="thermal_desc_soc_off">EXTRÊME : Throttling désactivé. Le processeur chauffe jusqu\'à l\'arrêt d\'urgence. Uniquement pour les benchmarks.</string>
 
     <!-- Dialogs -->
-    <string name="thermal_dialog_reboot_title">Redémarrage requis</string>
-    <string name="thermal_dialog_safe_msg">Nouveau profil thermique sélectionné.\n\nLe service Thermal HAL ne lira les nouveaux paramètres qu\'au prochain démarrage du système. Redémarrer l\'appareil maintenant ?</string>
-    <string name="thermal_dialog_risk_msg">ATTENTION : Vous avez choisi un mode thermique agressif !\n\nCela peut entraîner une forte chauffe du boîtier et une dégradation accélérée des composants.\n\nUn redémarrage est requis pour appliquer les paramètres.</string>
+    <string name="thermal_dialog_reboot_title">Redémarrage nécessaire</string>
+    <string name="thermal_dialog_safe_msg">Nouveau profil thermique sélectionné.\n\nLe service Thermal HAL lira les nouveaux paramètres au prochain démarrage du système. Redémarrer l\'appareil maintenant ?</string>
+    <string name="thermal_dialog_risk_msg">ATTENTION : Vous avez choisi un mode de température agressif !\n\nCela peut entraîner une forte surchauffe du boîtier et une dégradation accélérée des composants.\n\nUn redémarrage est nécessaire pour appliquer les paramètres.</string>
     
     <string name="btn_ok">Compris</string>
     <string name="btn_reboot">Redémarrer</string>
+    <string name="btn_confirm">Confirmer</string>
+
+    <!-- Reboot Bubble -->
+    <string name="reboot_launcher">Redémarrer le lanceur</string>
+    <string name="reboot_systemui">Redémarrer SystemUI</string>
+    <string name="reboot_system">Redémarrer le système</string>
+    <string name="reboot_confirm_system_title">Redémarrer l\'appareil ?</string>
+    <string name="reboot_confirm_system_msg">L\'appareil sera redémarré immédiatement. Enregistrez votre travail avant de continuer.</string>
+    <string name="reboot_confirm_sysui_title">Redémarrer SystemUI ?</string>
+    <string name="reboot_confirm_sysui_msg">SystemUI sera redémarré. La barre de navigation, la barre d\'état et les notifications disparaîtront brièvement.</string>
 
     <!-- IMS MANAGER -->
     <string name="ims_category_title">Configuration IMS</string>
-    <string name="warning_info">Ces paramètres activent de force les capacités de la configuration opérateur (Carrier Config). Par défaut, la plupart de ces fonctions sont masquées ou désactivées pour les régions non certifiées.\n\nPour appliquer les changements, il est nécessaire d\'activer puis désactiver le "Mode Avion".</string>
-    <string name="ims_footer_info">Ces paramètres activent de force les capacités de la configuration opérateur (Carrier Config). Par défaut, la plupart de ces fonctions sont masquées ou désactivées pour les régions non certifiées.\n\nPour appliquer les changements, il est nécessaire d\'activer puis désactiver le "Mode Avion".</string>
+    <string name="warning_info">Ces paramètres forcent l\'activation des fonctions de configuration de l\'opérateur. Par défaut, la plupart de ces fonctions sont masquées ou désactivées pour les régions non certifiées.\n\nPour appliquer les modifications, le mode avion doit être activé puis désactivé.</string>
+    <string name="ims_footer_info">Ces paramètres forcent l\'activation des fonctions de configuration de l\'opérateur. Par défaut, la plupart de ces fonctions sont masquées ou désactivées pour les régions non certifiées.\n\nPour appliquer les modifications, le mode avion doit être activé puis désactivé.</string>
 
     <!-- Section Headers -->
     <string name="ims_sec_voice">Services vocaux</string>
-    <string name="ims_sec_network">Réseau et 5G</string>
+    <string name="ims_sec_network">Réseau &amp; 5G</string>
     <string name="ims_sec_advanced">Paramètres avancés</string>
 
     <!-- VoLTE -->
     <string name="ims_lbl_volte">VoLTE</string>
-    <string name="ims_desc_volte">Active de force le support VoLTE dans la configuration opérateur.\n\nPermet de passer des appels vocaux via le réseau 4G/LTE sans basculer en 3G/2G. Assure une connexion rapide, une qualité audio HD et l\'utilisation simultanée d\'Internet pendant l\'appel. Corrige l\'absence de commutateur VoLTE dans les paramètres.</string>
+    <string name="ims_desc_volte">Force le support VoLTE dans la configuration de l\'opérateur.\n\nPermet les appels vocaux via le réseau 4G/LTE sans basculer vers 3G/2G. Assure une connexion rapide, une qualité audio HD et l\'utilisation simultanée d\'Internet pendant l\'appel. Corrige le commutateur VoLTE manquant dans les paramètres.</string>
 
     <!-- VoWiFi -->
     <string name="ims_lbl_vowifi">Appels Wi-Fi</string>
-    <string name="ims_desc_vowifi">Active de force le support des appels Wi-Fi (VoWiFi).\n\nPermet au téléphone de s\'enregistrer sur le réseau IMS de l\'opérateur via n\'importe quel Wi-Fi disponible. Indispensable dans les endroits avec une mauvaise réception cellulaire (sous-sols, murs épais) mais avec accès Internet. Active le menu caché "Appels Wi-Fi".</string>
+    <string name="ims_desc_vowifi">Force le support des appels Wi-Fi (Wi-Fi Calling).\n\nPermet au téléphone de s\'enregistrer sur le réseau IMS de l\'opérateur via n\'importe quel Wi-Fi disponible. Indispensable dans les endroits avec un mauvais signal cellulaire (sous-sols, murs épais), mais avec Internet disponible. Active le menu caché « Appels Wi-Fi ».</string>
 
     <!-- Video Calling (ViLTE) -->
     <string name="ims_lbl_vt">Appels vidéo</string>
-    <string name="ims_desc_vt">Active le support natif des appels vidéo via l\'opérateur.\n\nC\'est la fonction vidéo intégrée au composeur (pas via messageries, mais via le protocole standard IR.94). Fonctionne si l\'opérateur supporte la vidéo sur LTE.</string>
+    <string name="ims_desc_vt">Active le support natif des appels vidéo via l\'opérateur.\n\nC\'est la fonction vidéo intégrée dans l\'application Téléphone (pas via une messagerie, mais via le protocole standard IR.94). Fonctionne si l\'opérateur supporte Video over LTE.</string>
 
     <!-- Cross-SIM -->
     <string name="ims_lbl_cross_sim">Appels de secours</string>
-    <string name="ims_desc_cross_sim">Technologie d\'appel de secours via une autre carte SIM.\n\nPermet d\'utiliser le trafic Internet de la deuxième carte SIM pour l\'enregistrement IMS de la première. Utile lorsque la carte SIM principale a perdu le réseau (ex: itinérance ou zone blanche), mais que la seconde a accès à Internet.</string>
+    <string name="ims_desc_cross_sim">Technologie d\'appels de secours via une autre carte SIM.\n\nPermet d\'utiliser le trafic de données de la deuxième carte SIM pour l\'enregistrement IMS de la première. Utile lorsque la SIM principale a perdu le réseau (en roaming ou zone blanche) mais que la deuxième SIM a accès à Internet.</string>
 
     <!-- VoNR -->
-    <string name="ims_lbl_vonr">VoNR (Appels via 5G)</string>
-    <string name="ims_desc_vonr">Voice over New Radio. Appels vocaux sur les réseaux 5G purs (Standalone).\n\nLe standard de transmission vocale le plus moderne. Assure une latence ultra-faible et une meilleure qualité que la VoLTE. Fonctionne uniquement sur les réseaux 5G SA et nécessite Android 14+.</string>
+    <string name="ims_lbl_vonr">VoNR (Appels 5G)</string>
+    <string name="ims_desc_vonr">Voice over New Radio. Appels vocaux sur les réseaux 5G purs (Standalone).\n\nLa norme la plus moderne pour la transmission vocale. Assure une latence extrêmement faible et une meilleure qualité que VoLTE. Ne fonctionne que sur les réseaux 5G SA et nécessite Android 14+.</string>
 
     <!-- 5G Enable -->
     <string name="ims_lbl_5g">Débloquer la 5G</string>
-    <string name="ims_desc_5g">Supprime le blocage logiciel de la 5G côté configuration.\n\nDe nombreux opérateurs bloquent l\'accès à la 5G pour les appareils Pixel qui ne sont pas sur leur "liste blanche", même si le support matériel existe. Ce commutateur ajoute de force les bandes NR NSA et SA à la liste autorisée.</string>
+    <string name="ims_desc_5g">Supprime le verrouillage logiciel de la 5G dans la configuration.\n\nDe nombreux opérateurs bloquent l\'accès 5G pour les appareils Pixel qui ne figurent pas sur leur « liste blanche », même en présence du support matériel. Ce commutateur ajoute de force les bandes NR NSA et SA à la liste autorisée.</string>
 
     <!-- 5G Thresholds -->
     <string name="ims_lbl_5g_thresh">Signal 5G agressif</string>
-    <string name="ims_desc_5g_thresh">Modifie les seuils de niveau de signal pour le changement de réseau.\n\nAbaisse les exigences de qualité du signal pour afficher l\'icône 5G et rester sur le réseau 5G. Utile si le téléphone bascule trop facilement en 4G/LTE même lorsque la 5G est disponible.</string>
+    <string name="ims_desc_5g_thresh">Modifie les seuils de signal pour le changement de réseau.\n\nAbaisse les exigences de qualité du signal pour l\'affichage de l\'icône 5G et le maintien du réseau 5G. Aide lorsque le téléphone bascule trop vite en 4G/LTE alors que la 5G est disponible.</string>
 
     <!-- UT Interface -->
     <string name="ims_lbl_ut">Interface UT</string>
-    <string name="ims_desc_ut">Gestion des services supplémentaires via IMS.\n\nPermet de configurer le transfert d\'appel, le signal d\'appel et l\'identification de l\'appelant via le menu des paramètres du téléphone en utilisant le canal IP au lieu des codes USSD obsolètes. Corrige les erreurs type "Erreur réseau ou carte SIM" lors de la tentative d\'accès aux paramètres d\'appel sur les réseaux LTE-only.</string>
+    <string name="ims_desc_ut">Gestion des services supplémentaires via IMS.\n\nPermet de configurer le renvoi d\'appel, l\'appel en attente et la présentation du numéro via le menu des paramètres du téléphone en utilisant le canal IP au lieu des anciens codes USSD. Corrige les erreurs de type « Erreur réseau ou carte SIM » lors de l\'accès aux paramètres d\'appel en mode LTE uniquement.</string>
 
     <!-- LAUNCHER SETTINGS -->
-    <string name="launcher_settings_title">Paramètres du Launcher</string>
-    <string name="launcher_search_section">Recherche et Navigation</string>
+    <string name="launcher_settings_title">Paramètres du lanceur</string>
+    <string name="launcher_search_section">Recherche &amp; Navigation</string>
+
+    <!-- Launcher Navigation Items -->
+    <string name="launcher_group_general">Général</string>
+    <string name="launcher_search_feed_title">Recherche &amp; Feed</string>
+    <string name="launcher_search_feed_subtitle">Configurer la recherche native et le Google Feed</string>
+    <string name="launcher_group_appearance">Apparence</string>
+    <string name="launcher_grid_title">Paramètres de la grille</string>
+    <string name="launcher_grid_subtitle">Personnaliser les lignes et colonnes</string>
+    <string name="launcher_group_recents_features">Fonctionnalités des Récents</string>
+    <string name="launcher_clear_all_nav_title">Bouton Tout effacer</string>
+    <string name="launcher_clear_all_nav_subtitle">Personnaliser le comportement du bouton Tout effacer</string>
+    <string name="launcher_group_gestures">Gestes</string>
+    <string name="launcher_gestures_title">Gestes</string>
+    <string name="launcher_gestures_subtitle">Double appui pour verrouiller et plus</string>
+    <string name="launcher_group_recents_customization">Personnalisation des Récents</string>
+    <string name="launcher_recents_menu_title">Menu des Récents</string>
+    <string name="launcher_recents_menu_subtitle">Configurer le carrousel, l\'échelle, le flou et plus</string>
     
     <string name="launcher_search_title">Recherche native</string>
-    <string name="launcher_search_desc">Active de force l\'interface de recherche intégrée dans Pixel Launcher.\n\nGoogle modifie souvent le comportement de recherche "côté serveur", remplaçant la recherche locale rapide par le lancement lent de l\'appli Google. Cette option fige le drapeau \'device_config\', rétablissant la recherche rapide d\'applications et de contacts.</string>
+    <string name="launcher_search_desc">Force l\'activation de l\'interface de recherche intégrée dans le Pixel Launcher.\n\nGoogle modifie souvent le comportement de la recherche « côté serveur » en remplaçant la recherche locale rapide par le lancement lent de l\'application Google. Cette option fixe le flag \'device_config\' et rétablit la recherche rapide d\'applications et de contacts.</string>
 
+
+    <!-- //// -->
+    <string name="donate_progress_title">Progression des dons</string>
+    <string name="menu_refresh">Actualiser</string>
+    <string name="donate_open_target">Ouvrir la page de dons</string>
+    <string name="donate_error_loading">Erreur de chargement des données</string>
+    <string name="donate_retry">Réessayer</string>
+    <string name="donate_title">Soutien et liens</string>
+    <string name="donate_desc_short">GitHub, Telegram, Boosty</string>
+    <string name="donate_header">Soutenir le projet</string>
+    <string name="donate_desc_long">Si vous appréciez ce module et souhaitez soutenir son développement, vous pouvez le faire via Boosty.</string>
+    <string name="donate_btn_boosty">Vers Boosty</string>
+    <string name="donate_links_header">Liens utiles</string>
+    <string name="error_network">Erreur réseau</string>
+    <string name="refresh_strings">Chaînes de la page mises à jour</string>
+    <string name="donate_page_updated">Page mise à jour</string>
+    <string name="donate_page_updated_error">Erreur de chargement des données</string>
+
+    <string name="launcher_clear_all_title">Bouton Tout effacer</string>
+    <string name="launcher_clear_all_desc">Ajoute un bouton pour fermer toutes les applications dans le menu Récents.\n\nSupporte plusieurs modes d\'affichage pour l\'intégration dans l\'interface standard.</string>
+    <string name="launcher_clear_all_enable_title">Activer le bouton Tout effacer</string>
+    <string name="launcher_ca_hide_actions_row_title">Masquer les boutons d\'action par défaut</string>
+
+    <string name="launcher_ca_mode_float">Centré en bas</string>
+    <string name="launcher_ca_mode_screenshot">Remplacer « Capture d\'écran »</string>
+    <string name="launcher_ca_mode_select">Remplacer « Sélectionner »</string>
+
+    <string name="launcher_ca_margin">Position (marge du bas)</string>
+    <string name="launcher_btn_restart">Redémarrer le lanceur</string>
+    <string name="launcher_ca_margin_desc">Ajuste la position verticale du bouton flottant. La valeur est un multiplicateur de la marge par défaut.</string>
+    <string name="launcher_ca_hide_actions_row_desc">Masque les boutons système « Capture d\'écran » et « Sélectionner » dans les Récents tout en conservant la logique du conteneur et votre bouton Tout effacer personnalisé.</string>
+    <!-- ///// -->
     <!-- DOUBLE TAP (DT) SETTINGS -->
-    <string name="dt_category_title">Gestes Double Tape</string>
+    <string name="dt_category_title">Gestes double appui</string>
     <string name="dt_sec_wake">Réveil</string>
     <string name="dt_sec_sleep">Veille</string>
 
     <!-- DT2W (Wake) -->
-    <string name="dt2w_title">Réveil par toucher</string>
+    <string name="dt2w_title">Double appui pour réveiller</string>
     
-    <string name="dt2w_desc_xposed">Hook Xposed pour SystemUI.\n\nIntercepte les événements du capteur dans la classe DozeTriggers et émule le réveil, car le support matériel sur Pixel est souvent désactivé ou limité.</string>
-    <string name="dt2w_desc_native">Intégration système (Native).\n\nUtilise le code intégré au firmware pour traiter les événements tactiles en mode Doze, assurant le réveil sans hooks tiers.</string>
+    <string name="dt2w_desc_xposed">Hook Xposed pour SystemUI.\n\nIntercepte les événements du capteur dans la classe DozeTriggers et émule le réveil, car le support matériel est souvent désactivé ou limité sur les appareils Pixel.</string>
+    <string name="dt2w_desc_native">Intégration système (Natif).\n\nUtilise le code intégré au firmware pour le traitement des événements tactiles en mode Doze, assurant le réveil sans hooks tiers.</string>
     
-    <string name="dt2w_info_title">Comment ça marche</string>
-    <string name="dt2w_info_desc">C\'est une émulation logicielle, pas une fonction noyau matérielle.\n\n<b>Principe :</b>\nLe système maintient le numériseur actif en mode AOD/Doze et analyse les touchers.\n\n<b>Important :</b>\n• Un léger délai est possible dû au traitement logiciel.\n• Peut affecter légèrement la consommation de batterie (Deep Sleep).</string>
+    <string name="dt2w_info_title">Fonctionnement</string>
+    <string name="dt2w_info_desc">Ceci est une émulation logicielle, pas une fonction hardware du kernel.\n\n<b>Principe :</b>\nLe système maintient le digitizer actif en mode AOD/Doze et analyse les touches.\n\n<b>Important :</b>\n• Un léger délai est possible en raison du traitement logiciel.\n• Peut légèrement affecter la consommation de batterie (Deep Sleep).</string>
 
-    <string name="dt2w_timeout_title">Intervalle de tape</string>
-    <string name="dt2w_timeout_desc">Temps maximum entre deux touchers (en ms) pour être considérés comme une double tape.</string>
+    <string name="dt2w_timeout_title">Intervalle de saisie</string>
+    <string name="dt2w_timeout_desc">Temps maximum entre deux touches (en ms) pour qu\'elles soient considérées comme un double appui.</string>
 
     <!-- DT2S (Sleep) -->
-    <string name="dt2s_title">Veille sur bureau</string>
+    <string name="dt2s_title">Double appui pour verrouiller</string>
     
-    <string name="dt2s_desc_xposed">Hook Xposed pour Pixel Launcher.\n\nIntercepte la méthode \'onTouchEvent\' dans la classe Workspace du lanceur, permettant de verrouiller l\'écran en tapant sur un espace vide.</string>
-    <string name="dt2s_desc_native">Injection de code natif.\n\nUtilise le framework modifié pour enregistrer \'ActivityLifecycleCallbacks\' dans le processus Launcher3. Au démarrage de l\'activité, la vue racine du bureau (Workspace) est automatiquement trouvée et un \'OnTouchListener\' personnalisé y est attaché. Cela fonctionne sans Xposed et ne nécessite pas les droits root pour le lanceur lui-même.</string>
+    <string name="dt2s_desc_xposed">Hook Xposed pour le Pixel Launcher.\n\nIntercepte la méthode \'onTouchEvent\' dans la classe Workspace du lanceur et permet de verrouiller l\'écran en appuyant sur un espace vide.</string>
+    <string name="dt2s_desc_native">Injection de code natif.\n\nUtilise le framework modifié pour enregistrer des \'ActivityLifecycleCallbacks\' dans le processus Launcher3. Au lancement de l\'Activity, la vue root Workspace est automatiquement trouvée et un \'OnTouchListener\' personnalisé est attaché. Fonctionne sans Xposed et ne nécessite pas de droits root pour le lanceur lui-même.</string>
 
     <string name="dt2s_info_title">Particularités DT2S</string>
-    <string name="dt2s_info_desc">Permet d\'éteindre l\'écran en tapant deux fois sur une zone vide du bureau.\n\n<b>Limitations :</b>\n• Fonctionne uniquement dans Pixel Launcher.\n• Ne se déclenche pas sur les widgets ou icônes.\n• Peut entrer en conflit avec les glissements si la "Tolérance de mouvement" est trop agressive.</string>
+    <string name="dt2s_info_desc">Permet d\'éteindre l\'écran en double appuyant sur une zone vide du bureau.\n\n<b>Limitations :</b>\n• Fonctionne uniquement dans le Pixel Launcher.\n• Ne réagit pas sur les widgets ou icônes.\n• Peut entrer en conflit avec les gestes de balayage si la « tolérance de déplacement » est réglée trop agressivement.</string>
 
-    <string name="dt2s_timeout_title">Intervalle de tape</string>
-    <string name="dt2s_slop_title">Tolérance de mouvement</string>
-    <string name="dt2s_slop_desc">Distance maximale (en pixels) que le doigt peut parcourir entre les tapes. Diminuez si les tapes sont souvent reconnues comme des glissements (swipes).</string>
+    <string name="dt2s_timeout_title">Intervalle de saisie</string>
+    <string name="dt2s_slop_title">Tolérance de déplacement</string>
+    <string name="dt2s_slop_desc">Distance maximale (en pixels) que le doigt peut parcourir entre les deux touches. Réduisez la valeur si les appuis sont souvent détectés comme des balayages.</string>
 
     <!-- COMPONENTS UI -->
     <string name="common_range_format">Plage : %1$d - %2$d</string>
-    <string name="common_input_label">Entrez une valeur</string>
+    <string name="common_input_label">Saisir la valeur</string>
     <string name="common_video_placeholder">Démonstration vidéo</string>
 
     <!-- GLOBAL COMMON -->
+    <string name="app_name">Pixel Extra Parts</string>
     <string name="btn_apply">Appliquer</string>
-    <string name="btn_default">Défaut</string>
+    <string name="btn_default">Par défaut</string>
     <string name="btn_close">Fermer</string>
     <string name="btn_exit">Quitter</string>
+    <string name="btn_restart">Redémarrer</string>
+    <string name="nav_back">Retour</string>
+
+    <!-- Shared Dialogs -->
+    <string name="xposed_required_title">Xposed requis</string>
+    <string name="xposed_required_message">Cette fonctionnalité nécessite un module Xposed actif.</string>
     
     <string name="status_active">Actif</string>
     <string name="status_disabled">Désactivé</string>
     <string name="status_error">Erreur</string>
 
-    <string name="main_desc">Modules et tweaks personnalisés</string>
+    <!-- MAIN ACTIVITY -->
+    <string name="main_title">Pixel Extra Parts</string>
+    <string name="main_desc">Modules et ajustements personnalisés</string>
     
-    <string name="main_header_gesture">Gestes et Entrée</string>
+    <string name="main_header_gesture">Gestes &amp; Saisie</string>
     <string name="main_header_system">Système</string>
-    <string name="main_header_network">Réseau et Connectivité</string>
-    
-    <string name="main_root_title">Pas d\'accès Root</string>
-    <string name="main_root_desc">L\'application nécessite les droits Superutilisateur (Root) et un Framework Xposed actif.\n\nVeuillez installer Magisk/KernelSU et accorder les droits.</string>
+    <string name="main_header_network">Réseau &amp; Connectivité</string>
 
-    <string name="dt_desc_activity">Gérer les gestes de réveil et de veille</string>
-    <string name="launcher_title_activity">Launcher</string>
+    <!-- Test things (debug section, hidden by default) -->
+    <string name="test_things_title">Fonctionnalités de test</string>
+    <string name="test_things_desc">Fonctionnalités expérimentales en développement</string>
+    
+    <string name="main_root_title">Aucun accès Root</string>
+    <string name="main_root_desc">L\'application nécessite des droits superutilisateur (Root) et un framework Xposed actif.\n\nVeuillez installer Magisk/KernelSU et accorder les permissions.</string>
+
+    <string name="dt_desc_activity">Gestion des gestes de réveil et de veille</string>
+    <string name="launcher_title_activity">Lanceur</string>
     <string name="os_desc_activity">Paramètres d\'élasticité et d\'inertie du défilement</string>
     
-    <string name="dt_title_activity">Double Tape</string>
+    <string name="dt_title_activity">Double appui</string>
     
-    <string name="launcher_desc_activity">Paramètres Pixel Launcher</string>
+    <string name="launcher_desc_activity">Paramètres du Pixel Launcher</string>
     
     <string name="thermal_title_activity">Profils thermiques</string>
     
-    <string name="thermal_desc_activity">Gestion du throttling</string>
+    <string name="thermal_desc_activity">Gestion du throttling (Tensor)</string>
 
     <string name="os_desc_anchor">Point d\'ancrage de la transformation.</string>
 
+    <!-- Delta Normalization (Compose Smoothing) -->
+    <string name="os_group_norm">Lissage des deltas Compose</string>
+    <string name="os_desc_norm_group">Système de normalisation intelligent pour les implémentations de défilement Jetpack Compose.\n\nCompose transmet des deltas amplifiés par rapport au défilement View classique. Ce module détecte automatiquement les instances Compose et réduit progressivement leurs deltas au niveau View standard.\n\nCalibré empiriquement : les deltas Compose sont ~5× plus grands que les deltas View pour des gestes identiques.</string>
+    <string name="os_lbl_norm_enabled">Activer la normalisation</string>
+    <string name="os_desc_norm_enabled">Commutateur principal de la normalisation intelligente des deltas.\n\nLorsqu\'il est activé, le système analyse chaque instance EdgeEffect et applique des facteurs de correction aux deltas amplifiés de Compose.\n\nPeut rester activé en toute sécurité — n\'affecte pas les applications avec des deltas normaux.</string>
+    <string name="os_lbl_norm_ref_delta">Delta de référence</string>
+    <string name="os_desc_norm_ref_delta">Valeur de delta « normal » de base (fraction de effectiveSize).\n\nDéterminé empiriquement à partir d\'applications basées sur View. Si la moyenne glissante dépasse cette valeur × le multiplicateur de détection, l\'instance est considérée comme amplifiée.\n\nPar défaut : 0.00001 (très sensible). Augmenter en cas de faux positifs pour les applications normales.</string>
+    <string name="os_lbl_norm_detect_mul">Multiplicateur de détection</string>
+    <string name="os_desc_norm_detect_mul">Multiplicateur de seuil pour la détection d\'amplification.\n\nActivation : moyenne_glissante &gt; référence × cette valeur.\n3.3 = détecte Compose de manière fiable (~5× de View), ne se déclenche pas sur les applications View.\n\nAugmenter en cas de faux positifs, diminuer si Compose n\'est pas détecté.</string>
+    <string name="os_lbl_norm_factor">Facteur de correction</string>
+    <string name="os_desc_norm_factor">Multiplicateur pour les deltas amplifiés.\n\n0.2 = mettre au niveau View (d\'après l\'analyse : ref/compose ≈ 0.195).\n0.5 = diviser par deux. 1.0 = aucun changement.\n\nPlus petit = rebond plus faible, plus grand = plus fort.</string>
+    <string name="os_lbl_norm_window">Taille de la fenêtre</string>
+    <string name="os_desc_norm_window">Nombre des derniers échantillons |delta| pour l\'analyse.\n\nPlus petit = détection plus rapide, mais plus sensible au bruit.\nPlus grand = plus stable, mais adaptation plus lente.\n\nPlage : 2–64.</string>
+    <string name="os_lbl_norm_ramp">Événements de montée en charge</string>
+    <string name="os_desc_norm_ramp">Combien d\'événements pour la transition de 1.0 au facteur.\n\n1–4 = quasi instantané. 8–12 = transition douce.\n\nÉvite les sauts visuels lors de l\'activation de la normalisation.</string>
+    <string name="os_lbl_norm_detect_mode">Mode de détection</string>
+    <string name="os_desc_norm_detect_mode">Comment les instances Compose sont identifiées.\n\n0 = Comportement uniquement (fenêtre glissante des deltas)\n1 = Hybride : la trace de pile donne une ID instantanée, la fenêtre confirme\n2 = Trace de pile uniquement (pas d\'analyse de fenêtre)\n\nHybride (1) recommandé pour la meilleure précision + vitesse.</string>
+    <string name="os_norm_mode_behavior">Comportement uniquement</string>
+    <string name="os_norm_mode_hybrid">Hybride (recommandé)</string>
+    <string name="os_norm_mode_stacktrace">Trace de pile uniquement</string>
+
     <string name="ims_desc_activity">VoLTE, VoWiFi, 5G</string>
     <string name="ims_title_activity">Config IMS</string>
+
+
+    <!-- Grid Sizer / App Drawer Customization -->
+    <string name="grid_group_homepage">Personnalisation de l\'écran d\'accueil</string>
+    <string name="grid_lbl_home_enable">Personnaliser la grille de l\'écran d\'accueil</string>
+    <string name="grid_desc_home_enable">Active la personnalisation des colonnes et lignes de la grille de l\'écran d\'accueil.</string>
+    
+    <string name="grid_lbl_columns">Colonnes</string>
+    <string name="grid_desc_home_cols">Nombre de colonnes sur l\'écran d\'accueil.</string>
+    
+    <string name="grid_lbl_rows">Lignes</string>
+    <string name="grid_desc_home_rows">Nombre de lignes sur l\'écran d\'accueil.</string>
+    
+    <string name="grid_lbl_hide_text">Masquer les libellés</string>
+    <string name="grid_desc_home_hide_text">Masque les libellés des icônes sur l\'écran d\'accueil.</string>
+
+    <string name="grid_lbl_icon_size">Taille des icônes</string>
+    <string name="grid_desc_home_icon_size">Ajuste la taille des icônes sur l\'écran d\'accueil (100%% est la valeur par défaut).</string>
+    <string name="grid_desc_drawer_icon_size">Ajuste la taille des icônes dans le tiroir d\'applications (100%% est la valeur par défaut).</string>
+    <string name="grid_desc_dock_icon_size">Ajuste la taille des icônes dans le dock (100%% est la valeur par défaut).</string>
+
+    <string name="grid_lbl_text_mode">Mode d\'affichage du texte</string>
+    <string name="grid_desc_text_mode">Comment les libellés des icônes sont affichés lorsque le texte est visible.</string>
+    <string name="grid_text_mode_default">Tronquer</string>
+    <string name="grid_text_mode_two_line">Deux lignes</string>
+    <string name="grid_text_mode_marquee">Défilement</string>
+
+    <string name="grid_group_drawer">Personnaliser le tiroir d\'applications</string>
+    <string name="grid_lbl_drawer_enable">Personnaliser le tiroir d\'applications</string>
+    <string name="grid_desc_drawer_enable">Active la personnalisation de la grille et de la mise en page du tiroir d\'applications.</string>
+    
+    <string name="grid_lbl_drawer_cols">Colonnes du menu</string>
+    <string name="grid_desc_drawer_cols">Nombre de colonnes dans le tiroir d\'applications.</string>
+    
+    <string name="grid_lbl_row_height">Hauteur de ligne</string>
+    <string name="grid_desc_row_height">Ajuste l\'espacement vertical entre les lignes dans le tiroir d\'applications (100% est la valeur par défaut).</string>
+    
+    <string name="grid_lbl_drawer_hide_text">Masquer le texte du menu</string>
+    <string name="grid_desc_drawer_hide_text">Masque les libellés des icônes dans le tiroir d\'applications.</string>
+
+    <!-- Dock Grid Section -->
+    <string name="grid_group_dock">Personnalisation du dock</string>
+    <string name="grid_lbl_dock_icons">Nombre d\'icônes du dock</string>
+    <string name="grid_desc_dock_icons">Nombre d\'icônes dans la barre du dock.</string>
+    <string name="grid_lbl_dock_hide_text">Masquer le texte du dock</string>
+    <string name="grid_desc_dock_hide_text">Masque les libellés des icônes dans le dock.</string>
+
+    <string name="grid_lbl_search_cols">Colonnes de recherche</string>
+    <string name="grid_desc_search_cols">Nombre de colonnes pour les résultats et suggestions de recherche dans le tiroir d\'applications.</string>
+    <!-- Search Widget & Dock Section -->
+    <string name="search_widget_group_title">Widget de recherche et Dock</string>
+    
+    <string name="search_widget_enable_dock">Activer la personnalisation du dock</string>
+    <string name="search_widget_desc_dock">Commutateur principal pour toutes les modifications du dock et de la barre de recherche ci-dessous.</string>
+    
+    <string name="search_widget_hide_search">Masquer la barre de recherche</string>
+    <string name="search_widget_desc_hide_search">Masque le widget de recherche en bas.</string>
+    
+    <string name="search_widget_hide_dock">Masquer les icônes du dock</string>
+    <string name="search_widget_desc_hide_dock">Masque la zone des icônes du dock en bas (Hotseat).</string>
+    <string name="pref_recents_size_summary">pref_recents_size_summary</string>
+    <string name="info_recents_size">info_recents_size</string>
+    
+    <string name="search_widget_padding_home">Marge supérieure de l\'écran d\'accueil</string>
+    <string name="search_widget_desc_padding_home">Ajuste la marge supérieure pour les icônes du bureau (étend depuis le haut).</string>
+    
+    <string name="search_widget_padding_home_bottom">Marge inférieure de l\'écran d\'accueil</string>
+    <string name="search_widget_desc_padding_home_bottom">Ajuste la marge inférieure pour les icônes du bureau (étend depuis le bas).</string>
+    
+    <string name="search_widget_padding_dock">Marge des icônes du dock</string>
+    <string name="search_widget_desc_padding_dock">Ajuste la position verticale des icônes du dock (+/-).</string>
+    
+    <string name="search_widget_padding_search">Marge du widget de recherche</string>
+    <string name="search_widget_desc_padding_search">Ajuste la position verticale du widget de recherche (+/-).</string>
+
+    <string name="search_widget_padding_dots">Marge des points</string>
+    <string name="search_widget_desc_padding_dots">Ajuste la position verticale des points indicateurs de page.</string>
+    <string name="search_widget_padding_dots_x">Décalage horizontal des points</string>
+    <string name="search_widget_desc_padding_dots_x">Ajuste la position horizontale des points indicateurs de page.</string>
+
+    <!-- Recents Size -->
+    <string name="title_recents_size">Taille des cartes Récents</string>
+    <string name="desc_recents_size">Personnaliser la taille des cartes de tâches dans l\'aperçu</string>
+    <string name="pref_recents_size_enable">Activer la taille personnalisée</string>
+    <string name="pref_recents_size_scale">Échelle (%)</string>
+    <string name="pref_recents_carousel_enable">Effet carrousel (style OnePlus)</string>
+    <string name="pref_recents_icons_enable">Rangée d\'icônes d\'applications</string>
+
+    <!-- Recents Menu Screen -->
+    <string name="recents_menu_screen_title">Menu des Récents</string>
+    <string name="recents_group_general">Gestion générale</string>
+    <string name="recents_enable_modding">Activer le modding des Récents</string>
+    <string name="recents_disable_live_tile">Désactiver les tuiles actives</string>
+    <string name="recents_disable_live_tile_desc">Affiche un instantané au lieu de l\'aperçu en direct</string>
+    <string name="recents_group_scaling">Mise à l\'échelle de base des cartes</string>
+    <string name="recents_enable_static_scale">Activer la mise à l\'échelle statique</string>
+    <string name="recents_scale_percent">Échelle (%)</string>
+    <string name="recents_group_carousel_geometry">Carrousel : Géométrie</string>
+    <string name="recents_carousel_min_scale">Échelle minimale (bord)</string>
+    <string name="recents_carousel_spacing">Espacement / Chevauchement</string>
+    <string name="recents_carousel_min_alpha">Alpha minimal (bord)</string>
+    <string name="recents_group_carousel_blur">Carrousel : Flou</string>
+    <string name="recents_carousel_blur_radius">Rayon de flou maximal</string>
+    <string name="recents_blur_overflow">Flou sur toute la carte</string>
+    <string name="recents_blur_overflow_desc">Appliquer sur toute la carte au lieu de la miniature uniquement</string>
+    <string name="recents_group_carousel_tint">Carrousel : Teinte</string>
+    <string name="recents_tint_intensity">Intensité de la teinte</string>
+    <string name="recents_select_tint_color">Choisir la couleur de teinte</string>
+    <string name="recents_group_icon_offset">Carrousel : Décalage d\'icône</string>
+    <string name="recents_icon_offset_x">Décalage d\'icône X</string>
+    <string name="recents_icon_offset_y">Décalage d\'icône Y</string>
+
+    <!-- Gestures Screen -->
+    <string name="gestures_screen_title">Gestes</string>
+
+    <!-- Clear All Screen-->
+    <string name="clear_all_screen_title">Bouton Tout effacer</string>
+
+    <!-- Grid Settings Screen -->
+    <string name="grid_screen_title">Paramètres de la grille</string>
+    <string name="grid_homepage_title">Paramètres de l\'écran d\'accueil</string>
+    <string name="grid_homepage_dock_title">Barre du dock</string>
+    <string name="grid_menupage_title">Page du menu</string>
+    <string name="grid_menupage_enable">Personnaliser la page du menu</string>
+    <string name="grid_menupage_search_title">Résultats de recherche</string>
+    <string name="grid_menupage_suggestions_title">Liste de suggestions</string>
+    <string name="grid_menupage_apps_title">Liste des applications</string>
+    <string name="grid_menupage_suggestions_disable">Désactiver la liste de suggestions</string>
+    <string name="grid_text_mode_hide">Masquer le texte</string>
+
+    <!-- Search &amp; Feed Screen -->
+    <string name="search_feed_screen_title">Recherche &amp; Feed</string>
+
+    <!-- Quickstep Section -->
+    <string name="quickstep_warning_title">Fonctionnalité expérimentale</string>
+    <string name="quickstep_warning_text">Cette fonctionnalité remplace entièrement la vue Quickstep native par une implémentation personnalisée. Des problèmes visuels ou des plantages peuvent se produire. Utilisation à vos risques. Désactivez cette option en cas de problème.</string>
+    <string name="quickstep_engine_title">Moteur Quickstep personnalisé</string>
+    <string name="quickstep_engine_summary">Remplacer les Récents natifs par une implémentation personnalisée</string>
+    <string name="quickstep_engine_info">Active une vue Récents entièrement personnalisée avec différents styles visuels et animations. Remplace complètement les Récents par défaut du Pixel Launcher.</string>
+    <string name="quickstep_style_title">Style des Récents</string>
+    <string name="quickstep_style_stock">Standard</string>
+    <string name="quickstep_style_stock_desc">Disposition horizontale propre des cartes</string>
+    <string name="quickstep_style_ios">Style iOS</string>
+    <string name="quickstep_style_ios_desc">Cartes empilées verticalement avec effet 3D</string>
+    <string name="quickstep_style_oneplus">Style OnePlus</string>
+    <string name="quickstep_style_oneplus_desc">Carrousel avec carte centrale mise en avant</string>
+    <string name="quickstep_style_minimal">Minimal</string>
+    <string name="quickstep_style_minimal_desc">Petites cartes avec icônes uniquement</string>
+    <string name="content_desc_selected">Sélectionné</string>
+
+    
+    <string name="launcher_feed_title">Désactiver le Google Feed</string>
+    <string name="launcher_feed_desc">Désactive l\'écran -1 (Google Discover/Feed) sur l\'écran d\'accueil.</string>
+
+    <string name="launcher_top_widget_title">Désactiver le widget supérieur</string>
+    <string name="launcher_top_widget_desc">Supprime le widget « En un coup d\'œil » permanent de l\'écran d\'accueil, permettant d\'y placer des icônes.</string>
+
+    <!-- Animation Theme Manager -->
+    <string name="anim_theme_create_title">Créer un thème d\'animation</string>
+    <string name="anim_theme_style_name">Nom du style</string>
+    <string name="anim_theme_open_enter">Ouverture — Entrée</string>
+    <string name="anim_theme_open_exit">Ouverture — Sortie</string>
+    <string name="anim_theme_close_enter">Fermeture — Entrée</string>
+    <string name="anim_theme_close_exit">Fermeture — Sortie</string>
+    <string name="anim_theme_tap_to_select">Appuyer pour sélectionner le fichier XML</string>
+    <string name="anim_theme_compile_btn">Compiler &amp; Installer</string>
+    <string name="anim_theme_log_title">Journal de compilation</string>
+    <string name="anim_theme_installed_title">Thèmes installés</string>
+    <string name="anim_theme_none_installed">Aucun thème d\'animation installé</string>
+    <string name="anim_theme_paste_xml">Coller du XML</string>
+    <string name="anim_theme_xml_hint">Coller le XML d\'animation ici…</string>
+    <string name="anim_theme_input_mode_file">Fichier</string>
+    <string name="anim_theme_input_mode_xml">Texte XML</string>
+
+    <!-- Built-in Animations -->
+    <string name="anim_builtin_title">Animations intégrées</string>
+    <string name="anim_builtin_disabled">Désactivé</string>
+    <string name="anim_builtin_custom">Thème personnalisé</string>
+    <string name="anim_preview_open">Ouverture</string>
+    <string name="anim_preview_close">Fermeture</string>
+    <string name="anim_apply_both">Appliquer les deux</string>
+    <string name="anim_apply_open">Appliquer l\'ouverture</string>
+    <string name="anim_apply_close">Appliquer la fermeture</string>
+    <string name="anim_current_open">Ouverture actuelle : %s</string>
+    <string name="anim_current_close">Fermeture actuelle : %s</string>
+
+    <!-- Animation type names -->
+    <string name="anim_group_slide">Glissement</string>
+    <string name="anim_group_card_stack">Pile de cartes</string>
+    <string name="anim_group_train">Train</string>
+    <string name="anim_group_ios">Parallaxe iOS</string>
+    <string name="anim_group_fade">Fondu</string>
+    <string name="anim_group_zoom">Zoom</string>
+    <string name="anim_group_modal">Modal</string>
+    <string name="anim_group_depth">Profondeur</string>
+    <string name="anim_group_pivot">Pivot</string>
+
+    <!-- Direction names -->
+    <string name="anim_dir_right">Droite</string>
+    <string name="anim_dir_left">Gauche</string>
+    <string name="anim_dir_top">Haut</string>
+    <string name="anim_dir_bottom">Bas</string>
+
+    <!-- Activity Transition Settings -->
+    <string name="anim_transition_title">Transitions d\'activité</string>
+    <string name="anim_transition_subtitle">Thèmes personnalisés et transitions intégrées</string>
+    <string name="anim_predictive_back_title">Désactiver le geste de retour prédictif</string>
+    <string name="anim_predictive_back_desc">Supprime l\'animation système de retour par balayage</string>
+    <string name="anim_no_animation_title">Aucune animation</string>
+    <string name="anim_no_animation_desc">Désactive complètement l\'animation de transition</string>
+    <string name="anim_constructor_title">Constructeur d\'animations</string>
+    <string name="anim_constructor_preview">Aperçu</string>
+    <string name="anim_constructor_style_name">Nom du style</string>
+    <string name="anim_constructor_build_theme">Construire le thème</string>
+    <string name="anim_constructor_hide">Masquer</string>
+    <string name="anim_constructor_show_xml">Afficher le XML</string>
+    <string name="anim_constructor_hide_xml">Masquer le XML</string>
+    <string name="anim_dialog_cancel">Annuler</string>
+    <string name="anim_active_open_close">Ouverture + Fermeture</string>
+    <string name="anim_installing">Installation…</string>
+    <string name="anim_install_success">✓ Thème installé avec succès !</string>
+    <string name="anim_install_failed">Échec de l\'installation</string>
+    <string name="anim_install_failed_log">✗ Échec de l\'installation</string>
+    <string name="anim_compile_failed">Échec de la compilation</string>
+    <string name="anim_cd_delete">Supprimer</string>
+    <string name="anim_cd_confirm_delete">Confirmer la suppression</string>
+    <string name="anim_cd_reset">Réinitialiser</string>
+    <string name="anim_cd_copy">Copier</string>
+    <string name="anim_param_translate">Translation</string>
+    <string name="anim_param_scale">Échelle</string>
+    <string name="anim_param_alpha">Alpha</string>
+    <string name="anim_param_rotate">Rotation</string>
+    <string name="anim_param_pivot">Pivot</string>
+    <string name="anim_param_timing">Timing</string>
+    <string name="anim_param_interpolator">Interpolateur</string>
+
+    <!-- Addon Manager -->
+    <string name="addon_title">Addons Pine</string>
+    <string name="addon_desc">Gérer les modules de hook externes</string>
+    <string name="addon_count">%d module(s) installé(s)</string>
+    <string name="addon_active_count">Actif : %1$d sur %2$d</string>
+    <string name="addon_safe_mode_title">Mode sans échec actif</string>
+    <string name="addon_safe_mode_desc">Les addons ont été désactivés en raison de plantages répétés. Si le problème a été causé par un addon défectueux, vous pouvez le désactiver avant de quitter le mode sans échec.</string>
+    <string name="addon_safe_mode_exit">Quitter le mode sans échec</string>
+    <string name="addon_section_system">Modules système</string>
+    <string name="addon_section_user">Modules installés</string>
+    <string name="addon_system_empty_title">Aucun module système</string>
+    <string name="addon_system_empty_desc">Les modules système sont préinstallés avec le firmware</string>
+    <string name="addon_user_empty_title">Aucun module utilisateur installé</string>
+    <string name="addon_user_empty_desc">Importez un addon .jar pour commencer</string>
+    <string name="addon_import">Importer un addon</string>
+    <string name="addon_import_desc">Sélectionner un fichier addon .jar</string>
+    <string name="addon_import_success">Addon importé</string>
+    <string name="addon_import_failed">Échec de l\'importation</string>
+    <string name="addon_empty_title">Aucun addon installé</string>
+    <string name="addon_empty_desc">Importez un addon .jar pour commencer</string>
+    <string name="addon_delete_title">Supprimer l\'addon</string>
+    <string name="addon_delete_confirm">Supprimer « %s » ?\n\nLe fichier JAR sera supprimé et tous les paramètres seront réinitialisés.</string>
+    <string name="addon_scope_default">Cibles par défaut</string>
+    <string name="addon_scope_custom">Personnalisé uniquement</string>
+    <string name="addon_scope_merge">Fusionner les deux</string>
+    <string name="addon_scope_label_default">Portée par défaut</string>
+    <string name="addon_scope_label_custom">Portée personnalisée</string>
+    <string name="addon_scope_label_merge">Portée fusionnée</string>
+    <string name="addon_target_scope">Portée cible</string>
+    <string name="addon_targets_default">Cibles par défaut</string>
+    <string name="addon_targets_custom">Cibles personnalisées</string>
+    <string name="addon_builtin_badge">intégré</string>
+    <string name="addon_builtin_plus_addon">Intégré + Addon</string>
+    <string name="addon_enabled">Activé</string>
+    <string name="addon_btn_save">Enregistrer</string>
+    <string name="addon_btn_cancel">Annuler</string>
+    <string name="addon_btn_remove">Supprimer</string>
+    <string name="addon_settings_title">Paramètres du module</string>
+    <string name="addon_range_format">Plage : %1$s — %2$s</string>
+    <string name="addon_file_not_set">Non défini</string>
+    <string name="addon_file_saved">Fichier enregistré</string>
+    <string name="addon_file_copy_failed">Échec de la copie</string>
+    <string name="addon_apps_selected">%d application(s) sélectionnée(s)</string>
+    <string name="addon_select_apps">Sélectionner des applications</string>
+    <string name="addon_selected_count">%d sélectionné(s)</string>
+    <string name="addon_confirm_count">Confirmer (%d)</string>
+    <string name="addon_search_apps">Rechercher des applications\u2026</string>
+    <string name="addon_show_system">Afficher les applications système</string>
+    <string name="addon_hide_system">Masquer les applications système</string>
+    <string name="addon_no_apps_match">Aucune application trouvée pour « %s »</string>
+    <string name="addon_no_apps_available">Aucune application disponible</string>
+    <string name="addon_default_target_badge">Cible par défaut</string>
+    <string name="addon_author_unknown">Inconnu</string>
+
+    <!-- Addon Manager: Active Apps -->
+    <string name="addon_active_apps_title">Apps actives</string>
+    <string name="addon_active_apps_desc">%d application(s) avec hooks actifs</string>
+    <string name="addon_active_apps_empty">Aucun hook actif</string>
+    <string name="addon_active_apps_modules">%d module(s)</string>
 </resources>

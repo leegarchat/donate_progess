@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.EdgeEffect;
 
 import java.lang.reflect.Method;
-import java.util.WeakHashMap;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -53,6 +52,19 @@ public class EdgeEffectHook {
     private static final String FIELD_MATRIX = "mCustomMatrix";
     private static final String FIELD_POINTS = "mCustomPoints";
     private static final String FIELD_SETTINGS_CACHE = "mCustomSettingsCache";
+    private static final String FIELD_GESTURE_ID = "mCustomGestureId";
+    private static final String FIELD_GESTURE_SEQ = "mCustomGestureSeq";
+    private static final String FIELD_RECORD_LAST_NS = "mCustomRecordLastNs";
+    private static final String RECORD_TAG = "EdgePatternRec";
+
+    // ── Per-instance поля для интеллектуальной нормализации дельт ──
+    private static final String FIELD_NORM_WINDOW = "mNormDeltaWindow";
+    private static final String FIELD_NORM_IDX = "mNormWindowIdx";
+    private static final String FIELD_NORM_COUNT = "mNormWindowCount";
+    private static final String FIELD_NORM_FACTOR = "mNormCurrentFactor";
+    // true если конструктор вызван из Compose (определено по стек-трейсу)
+    private static final String FIELD_IS_COMPOSE = "mIsComposeCaller";
+    private static final String FIELD_CALLER_INFO = "mCallerInfo";
 
     private static final String KEY_ENABLED = "overscroll_enabled";
     private static final String KEY_PACKAGES_CONFIG = "overscroll_packages_config";
@@ -67,7 +79,6 @@ public class EdgeEffectHook {
     private static final String KEY_RESISTANCE_EXPONENT = "overscroll_res_exponent";
     private static final String KEY_LERP_MAIN_IDLE = "overscroll_lerp_main_idle";
     private static final String KEY_LERP_MAIN_RUN = "overscroll_lerp_main_run";
-    private static final String KEY_COMPOSE_SCALE = "overscroll_compose_scale";
     private static final String KEY_DISABLE_ARBITRARY_RENDERING = "overscroll_disable_arbitrary_rendering";
     private static final String KEY_SCALE_MODE = "overscroll_scale_mode";
     private static final String KEY_SCALE_INTENSITY = "overscroll_scale_intensity";
@@ -90,12 +101,65 @@ public class EdgeEffectHook {
     private static final String KEY_ZOOM_INTENSITY_HORIZ = "overscroll_zoom_intensity_horiz";
     private static final String KEY_H_SCALE_INTENSITY_HORIZ = "overscroll_h_scale_intensity_horiz";
     private static final String KEY_INVERT_ANCHOR = "overscroll_invert_anchor";
+    private static final String KEY_RECORD_PATTERNS = "record_patterns_edge_effect";
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  Ключи Settings.Global: интеллектуальная нормализация дельт
+    //  (Phase 2 — автоматическое подавление усиленных Compose-дельт)
+    // ═══════════════════════════════════════════════════════════════════
+    //
+    //  Принцип: скользящее окно |correctedDelta| → running mean.
+    //  Если mean > refDelta × detectMul → дельты усилены (Compose),
+    //  применяется плавное домножение на normFactor.
+    //  Без привязки к имени пакета — чисто поведенческий детектор.
+    //
+    //  Все ключи читаются с суффиксом _pine/_xposed через resolveKey().
+    //  Для отладки на живую:
+    //    adb shell settings put global overscroll_norm_enabled_pine 1
+    //    adb shell settings put global overscroll_norm_factor_pine 0.3
+    // ═══════════════════════════════════════════════════════════════════
+
+    // Главный выключатель нормализации: 0 = выкл (дефолт), 1 = вкл
+    private static final String KEY_NORM_ENABLED = "overscroll_norm_enabled";
+
+    // Эталонная «нормальная» дельта View-приложения (доля от effectiveSize).
+    // Определена эмпирически: Settings median ≈ 0.01 (робо-тест).
+    // Если средняя дельта экземпляра превышает это × detect_mul → усиление.
+    private static final String KEY_NORM_REF_DELTA = "overscroll_norm_ref_delta";
+
+    // Множитель порога обнаружения. Активация: running_mean > ref × это.
+    // 3.0 = надёжно ловит Compose (~5× от View), не срабатывает на View.
+    // Увеличить если ложные срабатывания, уменьшить если не ловит.
+    private static final String KEY_NORM_DETECT_MUL = "overscroll_norm_detect_mul";
+
+    // Фактор нормализации — на сколько домножить усиленную дельту.
+    // 0.2 = привести к уровню View (из анализа: ref/compose ≈ 0.195).
+    // 0.5 = уменьшить вдвое. 1.0 = не менять (нормализация выключена).
+    // Регулируйте на глаз: меньше = слабее bounce, больше = сильнее.
+    private static final String KEY_NORM_FACTOR = "overscroll_norm_factor";
+
+    // Размер скользящего окна — сколько последних |delta| анализировать.
+    // 8 = быстрое обнаружение (за 4 события), но чувствительно к выбросам.
+    // 16 = стабильнее, но медленнее реагирует. Допустимо: 2..64.
+    private static final String KEY_NORM_WINDOW = "overscroll_norm_window";
+
+    // Плавность перехода — за сколько событий перейти от 1.0 к factor.
+    // 4 = быстрый ramp (почти мгновенно). 12 = плавный. Минимум 1.
+    private static final String KEY_NORM_RAMP = "overscroll_norm_ramp";
+
+    // Режим определения caller'а: 0 = только поведение (окно дельт),
+    // 1 = стек-трейс + поведение (Compose-экземпляры получают normFactor
+    //     мгновенно, без ожидания окна). 2 = только стек-трейс (без окна).
+    // По умолчанию 1 — гибрид: стек даёт мгновенный старт, окно подстрахует.
+    private static final String KEY_NORM_DETECT_MODE = "overscroll_norm_detect_mode";
+
+    // ═══════════════════════════════════════════════════════════════════
+
     private static final float FILTER_THRESHOLD = 0.08f;
     private static final float MICRO_DELTA_EPS = 0.00035f;
     private static final float DIRECTION_FLIP_DAMPING = 0.2f;
     private static final float NORMAL_FLIP_DAMPING = 0.65f;
     private static final long SETTINGS_CACHE_TTL_MS = 120L;
-    private static final WeakHashMap<Object, Boolean> sComposeCache = new WeakHashMap<>();
     private static Method sSetTranslationX, sSetTranslationY, sSetScaleX, sSetScaleY, sSetPivotX, sSetPivotY;
     private static boolean sReflectionInited = false;
 
@@ -113,7 +177,6 @@ public class EdgeEffectHook {
         float resExponent;
         float lerpMainIdle;
         float lerpMainRun;
-        float composeScale;
         boolean disableArbitraryRendering;
         int scaleMode;
         float scaleIntensity;
@@ -136,6 +199,15 @@ public class EdgeEffectHook {
         float scaleAnchorXHoriz;
         float hScaleAnchorYHoriz;
         boolean invertAnchor;
+        boolean recordPatterns;
+        // ── Delta normalization ──
+        boolean normEnabled;
+        float normRefDelta;
+        float normDetectMul;
+        float normFactor;
+        int normWindow;
+        int normRamp;
+        int normDetectMode;  // 0=behavior, 1=hybrid, 2=stacktrace-only
     }
 
     public static void initWithClassLoader(ClassLoader classLoader) {
@@ -177,28 +249,29 @@ public class EdgeEffectHook {
 
                 if (mSpring != null) {
                     mSpring.setSpeedMultiplier(cache.animationSpeedMul);
-                    if (mSpring.isRunning()) {
-                        mSpring.doFrame(System.nanoTime());
-                    }
+                    
+                    // [FIX] Do NOT advance physics in isFinished().
+                    // Only draw() or explicit advance methods should drive the spring.
+                    // Calling doFrame() here causes erratic behavior and time jumps.
+                    // if (mSpring.isRunning()) {
+                    //    mSpring.doFrame(System.nanoTime());
+                    // }
 
+                    // [FIX] Read-only check — do NOT modify FIELD_SMOOTH_OFFSET_Y here.
+                    // draw() is the sole driver of visual smoothing. Modifying smooth here
+                    // causes double-advancing per frame in Compose (isInProgress + draw + post-draw).
                     float smooth = (smoothY != null) ? smoothY : 0f;
-                    smooth += (mSpring.mValue - smooth) * 0.35f;
-                    if (Math.abs(mSpring.mValue) < 0.1f && Math.abs(smooth) < minVal * 2f) {
-                        smooth = 0f;
-                    }
-                    XposedHelpers.setAdditionalInstanceField(thiz, FIELD_SMOOTH_OFFSET_Y, smooth);
+                    float smoothSc = getF(thiz, FIELD_SMOOTH_SCALE, 1f);
+                    float smoothZ = getF(thiz, FIELD_SMOOTH_ZOOM, 1f);
+                    float smoothH = getF(thiz, FIELD_SMOOTH_H_SCALE, 1f);
 
-                    boolean physicsDone = !mSpring.isRunning() && Math.abs(mSpring.mValue) < minVal;
-                    boolean visualDone = Math.abs(smooth) < minVal;
+                    boolean physicsDone = !mSpring.isRunning()
+                            && Math.abs(mSpring.mValue) < minVal;
+                    boolean visualDone = Math.abs(smooth) < minVal
+                            && Math.abs(smoothSc - 1f) < 0.001f
+                            && Math.abs(smoothZ - 1f) < 0.001f
+                            && Math.abs(smoothH - 1f) < 0.001f;
                     boolean fullyFinished = physicsDone && visualDone;
-
-                    if (physicsDone && !visualDone) {
-                        float diff = Math.abs(smooth);
-                        if (diff < minVal * 3) {
-                            XposedHelpers.setAdditionalInstanceField(thiz, FIELD_SMOOTH_OFFSET_Y, 0f);
-                            fullyFinished = true;
-                        }
-                    }
 
                     if (fullyFinished) {
                         forceFinish(thiz, mSpring);
@@ -248,12 +321,6 @@ public class EdgeEffectHook {
                 float deltaDistance = (float) param.args[0];
                 float displacement = (param.args.length > 1) ? (float) param.args[1] : 0.5f;
 
-                if (isComposeCaller(thiz)) {
-                    float composeDivisor = getFloatSetting(ctx, KEY_COMPOSE_SCALE, 3.33f);
-                    if (composeDivisor < 0.01f) composeDivisor = 1.0f;
-                    deltaDistance /= composeDivisor;
-                }
-
                 SettingsCache cache = getSettingsCache(ctx, thiz, true);
                 boolean strictHold = cache.disableArbitraryRendering;
 
@@ -270,6 +337,13 @@ public class EdgeEffectHook {
                 float correctedDelta = (Math.abs(cfgScale) > 0.001f) ? deltaDistance / cfgScale : deltaDistance;
                 if (Math.abs(correctedDelta) < MICRO_DELTA_EPS) {
                     correctedDelta = 0f;
+                }
+
+                // ── Intelligent delta normalization (Phase 2) ──
+                // Автоматически уменьшает усиленные Compose-дельты до View-уровня.
+                // Работает per-instance через скользящее окно, без проверки пакета.
+                if (cache.normEnabled && correctedDelta != 0f) {
+                    correctedDelta = applyDeltaNormalization(thiz, cache, correctedDelta);
                 }
 
                 float inputSmoothFactor = cache.inputSmooth;
@@ -341,7 +415,42 @@ public class EdgeEffectHook {
                 }
 
                 mSpring.mValue = nextTranslation;
-                XposedHelpers.setFloatField(thiz, "mDistance", nextTranslation / effectiveSize);
+                // [FIX] mDistance must be non-negative — onPullDistance() assumes >= 0
+                float distance = Math.abs(nextTranslation) / effectiveSize;
+                XposedHelpers.setFloatField(thiz, "mDistance", distance);
+
+                if (distance == 0f) {
+                    XposedHelpers.setIntField(thiz, "mState", 0); // STATE_IDLE
+                    mSpring.mValue = 0f;
+                    mSpring.mVelocity = 0f;
+                    // [FIX] Don't call resetState() here — smooth offset may still be
+                    // non-zero from the previous draw() frame. If we zero smooth now,
+                    // isFinished() returns true and AOSP never calls draw() again,
+                    // leaving the RenderNode with stale translation → phantom shifted list.
+                    // Let draw() handle the visual decay and reset the RenderNode properly.
+                    XposedHelpers.setAdditionalInstanceField(thiz, FIELD_FIRST_TOUCH, true);
+                    XposedHelpers.setAdditionalInstanceField(thiz, FIELD_LAST_DELTA, 0f);
+                }
+
+                // --- Delta pattern recording ---
+                if (cache.recordPatterns) {
+                    long nowNs = SystemClock.elapsedRealtimeNanos();
+                    Integer gidObj = (Integer) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_GESTURE_ID);
+                    Integer seqObj = (Integer) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_GESTURE_SEQ);
+                    Long lastRecNs = (Long) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_RECORD_LAST_NS);
+                    int gid = (gidObj != null) ? gidObj : 0;
+                    int seq = (seqObj != null) ? seqObj : 0;
+                    long prevNs = (lastRecNs != null) ? lastRecNs : 0L;
+                    if (isFirstTouch) { gid++; seq = 0; }
+                    seq++;
+                    long dtUs = (!isFirstTouch && prevNs > 0) ? (nowNs - prevNs) / 1000L : 0L;
+                    XposedHelpers.setAdditionalInstanceField(thiz, FIELD_GESTURE_ID, gid);
+                    XposedHelpers.setAdditionalInstanceField(thiz, FIELD_GESTURE_SEQ, seq);
+                    XposedHelpers.setAdditionalInstanceField(thiz, FIELD_RECORD_LAST_NS, nowNs);
+                    recordPattern(thiz, nowNs, ctx.getPackageName(), gid, seq, dtUs,
+                            deltaDistance, correctedDelta, filteredDelta,
+                            displacement, currentTranslation, effectiveSize);
+                }
 
                 return deltaDistance;
             }
@@ -349,6 +458,61 @@ public class EdgeEffectHook {
 
         XposedHelpers.findAndHookMethod(edgeClass, "onPull", float.class, float.class, onPullHook);
         XposedHelpers.findAndHookMethod(edgeClass, "onPull", float.class, onPullHook);
+
+        // Hook onPullDistance — AOSP ScrollView/RecyclerView call this directly.
+        // The original onPullDistance clamps mDistance >= 0 and delegates to onPull(delta).
+        // We must hook it to return consumed delta consistent with our spring model.
+        XposedHelpers.findAndHookMethod(edgeClass, "onPullDistance", float.class, float.class, new XC_MethodReplacement() {
+            @Override
+            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                EdgeEffect thiz = (EdgeEffect) param.thisObject;
+                Context ctx = (Context) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_CONTEXT);
+
+                if (!isBounceEnabled(ctx, thiz)) {
+                    return XposedBridge.invokeOriginalMethod(param.method, thiz, param.args);
+                }
+
+                float deltaDistance = (float) param.args[0];
+                float displacement = (float) param.args[1];
+
+                SpringDynamics mSpring = (SpringDynamics) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_SPRING);
+                if (mSpring == null) return 0f;
+
+                float mHeight = XposedHelpers.getFloatField(thiz, "mHeight");
+                float mWidth = XposedHelpers.getFloatField(thiz, "mWidth");
+                float effectiveSize = Math.max(Math.abs(mHeight), Math.abs(mWidth));
+                Float screenHObj = (Float) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_SCREEN_HEIGHT);
+                float screenHeight = (screenHObj != null) ? screenHObj : 2200f;
+                if (effectiveSize < 1f) effectiveSize = screenHeight;
+
+                float currentDistance = Math.abs(mSpring.mValue) / effectiveSize;
+                float finalDistance = Math.max(0f, deltaDistance + currentDistance);
+                float delta = finalDistance - currentDistance;
+
+                if (delta == 0f && currentDistance == 0f) {
+                    return 0f;
+                }
+
+                // Delegate to our onPull logic
+                XposedHelpers.callMethod(thiz, "onPull", delta, displacement);
+                return delta;
+            }
+        });
+
+        // Hook getDistance — must return value consistent with spring model
+        XposedHelpers.findAndHookMethod(edgeClass, "getDistance", new XC_MethodReplacement() {
+            @Override
+            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                EdgeEffect thiz = (EdgeEffect) param.thisObject;
+                Context ctx = (Context) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_CONTEXT);
+
+                if (!isBounceEnabled(ctx, thiz)) {
+                    return XposedBridge.invokeOriginalMethod(param.method, thiz, param.args);
+                }
+
+                return XposedHelpers.getFloatField(thiz, "mDistance");
+            }
+        });
 
         
         XposedHelpers.findAndHookMethod(edgeClass, "onRelease", new XC_MethodReplacement() {
@@ -359,6 +523,19 @@ public class EdgeEffectHook {
 
                 if (!isBounceEnabled(ctx, thiz)) {
                     return XposedBridge.invokeOriginalMethod(param.method, thiz, param.args);
+                }
+
+                // [FIX] Match AOSP: onRelease() is a no-op unless in STATE_PULL (1).
+                // AOSP EdgeEffect.java line 487: if (mState != STATE_PULL && mState != STATE_PULL_DECAY) return;
+                // Without this guard, onRelease kills spring animations started by onAbsorb,
+                // because Compose/AOSP call onRelease() right after onAbsorb().
+                int currentState = XposedHelpers.getIntField(thiz, "mState");
+                if (currentState != 1 /* STATE_PULL */) {
+                    // Still reset touch tracking for next interaction
+                    XposedHelpers.setAdditionalInstanceField(thiz, FIELD_TARGET_FINGER_X, 0.5f);
+                    XposedHelpers.setAdditionalInstanceField(thiz, FIELD_LAST_DELTA, 0f);
+                    XposedHelpers.setAdditionalInstanceField(thiz, FIELD_FIRST_TOUCH, true);
+                    return null;
                 }
 
                 SpringDynamics mSpring = (SpringDynamics) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_SPRING);
@@ -376,6 +553,13 @@ public class EdgeEffectHook {
                     mSpring.start();
                     XposedHelpers.setIntField(thiz, "mState", 3);
                 } else {
+                    // Value <= 0.5 — negligible pull, reset immediately
+                    if (mSpring != null) {
+                        mSpring.cancel();
+                        mSpring.mValue = 0f;
+                        mSpring.mVelocity = 0f;
+                    }
+                    resetState(thiz);
                     XposedHelpers.setIntField(thiz, "mState", 0);
                     XposedHelpers.setFloatField(thiz, "mDistance", 0f);
                 }
@@ -544,9 +728,14 @@ public class EdgeEffectHook {
                 XposedHelpers.setAdditionalInstanceField(thiz, FIELD_SMOOTH_ZOOM, newScaleZ);
                 XposedHelpers.setAdditionalInstanceField(thiz, FIELD_SMOOTH_H_SCALE, newScaleH);
 
-                boolean isResting = Math.abs(newOffset) < 0.1f && Math.abs(newScaleV - 1f) < 0.001f;
+                boolean isResting = Math.abs(newOffset) < 0.1f
+                        && Math.abs(newScaleV - 1f) < 0.001f
+                        && Math.abs(newScaleZ - 1f) < 0.001f
+                        && Math.abs(newScaleH - 1f) < 0.001f;
                 if (isResting && !mSpring.isRunning()) {
-                    safeResetRenderNode(renderNode);
+                    float rW = XposedHelpers.getFloatField(thiz, "mWidth");
+                    float rH = XposedHelpers.getFloatField(thiz, "mHeight");
+                    safeResetRenderNode(renderNode, rW, rH);
                     forceFinish(thiz, mSpring);
                     return false;
                 }
@@ -559,7 +748,11 @@ public class EdgeEffectHook {
 
                 float effectiveSize = Math.max(Math.abs(mHeight), Math.abs(mWidth));
                 if (effectiveSize < 1f) effectiveSize = screenHeight;
-                XposedHelpers.setFloatField(thiz, "mDistance", newOffset / effectiveSize);
+                // [FIX] Use spring physics value for mDistance, not the smooth visual offset.
+                // Using smooth would make mDistance > 0 after the spring has settled at 0,
+                // causing AOSP to feed scroll deltas via onPullDistance instead of scrolling
+                // the list — this is the root cause of the "phantom list" bug.
+                XposedHelpers.setFloatField(thiz, "mDistance", Math.abs(mSpring.mValue) / effectiveSize);
 
                 try {
                     if (sSetTranslationX != null) {
@@ -641,7 +834,7 @@ public class EdgeEffectHook {
                         || Math.abs(newScaleH - 1f) >= 0.001f;
 
                 if (!continueAnim) {
-                    safeResetRenderNode(renderNode);
+                    safeResetRenderNode(renderNode, mWidth, mHeight);
                     forceFinish(thiz, mSpring);
                 }
                 return continueAnim;
@@ -650,20 +843,84 @@ public class EdgeEffectHook {
     }
 
 
-    private static boolean isComposeCaller(Object thiz) {
-        if (sComposeCache.containsKey(thiz)) return Boolean.TRUE.equals(sComposeCache.get(thiz));
-        boolean isCompose = false;
+    private static boolean matchesWildcard(String pattern, String text) {
+        if (pattern.equals("*")) return true;
+        if (!pattern.contains("*")) return pattern.equals(text);
+        // Split by '*' and match segments in order
+        String[] segments = pattern.split("\\*", -1);
+        int textIdx = 0;
+        for (int i = 0; i < segments.length; i++) {
+            String seg = segments[i];
+            if (seg.isEmpty()) continue;
+            int found = text.indexOf(seg, textIdx);
+            if (found < 0) return false;
+            // First segment must match at start if pattern doesn't start with '*'
+            if (i == 0 && !pattern.startsWith("*") && found != 0) return false;
+            textIdx = found + seg.length();
+        }
+        // Last segment must match at end if pattern doesn't end with '*'
+        if (!pattern.endsWith("*")) {
+            String lastSeg = segments[segments.length - 1];
+            if (!lastSeg.isEmpty() && !text.endsWith(lastSeg)) return false;
+        }
+        return true;
+    }
+
+    /**
+     * Анализирует стек-трейс при создании EdgeEffect, чтобы определить,
+     * кто инициировал создание — Compose или классический View.
+     *
+     * @return строка вида "compose:ClassName", "view:ClassName" или "unknown"
+     */
+    private static String detectCaller() {
+        // Compose-характерные фрагменты в имени класса
+        final String[] COMPOSE_SIGS = {
+            "AndroidEdgeEffectOverscrollEffect",
+            "OverscrollKt",
+            "androidx.compose.foundation",
+            "EdgeEffectCompat"                     // иногда Compose идёт через EdgeEffectCompat
+        };
+        // Классические View-caller'ы
+        final String[] VIEW_SIGS = {
+            "RecyclerView",
+            "ScrollView",
+            "AbsListView",
+            "NestedScrollView",
+            "ListView",
+            "HorizontalScrollView",
+            "ViewPager"
+        };
+
         try {
             StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-            for (StackTraceElement element : stack) {
-                if (element.getClassName().startsWith("androidx.compose")) {
-                    isCompose = true;
-                    break;
+            // Пропускаем первые фреймы (getStackTrace, detectCaller, initInstance, hook, <init>)
+            int startIdx = Math.min(4, stack.length);
+
+            // Сначала ищем Compose (приоритет — он ближе к вызову)
+            for (int i = startIdx; i < stack.length; i++) {
+                String cls = stack[i].getClassName();
+                for (String sig : COMPOSE_SIGS) {
+                    if (cls.contains(sig)) {
+                        // Извлекаем короткое имя класса
+                        String shortName = cls.substring(cls.lastIndexOf('.') + 1);
+                        return "compose:" + shortName;
+                    }
                 }
             }
-        } catch (Exception ignored) {}
-        sComposeCache.put(thiz, isCompose);
-        return isCompose;
+            // Если Compose не найден, ищем View
+            for (int i = startIdx; i < stack.length; i++) {
+                String cls = stack[i].getClassName();
+                for (String sig : VIEW_SIGS) {
+                    if (cls.contains(sig)) {
+                        String shortName = cls.substring(cls.lastIndexOf('.') + 1);
+                        return "view:" + shortName;
+                    }
+                }
+            }
+        } catch (Throwable ignored) {
+            // Стек-трейс может не быть доступен в некоторых окружениях
+        }
+        return "unknown";
     }
 
     private static void initInstance(Object thiz, Context context) {
@@ -679,6 +936,18 @@ public class EdgeEffectHook {
         XposedHelpers.setAdditionalInstanceField(thiz, FIELD_TARGET_FINGER_X, 0.5f);
         XposedHelpers.setAdditionalInstanceField(thiz, FIELD_CURRENT_FINGER_X, 0.5f);
         XposedHelpers.setAdditionalInstanceField(thiz, FIELD_FIRST_TOUCH, true);
+
+        // Normalization state — per-instance, persists across gestures
+        XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_WINDOW, null);
+        XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_IDX, 0);
+        XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_COUNT, 0);
+        XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_FACTOR, 1.0f);
+
+        // Определяем caller по стек-трейсу (один раз при создании)
+        String callerInfo = detectCaller();
+        boolean isCompose = callerInfo.startsWith("compose");
+        XposedHelpers.setAdditionalInstanceField(thiz, FIELD_IS_COMPOSE, isCompose);
+        XposedHelpers.setAdditionalInstanceField(thiz, FIELD_CALLER_INFO, callerInfo);
 
         float screenHeight = 2200f;
         float screenWidth = 1080f;
@@ -705,7 +974,7 @@ public class EdgeEffectHook {
                 String[] apps = configString.split(" ");
                 for (String appConfig : apps) {
                     String[] parts = appConfig.split(":");
-                    if (parts.length >= 3 && parts[0].equals(pkgName)) {
+                    if (parts.length >= 3 && matchesWildcard(parts[0], pkgName)) {
                         myFilter = Integer.parseInt(parts[1]) == 1;
                         myScale = Float.parseFloat(parts[2]);
                         if (parts.length >= 4) myIgnore = parts[3].equals("1");
@@ -748,6 +1017,138 @@ public class EdgeEffectHook {
         XposedHelpers.setAdditionalInstanceField(thiz, FIELD_FIRST_TOUCH, true);
     }
 
+    /**
+     * Logs one onPull event via logcat with tag RECORD_TAG.
+     * Active only when global setting record_patterns_edge_effect = 1.
+     * Format: elapsed_ns\tpkg\tgesture_id\tseq\tdt_us\traw\tcorrected\tfiltered\tdisp\tspring\tsize\tcaller
+     * Use `adb logcat -s EdgePatternRec:D` to capture on PC.
+     */
+    private static void recordPattern(Object thiz, long elapsedNs, String pkg, int gestureId, int seq,
+                                       long dtUs, float raw, float corrected, float filtered,
+                                       float disp, float springVal, float effSize) {
+        String callerInfo = "?";
+        try {
+            Object ci = XposedHelpers.getAdditionalInstanceField(thiz, FIELD_CALLER_INFO);
+            if (ci != null) callerInfo = (String) ci;
+        } catch (Throwable ignored) {}
+        android.util.Log.d(RECORD_TAG, elapsedNs + "\t" + pkg + "\t" + gestureId + "\t" + seq + "\t" + dtUs
+                + "\t" + raw + "\t" + corrected + "\t" + filtered
+                + "\t" + disp + "\t" + springVal + "\t" + effSize + "\t" + callerInfo);
+    }
+
+    /**
+     * Intelligent delta normalization (Phase 2).
+     *
+     * Tracks a sliding window of |correctedDelta| for each EdgeEffect instance.
+     * When the running mean exceeds refDelta × detectMul, the instance is
+     * identified as "amplified" (e.g. Compose) and deltas are smoothly scaled
+     * down toward normFactor to match normal View-level deltas.
+     *
+     * The transition ramps over normRamp events to avoid visual jumps.
+     * The window persists across gestures — once an instance is identified
+     * as amplified, normalization stays active (with ramp-back if pattern changes).
+     *
+     * normDetectMode:
+     *   0 = behavior-only  — только скользящее окно, стек-трейс игнорируется
+     *   1 = hybrid (default) — Compose-инстансы (по стеку) сразу получают normFactor
+     *       без ожидания прогрева окна; окно продолжает работать и может отменить
+     *       если дельты окажутся нормальными
+     *   2 = stacktrace-only — Compose → всегда normFactor, View/unknown → 1.0,
+     *       окно не используется
+     */
+    private static float applyDeltaNormalization(Object thiz, SettingsCache cache, float correctedDelta) {
+        float absDelta = Math.abs(correctedDelta);
+
+        // Читаем флаг стек-трейса (установлен один раз в initInstance)
+        Boolean isComposeObj = (Boolean) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_IS_COMPOSE);
+        boolean isCompose = (isComposeObj != null) && isComposeObj;
+        int detectMode = cache.normDetectMode;
+
+        // ── Mode 2: stacktrace-only — мгновенное решение, без окна ──
+        if (detectMode == 2) {
+            float factor = isCompose ? cache.normFactor : 1.0f;
+            XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_FACTOR, factor);
+            return correctedDelta * factor;
+        }
+
+        // ── Mode 0 и 1 используют скользящее окно ──
+
+        // Get or recreate circular buffer (handles dynamic window size changes)
+        float[] window = (float[]) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_NORM_WINDOW);
+        int windowSize = cache.normWindow;
+        if (window == null || window.length != windowSize) {
+            window = new float[windowSize];
+            XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_WINDOW, window);
+            XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_IDX, 0);
+            XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_COUNT, 0);
+        }
+
+        Integer idxObj = (Integer) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_NORM_IDX);
+        Integer countObj = (Integer) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_NORM_COUNT);
+        Float factorObj = (Float) XposedHelpers.getAdditionalInstanceField(thiz, FIELD_NORM_FACTOR);
+        int idx = (idxObj != null) ? idxObj : 0;
+        int count = (countObj != null) ? countObj : 0;
+        float currentFactor = (factorObj != null) ? factorObj : 1.0f;
+
+        // Only real deltas go into the window — micro-deltas (noise) are excluded
+        if (absDelta > MICRO_DELTA_EPS) {
+            window[idx] = absDelta;
+            idx = (idx + 1) % windowSize;
+            if (count < windowSize) count++;
+            XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_IDX, idx);
+            XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_COUNT, count);
+        }
+
+        // ── Mode 1 (hybrid): Compose-инстансы нормализуются мгновенно,
+        //    пока окно ещё не набрало достаточно данных ──
+        int minSamples = Math.max(windowSize / 2, 2);
+        boolean windowReady = (count >= minSamples);
+
+        if (detectMode == 1 && isCompose && !windowReady) {
+            // Стек-трейс определил Compose — применяем normFactor сразу,
+            // не дожидаясь прогрева окна. Ramp здесь тоже нужен.
+            float rampStep = Math.abs(1.0f - cache.normFactor) / Math.max(cache.normRamp, 1);
+            float targetFactor = cache.normFactor;
+            if (currentFactor > targetFactor) {
+                currentFactor = Math.max(currentFactor - rampStep, targetFactor);
+            } else if (currentFactor < targetFactor) {
+                currentFactor = Math.min(currentFactor + rampStep, targetFactor);
+            }
+            XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_FACTOR, currentFactor);
+            return correctedDelta * currentFactor;
+        }
+
+        // ── Окно набрало достаточно данных — решение по поведению ──
+        if (windowReady) {
+            // Running mean of the sliding window
+            float sum = 0;
+            for (int i = 0; i < count; i++) sum += window[i];
+            float runningMean = sum / count;
+
+            float threshold = cache.normRefDelta * cache.normDetectMul;
+            float targetFactor;
+
+            if (runningMean > threshold) {
+                // ▼ Deltas amplified — ramp toward normFactor
+                targetFactor = cache.normFactor;
+            } else {
+                // ▲ Deltas normal — ramp back to 1.0 (no change)
+                targetFactor = 1.0f;
+            }
+
+            // Smooth ramp: step size = |1 - factor| / ramp events
+            float rampStep = Math.abs(1.0f - cache.normFactor) / Math.max(cache.normRamp, 1);
+            if (currentFactor > targetFactor) {
+                currentFactor = Math.max(currentFactor - rampStep, targetFactor);
+            } else if (currentFactor < targetFactor) {
+                currentFactor = Math.min(currentFactor + rampStep, targetFactor);
+            }
+        }
+
+        XposedHelpers.setAdditionalInstanceField(thiz, FIELD_NORM_FACTOR, currentFactor);
+        return correctedDelta * currentFactor;
+    }
+
     private static void ensureReflection() {
         if (sReflectionInited) return;
         try {
@@ -767,7 +1168,7 @@ public class EdgeEffectHook {
         } catch (Exception ignored) {}
     }
 
-    private static void safeResetRenderNode(Object renderNode) {
+    private static void safeResetRenderNode(Object renderNode, float viewWidth, float viewHeight) {
         if (renderNode == null) return;
         ensureReflection();
         try {
@@ -777,7 +1178,10 @@ public class EdgeEffectHook {
                 sSetScaleX.invoke(renderNode, 1f);
                 sSetScaleY.invoke(renderNode, 1f);
             }
-            XposedHelpers.callMethod(renderNode, "stretch", 0f, 0f, 0f, 0f);
+            // [FIX] Pass actual W/H to stretch() — stretch(0,0,0,0) may not properly clear
+            float sw = viewWidth > 0 ? viewWidth : 1f;
+            float sh = viewHeight > 0 ? viewHeight : 1f;
+            XposedHelpers.callMethod(renderNode, "stretch", 0f, 0f, sw, sh);
         } catch (Throwable ignored) {}
     }
 
@@ -795,47 +1199,62 @@ public class EdgeEffectHook {
             return cache;
         }
 
-        cache.pullCoeff = getFloatSetting(ctx, KEY_PULL_COEFF, 0.5f);
-        cache.stiffness = getFloatSetting(ctx, KEY_STIFFNESS, 450f);
-        cache.damping = getFloatSetting(ctx, KEY_DAMPING, 0.7f);
-        cache.fling = getFloatSetting(ctx, KEY_FLING, 0.6f);
+        cache.pullCoeff = getFloatSetting(ctx, KEY_PULL_COEFF, 1.5141f);
+        cache.stiffness = getFloatSetting(ctx, KEY_STIFFNESS, 148.6191f);
+        cache.damping = getFloatSetting(ctx, KEY_DAMPING, 0.9976f);
+        cache.fling = getFloatSetting(ctx, KEY_FLING, 1.3679f);
         cache.minVel = getFloatSetting(ctx, KEY_PHYSICS_MIN_VEL, 8.0f);
         cache.minVal = getFloatSetting(ctx, KEY_PHYSICS_MIN_VAL, 0.6f);
         cache.inputSmooth = getFloatSetting(ctx, KEY_INPUT_SMOOTH_FACTOR, 0.5f);
-        cache.animationSpeedPercent = getFloatSetting(ctx, KEY_ANIMATION_SPEED, 100.0f);
+        cache.animationSpeedPercent = getFloatSetting(ctx, KEY_ANIMATION_SPEED, 168.5232f);
         if (cache.animationSpeedPercent < 1.0f) cache.animationSpeedPercent = 1.0f;
         if (cache.animationSpeedPercent > 300.0f) cache.animationSpeedPercent = 300.0f;
         cache.animationSpeedMul = cache.animationSpeedPercent / 100.0f;
         cache.resExponent = getFloatSetting(ctx, KEY_RESISTANCE_EXPONENT, 4.0f);
         cache.lerpMainIdle = getFloatSetting(ctx, KEY_LERP_MAIN_IDLE, 0.4f);
-        cache.lerpMainRun = getFloatSetting(ctx, KEY_LERP_MAIN_RUN, 0.7f);
-        cache.composeScale = getFloatSetting(ctx, KEY_COMPOSE_SCALE, 3.33f);
+        cache.lerpMainRun = getFloatSetting(ctx, KEY_LERP_MAIN_RUN, 0.6999f);
         cache.disableArbitraryRendering = getIntSetting(ctx, KEY_DISABLE_ARBITRARY_RENDERING, 0) == 1;
 
         cache.scaleMode = getIntSetting(ctx, KEY_SCALE_MODE, 0);
-        cache.scaleIntensity = getFloatSetting(ctx, KEY_SCALE_INTENSITY, 0.0f);
-        cache.scaleIntensityHoriz = getFloatSetting(ctx, KEY_SCALE_INTENSITY_HORIZ, 0.0f);
-        cache.scaleLimitMin = getFloatSetting(ctx, KEY_SCALE_LIMIT_MIN, 0.3f);
+        cache.scaleIntensity = getFloatSetting(ctx, KEY_SCALE_INTENSITY, 0.31f);
+        cache.scaleIntensityHoriz = getFloatSetting(ctx, KEY_SCALE_INTENSITY_HORIZ, 0.3786f);
+        cache.scaleLimitMin = getFloatSetting(ctx, KEY_SCALE_LIMIT_MIN, 0.1f);
 
         cache.zoomMode = getIntSetting(ctx, KEY_ZOOM_MODE, 0);
-        cache.zoomIntensity = getFloatSetting(ctx, KEY_ZOOM_INTENSITY, 0.0f);
-        cache.zoomIntensityHoriz = getFloatSetting(ctx, KEY_ZOOM_INTENSITY_HORIZ, 0.0f);
-        cache.zoomLimitMin = getFloatSetting(ctx, KEY_ZOOM_LIMIT_MIN, 0.3f);
+        cache.zoomIntensity = getFloatSetting(ctx, KEY_ZOOM_INTENSITY, 0.2f);
+        cache.zoomIntensityHoriz = getFloatSetting(ctx, KEY_ZOOM_INTENSITY_HORIZ, 0.2f);
+        cache.zoomLimitMin = getFloatSetting(ctx, KEY_ZOOM_LIMIT_MIN, 0.1f);
         cache.zoomAnchorX = getFloatSetting(ctx, KEY_ZOOM_ANCHOR_X, 0.5f);
         cache.zoomAnchorY = getFloatSetting(ctx, KEY_ZOOM_ANCHOR_Y, 0.5f);
         cache.zoomAnchorXHoriz = getFloatSetting(ctx, KEY_ZOOM_ANCHOR_X_HORIZ, 0.5f);
         cache.zoomAnchorYHoriz = getFloatSetting(ctx, KEY_ZOOM_ANCHOR_Y_HORIZ, 0.5f);
 
         cache.hScaleMode = getIntSetting(ctx, KEY_H_SCALE_MODE, 0);
-        cache.hScaleIntensity = getFloatSetting(ctx, KEY_H_SCALE_INTENSITY, 0.0f);
+        cache.hScaleIntensity = getFloatSetting(ctx, KEY_H_SCALE_INTENSITY, 0.2f);
         cache.hScaleIntensityHoriz = getFloatSetting(ctx, KEY_H_SCALE_INTENSITY_HORIZ, 0.0f);
-        cache.hScaleLimitMin = getFloatSetting(ctx, KEY_H_SCALE_LIMIT_MIN, 0.3f);
+        cache.hScaleLimitMin = getFloatSetting(ctx, KEY_H_SCALE_LIMIT_MIN, 0.1f);
 
         cache.scaleAnchorY = getFloatSetting(ctx, KEY_SCALE_ANCHOR_Y, 0.5f);
         cache.hScaleAnchorX = getFloatSetting(ctx, KEY_H_SCALE_ANCHOR_X, 0.5f);
         cache.scaleAnchorXHoriz = getFloatSetting(ctx, KEY_SCALE_ANCHOR_X_HORIZ, 0.5f);
         cache.hScaleAnchorYHoriz = getFloatSetting(ctx, KEY_H_SCALE_ANCHOR_Y_HORIZ, 0.5f);
         cache.invertAnchor = getIntSetting(ctx, KEY_INVERT_ANCHOR, 1) == 1;
+        cache.recordPatterns = getIntSetting(ctx, KEY_RECORD_PATTERNS, 0) == 1;
+
+        // ── Delta normalization keys ──
+        // normEnabled and normDetectMode are written as Int from UI (Switch / RadioGroup)
+        // normWindow and normRamp are written as Float from UI (Slider), so read with getFloatSetting and cast
+        cache.normEnabled = getIntSetting(ctx, KEY_NORM_ENABLED, 1) == 1;
+        cache.normRefDelta = getFloatSetting(ctx, KEY_NORM_REF_DELTA, 9.9999f);
+        cache.normDetectMul = getFloatSetting(ctx, KEY_NORM_DETECT_MUL, 0f);
+        cache.normFactor = getFloatSetting(ctx, KEY_NORM_FACTOR, 0.33f);
+        cache.normWindow = (int) getFloatSetting(ctx, KEY_NORM_WINDOW, 2f);
+        cache.normRamp = (int) getFloatSetting(ctx, KEY_NORM_RAMP, 1f);
+        cache.normDetectMode = getIntSetting(ctx, KEY_NORM_DETECT_MODE, 1);
+        if (cache.normWindow < 2) cache.normWindow = 2;
+        if (cache.normWindow > 64) cache.normWindow = 64;
+        if (cache.normRamp < 1) cache.normRamp = 1;
+        if (cache.normDetectMode < 0 || cache.normDetectMode > 2) cache.normDetectMode = 1;
 
         cache.updatedAt = now;
         XposedHelpers.setAdditionalInstanceField(thiz, FIELD_SETTINGS_CACHE, cache);

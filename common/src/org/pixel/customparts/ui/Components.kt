@@ -9,6 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -21,6 +23,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
@@ -87,6 +91,8 @@ fun ExpandableWarningCard(
                     style = MaterialTheme.typography.titleMedium,
                     color = contentColor,
                     fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f).padding(horizontal = 16.dp)
                 )
                 Icon(Icons.Rounded.ExpandMore, null, modifier = Modifier.rotate(rotation), tint = contentColor)
@@ -99,7 +105,7 @@ fun ExpandableWarningCard(
             ) {
                 Column {
                     Spacer(Modifier.height(12.dp))
-                    Divider(color = contentColor.copy(alpha = dividerAlpha), modifier = Modifier.padding(bottom = 12.dp))
+                    HorizontalDivider(color = contentColor.copy(alpha = dividerAlpha), modifier = Modifier.padding(bottom = 12.dp))
                     Text(text = text, style = MaterialTheme.typography.bodyMedium, color = contentColor)
                 }
             }
@@ -130,13 +136,17 @@ fun GenericSwitchRow(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             if (summary != null) {
                 Text(
                     text = summary,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
@@ -178,7 +188,9 @@ fun SliderSetting(
     infoText: String? = null,
     videoResName: String? = null,
     onInfoClick: ((String, String, String?) -> Unit)? = null,
-    onValueChangeFinished: (() -> Unit)? = null
+    onValueChangeFinished: (() -> Unit)? = null,
+    showDefaultButton: Boolean = true,
+    inputRange: IntRange? = null
 ) {
     SliderSettingFloat(
         title = title,
@@ -193,7 +205,9 @@ fun SliderSetting(
         infoText = infoText,
         videoResName = videoResName,
         onInfoClick = onInfoClick,
-        onValueChangeFinished = onValueChangeFinished
+        onValueChangeFinished = onValueChangeFinished,
+        showDefaultButton = showDefaultButton,
+        inputRange = inputRange?.let { it.first.toFloat()..it.last.toFloat() }
     )
 }
 
@@ -211,7 +225,9 @@ fun SliderSettingFloat(
     infoText: String? = null,
     videoResName: String? = null,
     onInfoClick: ((String, String, String?) -> Unit)? = null,
-    onValueChangeFinished: (() -> Unit)? = null
+    onValueChangeFinished: (() -> Unit)? = null,
+    showDefaultButton: Boolean = true,
+    inputRange: ClosedFloatingPointRange<Float>? = null
 ) {
     var showManualInput by remember { mutableStateOf(false) }
     val contentAlpha = if (enabled) 1f else 0.4f
@@ -236,34 +252,40 @@ fun SliderSettingFloat(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f).padding(end = 8.dp)
             )
             
             Text(
                 text = formattedValue,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1
             )
         }
         
         Spacer(Modifier.height(8.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(
-                onClick = onDefault,
-                enabled = enabled,
-                modifier = Modifier.size(32.dp).alpha(contentAlpha)
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Refresh,
-                    contentDescription = "Reset to default",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
+            if (showDefaultButton) {
+                IconButton(
+                    onClick = onDefault,
+                    enabled = enabled,
+                    modifier = Modifier.size(32.dp).alpha(contentAlpha)
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Refresh,
+                        contentDescription = "Reset to default",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
 
-            Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(8.dp))
+            }
 
             Slider(
                 value = value.coerceIn(range.start, range.endInclusive),
@@ -292,11 +314,12 @@ fun SliderSettingFloat(
     }
 
     if (showManualInput) {
+        val dialogRange = inputRange ?: range
         FloatInputDialog(
             title = title,
             initialValue = value,
-            rangeStart = range.start,
-            rangeEnd = range.endInclusive,
+            rangeStart = dialogRange.start,
+            rangeEnd = dialogRange.endInclusive,
             unit = unit,
             isInteger = isInteger,
             onDismiss = { showManualInput = false },
@@ -336,6 +359,8 @@ fun RadioSelectionGroup(
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f).alpha(contentAlpha)
             )
             
@@ -378,7 +403,10 @@ fun RadioSelectionGroup(
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                     ),
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
                 )
                 
                 AnimatedVisibility(
@@ -752,6 +780,110 @@ fun InfoDialog(
     }
 }
 
+@Composable
+fun WeakDivider(modifier: Modifier = Modifier) {
+    HorizontalDivider(
+        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+        modifier = modifier.padding(horizontal = 20.dp)
+    )
+}
+
+@Composable
+fun StrongDivider(modifier: Modifier = Modifier) {
+    HorizontalDivider(
+        color = MaterialTheme.colorScheme.outlineVariant,
+        thickness = 1.dp,
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
+}
+
+@Composable
+fun ExpandableSettingsGroupCard(
+    title: String,
+    enabled: Boolean = true,
+    expanded: Boolean = false,
+    onExpandChange: (Boolean) -> Unit,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    val rotation by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        label = "arrow_rotation",
+        animationSpec = tween(300)
+    )
+
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = if (enabled) containerColor else containerColor.copy(alpha = 0.6f)
+        ),
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessHigh
+                )
+            )
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onExpandChange(!expanded) }
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = if (enabled) contentColor else contentColor.copy(alpha = 0.5f)
+                )
+
+                Icon(
+                    imageVector = Icons.Rounded.ExpandMore,
+                    contentDescription = null,
+                    modifier = Modifier.rotate(rotation),
+                    tint = if (enabled) contentColor else contentColor.copy(alpha = 0.5f)
+                )
+            }
+
+            AnimatedVisibility(
+                visible = expanded,
+                enter = expandVertically(animationSpec = spring(stiffness = Spring.StiffnessLow)) + fadeIn(),
+                exit = shrinkVertically(animationSpec = spring(stiffness = Spring.StiffnessLow)) + fadeOut()
+            ) {
+                Column(modifier = Modifier.padding(start = 4.dp, end = 4.dp, bottom = 16.dp)) {
+                    content()
+                }
+            }
+        }
+    }
+}
+
 object ModuleStatus {
-    fun isModuleActive(): Boolean = false
+    fun isModuleActive(): Boolean {
+        try {
+            // Check Settings.Global directly via reflection to avoid context issues or hidden structure
+            val activityThreadClass = Class.forName("android.app.ActivityThread")
+            val currentApplicationMethod = activityThreadClass.getMethod("currentApplication")
+            val context = currentApplicationMethod.invoke(null) as? android.content.Context
+            
+            if (context != null) {
+                val value = android.provider.Settings.Global.getInt(
+                    context.contentResolver, 
+                    "pixelparts_xposed_to_pine", 
+                    0
+                )
+                if (value == 1) return true
+            }
+        } catch (e: Exception) {
+            // ignore
+        }
+        return false
+    }
 }
