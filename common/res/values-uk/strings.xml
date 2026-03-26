@@ -40,6 +40,8 @@
     <string name="magnifier_offset_y_title">Вертикальний зсув</string>
     <string name="magnifier_xposed_warning_title">Потрібен модуль Xposed</string>
     <string name="magnifier_xposed_warning_desc">Модифікація лупи працює для кожного додатка окремо. Увімкніть модуль Xposed для кожного додатка, в якому має з\'являтися модифікована лупа.</string>
+    <string name="magnifier_preview_label">Приклад</string>
+    <string name="magnifier_sample_text">Приклад тексту для тестування лупи</string>
     <string name="overscroll_xposed_warning_title">Потрібен модуль Xposed</string>
     <string name="overscroll_xposed_warning_desc">Модифікація overscroll працює для кожного додатка окремо. Увімкніть модуль Xposed для кожного додатка, в якому має з\'являтися модифікований ефект краю.</string>
 

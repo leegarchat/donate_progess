@@ -40,6 +40,8 @@
     <string name="magnifier_offset_y_title">Offset Vertikal</string>
     <string name="magnifier_xposed_warning_title">Modul Xposed Diperlukan</string>
     <string name="magnifier_xposed_warning_desc">Modifikasi kaca pembesar bekerja per-aplikasi. Aktifkan modul Xposed untuk setiap aplikasi tempat kaca pembesar yang dimodifikasi harus muncul.</string>
+    <string name="magnifier_preview_label">Pratinjau</string>
+    <string name="magnifier_sample_text">Teks contoh untuk pengujian kaca pembesar</string>
     <string name="overscroll_xposed_warning_title">Modul Xposed Diperlukan</string>
     <string name="overscroll_xposed_warning_desc">Modifikasi overscroll bekerja per-aplikasi. Aktifkan modul Xposed untuk setiap aplikasi tempat efek tepi yang dimodifikasi harus muncul.</string>
 

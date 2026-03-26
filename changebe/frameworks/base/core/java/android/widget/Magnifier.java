@@ -45,6 +45,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -90,7 +91,7 @@ public final class Magnifier {
     // The window containing the magnifier.
     private InternalPopupWindow mWindow;
     // The width of the window containing the magnifier.
-    private final int mWindowWidth;
+    private int mWindowWidth;
     // The height of the window containing the magnifier.
     private int mWindowHeight;
     // The zoom applied to the view region copied to the magnifier view.
@@ -104,7 +105,7 @@ public final class Magnifier {
     // The elevation of the window containing the magnifier.
     private final float mWindowElevation;
     // The corner radius of the window containing the magnifier.
-    private final float mWindowCornerRadius;
+    private float mWindowCornerRadius;
     // The overlay to be drawn on the top of the magnifier content.
     private final Drawable mOverlay;
     // The horizontal offset between the source and window coords when #show(float, float) is used.
@@ -175,23 +176,36 @@ public final class Magnifier {
     private static final float DEFAULT_ZOOM = 1.25f;
     private static final float DEFAULT_SIZE = 1.0f;
 
+    // Runtime-update fields for real-time settings re-read in show()
+    private int mCustomOffsetYApplied = 0;       // offsetPx added to Builder at construction
+    private int mRuntimeOffsetYDeltaPx = 0;      // delta applied per-show() call
+    private long mLastSettingsReadMs = 0;        // throttle timestamp
+    private static final long SETTINGS_READ_INTERVAL_MS = 250;
+
+    // Original (pre-custom) builder values for runtime re-derivation of size/shape/zoom
+    private final int mOriginalWindowWidth;
+    private final int mOriginalWindowHeight;
+    private final float mOriginalCornerRadius;
+    private final float mOriginalZoom;
+
     /**
      * Reads Settings.Global and modifies Builder params BEFORE the constructor copies them
      * to final fields. This is the native equivalent of MagnifierHook's beforeHookedMethod.
      */
-    private static void applyCustomParams(@NonNull Builder params) {
+    private static int applyCustomParams(@NonNull Builder params) {
         Context ctx;
         try {
             ctx = params.mView.getContext();
         } catch (Exception e) {
-            return;
+            return 0;
         }
-        if (ctx == null) return;
+        if (ctx == null) return 0;
 
+        int appliedOffsetPx = 0;
         try {
             int enabled = Settings.Global.getInt(
                     ctx.getContentResolver(), KEY_ENABLED, 0);
-            if (enabled != 1) return;
+            if (enabled != 1) return 0;
 
             float customZoom = Settings.Global.getFloat(
                     ctx.getContentResolver(), KEY_ZOOM, DEFAULT_ZOOM);
@@ -228,8 +242,8 @@ public final class Magnifier {
             if (offsetYDp != 0) {
                 float density = params.mView.getContext().getResources()
                         .getDisplayMetrics().density;
-                int offsetPx = Math.round(offsetYDp * density);
-                params.mVerticalDefaultSourceToMagnifierOffset += offsetPx;
+                appliedOffsetPx = Math.round(offsetYDp * density);
+                params.mVerticalDefaultSourceToMagnifierOffset += appliedOffsetPx;
             }
 
             // --- Recompute source dimensions for consistency ---
@@ -240,6 +254,107 @@ public final class Magnifier {
             }
         } catch (Exception e) {
             Log.e(TAG, "[PixelParts] Magnifier applyCustomParams failed", e);
+        }
+        return appliedOffsetPx;
+    }
+
+    /**
+     * Re-reads Settings.Global on every show() call (throttled) to apply real-time changes
+     * to zoom, vertical offset, size, and shape without requiring a cursor re-grab.
+     * Changes to size/shape/zoom dismiss the current window so it is recreated on next show().
+     */
+    private void applyCustomParamsRuntime() {
+        long now = SystemClock.uptimeMillis();
+        if (now - mLastSettingsReadMs < SETTINGS_READ_INTERVAL_MS) return;
+        mLastSettingsReadMs = now;
+
+        try {
+            Context ctx = mView.getContext();
+            if (ctx == null) return;
+            android.content.ContentResolver cr = ctx.getContentResolver();
+
+            int enabled = Settings.Global.getInt(cr, KEY_ENABLED, 0);
+            if (enabled != 1) {
+                // Feature disabled: restore original dimensions/zoom
+                mRuntimeOffsetYDeltaPx = -mCustomOffsetYApplied;
+                boolean needsDismiss = false;
+                if (Math.abs(mZoom - mOriginalZoom) > 0.01f) {
+                    mZoom = mOriginalZoom;
+                    needsDismiss = true;
+                }
+                if (mWindowWidth != mOriginalWindowWidth
+                        || mWindowHeight != mOriginalWindowHeight
+                        || Math.abs(mWindowCornerRadius - mOriginalCornerRadius) > 0.01f) {
+                    mWindowWidth = mOriginalWindowWidth;
+                    mWindowHeight = mOriginalWindowHeight;
+                    mWindowCornerRadius = mOriginalCornerRadius;
+                    needsDismiss = true;
+                }
+                if (needsDismiss) {
+                    mSourceWidth = mIsFishEyeStyle
+                            ? mWindowWidth : Math.round(mWindowWidth / mZoom);
+                    mSourceHeight = Math.round(mWindowHeight / mZoom);
+                    mDirtyState = true;
+                    dismiss();
+                }
+                return;
+            }
+
+            boolean needsDismiss = false;
+
+            // --- Zoom ---
+            float newZoom = Settings.Global.getFloat(cr, KEY_ZOOM, DEFAULT_ZOOM);
+            if (newZoom > 0f && Math.abs(newZoom - mZoom) > 0.01f) {
+                mZoom = newZoom;
+                needsDismiss = true;
+            }
+
+            // --- Size & shape ---
+            float newSizeScale = Settings.Global.getFloat(cr, KEY_SIZE, DEFAULT_SIZE);
+            int newShape = Settings.Global.getInt(cr, KEY_SHAPE, SHAPE_DEFAULT);
+            int newW = mOriginalWindowWidth;
+            int newH = mOriginalWindowHeight;
+            float newCR = mOriginalCornerRadius;
+
+            if (Math.abs(newSizeScale - 1.0f) > 0.01f && newSizeScale > 0f) {
+                newW = Math.max(1, Math.round(newW * newSizeScale));
+                newH = Math.max(1, Math.round(newH * newSizeScale));
+            }
+
+            if (newShape == SHAPE_SQUARE || newShape == SHAPE_CIRCLE) {
+                int side = Math.max(newW, newH);
+                newW = side;
+                newH = side;
+                if (newShape == SHAPE_CIRCLE) {
+                    newCR = side / 2.0f;
+                }
+            }
+
+            if (newW != mWindowWidth || newH != mWindowHeight
+                    || Math.abs(newCR - mWindowCornerRadius) > 0.01f) {
+                mWindowWidth = newW;
+                mWindowHeight = newH;
+                mWindowCornerRadius = newCR;
+                needsDismiss = true;
+            }
+
+            // Recompute source dimensions and dismiss if anything geometry-related changed
+            if (needsDismiss) {
+                mSourceWidth = mIsFishEyeStyle
+                        ? mWindowWidth : Math.round(mWindowWidth / mZoom);
+                mSourceHeight = Math.round(mWindowHeight / mZoom);
+                mDirtyState = true;
+                dismiss();
+            }
+
+            // --- Vertical offset delta ---
+            int newOffsetYDp = Settings.Global.getInt(cr, KEY_OFFSET_Y, 0);
+            float density = ctx.getResources().getDisplayMetrics().density;
+            int newOffsetYPx = Math.round(newOffsetYDp * density);
+            mRuntimeOffsetYDeltaPx = newOffsetYPx - mCustomOffsetYApplied;
+
+        } catch (Exception e) {
+            Log.e(TAG, "[PixelParts] Magnifier applyCustomParamsRuntime failed", e);
         }
     }
 
@@ -322,8 +437,14 @@ public final class Magnifier {
     }
 
     private Magnifier(@NonNull Builder params) {
+        // [CUSTOM INJECTION] Store original builder values BEFORE custom modifications
+        mOriginalWindowWidth = params.mWidth;
+        mOriginalWindowHeight = params.mHeight;
+        mOriginalCornerRadius = params.mCornerRadius;
+        mOriginalZoom = params.mZoom;
+
         // [CUSTOM INJECTION] Apply custom settings to builder BEFORE copying to final fields
-        applyCustomParams(params);
+        mCustomOffsetYApplied = applyCustomParams(params);
 
         // Copy params from builder.
         mView = params.mView;
@@ -380,9 +501,12 @@ public final class Magnifier {
      */
     public void show(@FloatRange(from = 0) float sourceCenterX,
             @FloatRange(from = 0) float sourceCenterY) {
+        // [CUSTOM INJECTION] Re-read settings for real-time zoom/offset updates
+        applyCustomParamsRuntime();
         show(sourceCenterX, sourceCenterY,
                 sourceCenterX + mDefaultHorizontalSourceToMagnifierOffset,
-                sourceCenterY + mDefaultVerticalSourceToMagnifierOffset);
+                sourceCenterY + mDefaultVerticalSourceToMagnifierOffset
+                        + mRuntimeOffsetYDeltaPx);
     }
 
     private Drawable mCursorDrawable;

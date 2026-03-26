@@ -40,6 +40,8 @@
     <string name="magnifier_offset_y_title">Смещение по вертикали</string>
     <string name="magnifier_xposed_warning_title">Требуется Xposed-модуль</string>
     <string name="magnifier_xposed_warning_desc">Модификация текстовой лупы работает поприложениям. Включите Xposed-модуль для каждого приложения, где вы хотите видеть изменённую лупу.</string>
+    <string name="magnifier_preview_label">Пример</string>
+    <string name="magnifier_sample_text">Пример текста для тестирования лупы</string>
     <string name="overscroll_xposed_warning_title">Требуется Xposed-модуль</string>
     <string name="overscroll_xposed_warning_desc">Модификация эффекта прокрутки работает поприложениям. Включите Xposed-модуль для каждого приложения, где вы хотите видеть изменённый эффект прокрутки.</string>
 

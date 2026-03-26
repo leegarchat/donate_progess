@@ -39,6 +39,8 @@
     <string name="magnifier_offset_y_title">Vertical offset</string>
     <string name="magnifier_xposed_warning_title">Xposed module required</string>
     <string name="magnifier_xposed_warning_desc">Text magnifier modification works per-app. Enable the Xposed module for each application where you want the modified loupe to appear.</string>
+    <string name="magnifier_preview_label">Preview</string>
+    <string name="magnifier_sample_text">Sample text for magnifier testing</string>
     <string name="overscroll_xposed_warning_title">Xposed module required</string>
     <string name="overscroll_xposed_warning_desc">Overscroll effect modification works per-app. Enable the Xposed module for each application where you want the modified edge effect to appear.</string>
 

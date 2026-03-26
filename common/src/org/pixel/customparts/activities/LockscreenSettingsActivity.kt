@@ -43,8 +43,8 @@ import org.pixel.customparts.ui.ExpandableWarningCard
 import org.pixel.customparts.ui.SliderSetting
 import org.pixel.customparts.ui.InfoDialog
 
-import android.provider.Settings
 import androidx.compose.foundation.text.KeyboardOptions
+import org.pixel.customparts.utils.SettingsCompat
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.ui.text.input.ImeAction
@@ -60,44 +60,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Box
 
-object SettingsUtils {
-    fun putSystemInt(context: android.content.Context, key: String, value: Int) {
-        try {
-            Settings.System.putInt(context.contentResolver, key, value)
-        } catch (e: Exception) {
-            try {
-                Settings.Global.putInt(context.contentResolver, key, value)
-            } catch (e2: Exception) {
-                e2.printStackTrace()
-            }
-        }
-    }
-    fun getSystemInt(context: android.content.Context, key: String, def: Int): Int {
-        try {
-             return Settings.System.getInt(context.contentResolver, key)
-        } catch (e: Exception) {
-             return Settings.Global.getInt(context.contentResolver, key, def)
-        }
-    }
-    fun putSystemString(context: android.content.Context, key: String, value: String) {
-        try {
-             Settings.System.putString(context.contentResolver, key, value)
-        } catch (e: Exception) {
-            try {
-                Settings.Global.putString(context.contentResolver, key, value)
-            } catch (e2: Exception) {
-                e2.printStackTrace()
-            }
-        }
-    }
-    fun getSystemString(context: android.content.Context, key: String): String? {
-        var value = Settings.System.getString(context.contentResolver, key)
-        if (value == null) {
-            value = Settings.Global.getString(context.contentResolver, key)
-        }
-        return value
-    }
-}
+
 
 @Composable
 fun TextFieldSetting(
@@ -157,17 +120,17 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
     var dt2wTimeout by remember { mutableIntStateOf(DoubleTapManager.getDt2wTimeout(context)) }
     
     // Battery Info State
-    var batteryInfoEnabled by remember { mutableStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.BATTERY_INFO_ENABLE, 0) == 1) }
-    var showWattage by remember { mutableStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.SHOW_WATTAGE, 1) == 1) }
-    var showVoltage by remember { mutableStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.SHOW_VOLTAGE, 1) == 1) }
-    var showCurrent by remember { mutableStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.SHOW_CURRENT, 1) == 1) }
-    var showTemp by remember { mutableStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.SHOW_TEMP, 1) == 1) }
-    var showPercent by remember { mutableStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.SHOW_PERCENT, 0) == 1) }
-    var showStandardString by remember { mutableStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.SHOW_STANDARD_STRING, 1) == 1) }
-    var showCustomSymbol by remember { mutableStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.SHOW_CUSTOM_SYMBOL, 1) == 1) }
-    var customSymbol by remember { mutableStateOf(SettingsUtils.getSystemString(context, SettingsKeys.CUSTOM_SYMBOL) ?: "⚡") }
-    var refreshIntervalMs by remember { mutableIntStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.BATTERY_INFO_REFRESH_INTERVAL_MS, 1000).coerceIn(100, 5000)) }
-    var averageModeEnabled by remember { mutableStateOf(SettingsUtils.getSystemInt(context, SettingsKeys.BATTERY_INFO_AVERAGE_MODE, 0) == 1) }
+    var batteryInfoEnabled by remember { mutableStateOf(SettingsCompat.isEnabled(context, SettingsKeys.BATTERY_INFO_ENABLE, false)) }
+    var showWattage by remember { mutableStateOf(SettingsCompat.isEnabled(context, SettingsKeys.SHOW_WATTAGE, true)) }
+    var showVoltage by remember { mutableStateOf(SettingsCompat.isEnabled(context, SettingsKeys.SHOW_VOLTAGE, true)) }
+    var showCurrent by remember { mutableStateOf(SettingsCompat.isEnabled(context, SettingsKeys.SHOW_CURRENT, true)) }
+    var showTemp by remember { mutableStateOf(SettingsCompat.isEnabled(context, SettingsKeys.SHOW_TEMP, true)) }
+    var showPercent by remember { mutableStateOf(SettingsCompat.isEnabled(context, SettingsKeys.SHOW_PERCENT, false)) }
+    var showStandardString by remember { mutableStateOf(SettingsCompat.isEnabled(context, SettingsKeys.SHOW_STANDARD_STRING, true)) }
+    var showCustomSymbol by remember { mutableStateOf(SettingsCompat.isEnabled(context, SettingsKeys.SHOW_CUSTOM_SYMBOL, true)) }
+    var customSymbol by remember { mutableStateOf(SettingsCompat.getString(context, SettingsKeys.CUSTOM_SYMBOL, "⚡") ?: "⚡") }
+    var refreshIntervalMs by remember { mutableIntStateOf(SettingsCompat.getInt(context, SettingsKeys.BATTERY_INFO_REFRESH_INTERVAL_MS, 1000).coerceIn(100, 5000)) }
+    var averageModeEnabled by remember { mutableStateOf(SettingsCompat.isEnabled(context, SettingsKeys.BATTERY_INFO_AVERAGE_MODE, false)) }
 
     var showXposedInactiveDialog by remember { mutableStateOf(false) }
 
@@ -313,7 +276,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                                 batteryInfoEnabled = false
                             } else {
                                 batteryInfoEnabled = checked
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.BATTERY_INFO_ENABLE, if (checked) 1 else 0) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.BATTERY_INFO_ENABLE, if (checked) 1 else 0) }
                                 needsRestart = true
                             }
                         }
@@ -330,12 +293,12 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                             enabled = batteryInfoEnabled,
                             onValueChange = { value ->
                                 refreshIntervalMs = value
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.BATTERY_INFO_REFRESH_INTERVAL_MS, value) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.BATTERY_INFO_REFRESH_INTERVAL_MS, value) }
                                 needsRestart = true
                             },
                             onDefault = {
                                 refreshIntervalMs = 1000
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.BATTERY_INFO_REFRESH_INTERVAL_MS, 1000) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.BATTERY_INFO_REFRESH_INTERVAL_MS, 1000) }
                                 needsRestart = true
                             }
                         )
@@ -345,7 +308,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                             checked = averageModeEnabled,
                             onCheckedChange = { checked ->
                                 averageModeEnabled = checked
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.BATTERY_INFO_AVERAGE_MODE, if (checked) 1 else 0) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.BATTERY_INFO_AVERAGE_MODE, if (checked) 1 else 0) }
                                 needsRestart = true
                             }
                         )
@@ -355,7 +318,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                             checked = showStandardString,
                             onCheckedChange = { checked ->
                                 showStandardString = checked
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.SHOW_STANDARD_STRING, if (checked) 1 else 0) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.SHOW_STANDARD_STRING, if (checked) 1 else 0) }
                                 needsRestart = true
                             }
                         )
@@ -365,7 +328,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                             checked = showCustomSymbol,
                             onCheckedChange = { checked ->
                                 showCustomSymbol = checked
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.SHOW_CUSTOM_SYMBOL, if (checked) 1 else 0) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.SHOW_CUSTOM_SYMBOL, if (checked) 1 else 0) }
                                 needsRestart = true
                             }
                         )
@@ -376,7 +339,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                                value = customSymbol,
                                onValueChange = { newVal ->
                                    customSymbol = newVal
-                                   scope.launch { SettingsUtils.putSystemString(context, SettingsKeys.CUSTOM_SYMBOL, newVal) }
+                                   scope.launch { SettingsCompat.putString(context, SettingsKeys.CUSTOM_SYMBOL, newVal) }
                                    needsRestart = true
                                }
                             )
@@ -387,7 +350,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                             checked = showWattage,
                             onCheckedChange = { checked ->
                                 showWattage = checked
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.SHOW_WATTAGE, if (checked) 1 else 0) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.SHOW_WATTAGE, if (checked) 1 else 0) }
                                 needsRestart = true
                             }
                         )
@@ -396,7 +359,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                             checked = showVoltage,
                             onCheckedChange = { checked ->
                                 showVoltage = checked
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.SHOW_VOLTAGE, if (checked) 1 else 0) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.SHOW_VOLTAGE, if (checked) 1 else 0) }
                                 needsRestart = true
                             }
                         )
@@ -405,7 +368,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                             checked = showCurrent,
                             onCheckedChange = { checked ->
                                 showCurrent = checked
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.SHOW_CURRENT, if (checked) 1 else 0) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.SHOW_CURRENT, if (checked) 1 else 0) }
                                 needsRestart = true
                             }
                         )
@@ -414,7 +377,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                             checked = showTemp,
                             onCheckedChange = { checked ->
                                 showTemp = checked
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.SHOW_TEMP, if (checked) 1 else 0) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.SHOW_TEMP, if (checked) 1 else 0) }
                                 needsRestart = true
                             }
                         )
@@ -423,7 +386,7 @@ fun LockscreenSettingsScreen(onBack: () -> Unit) {
                             checked = showPercent,
                             onCheckedChange = { checked ->
                                 showPercent = checked
-                                scope.launch { SettingsUtils.putSystemInt(context, SettingsKeys.SHOW_PERCENT, if (checked) 1 else 0) }
+                                scope.launch { SettingsCompat.putInt(context, SettingsKeys.SHOW_PERCENT, if (checked) 1 else 0) }
                                 needsRestart = true
                             }
                         )

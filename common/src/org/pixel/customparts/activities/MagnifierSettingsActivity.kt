@@ -31,6 +31,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.style.TextAlign
 import org.pixel.customparts.AppConfig
 import org.pixel.customparts.R
 import org.pixel.customparts.SettingsKeys
@@ -170,6 +181,9 @@ private fun MagnifierSection() {
         )
     }
 
+    val defaultSampleText = dynamicStringResource(R.string.magnifier_sample_text)
+    var sampleText by remember { mutableStateOf(defaultSampleText) }
+
     SettingsGroupCard(title = dynamicStringResource(R.string.magnifier_section_title)) {
         GenericSwitchRow(
             title = dynamicStringResource(R.string.magnifier_enable_title),
@@ -258,5 +272,145 @@ private fun MagnifierSection() {
             },
             valueText = "${offsetY}dp"
         )
+
+        HorizontalDivider()
+
+        OutlinedTextField(
+            value = sampleText,
+            onValueChange = { sampleText = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            singleLine = true
+        )
+
+        MagnifierPreviewCard(
+            sampleText = sampleText,
+            zoom = zoom,
+            sizeScale = sizeScale,
+            shape = shape,
+            offsetY = offsetY,
+            modifier = Modifier.padding(horizontal = 16.dp).padding(bottom = 12.dp)
+        )
+    }
+}
+
+@Composable
+private fun MagnifierPreviewCard(
+    sampleText: String,
+    zoom: Float,
+    sizeScale: Float,
+    shape: Int,
+    offsetY: Int,
+    modifier: Modifier = Modifier
+) {
+    val previewLabel = dynamicStringResource(R.string.magnifier_preview_label)
+
+    val animatedZoom by animateFloatAsState(targetValue = zoom, label = "mag_zoom")
+    val animatedSize by animateFloatAsState(targetValue = sizeScale, label = "mag_size")
+
+    // AOSP default magnifier: 100dp × 48dp.
+    // applyCustomParams scales by sizeScale, then for SQUARE/CIRCLE: side = max(w, h).
+    val baseW = 100f
+    val baseH = 48f
+    var magWDp = baseW * animatedSize
+    var magHDp = baseH * animatedSize
+    if (shape == 1 || shape == 2) {
+        val side = maxOf(magWDp, magHDp)
+        magWDp = side
+        magHDp = side
+    }
+
+    // AOSP default vertical offset = −42dp. Custom adds offsetY dp.
+    // Magnifier center relative to text cursor = (−42 + offsetY) dp.
+    val lensCenterRelative = -42f + offsetY
+    val animatedLensCenter by animateFloatAsState(targetValue = lensCenterRelative, label = "mag_center")
+
+    val textLineH = 20f  // dp – approximate Material bodyMedium visible height
+    val lensHalfH = magHDp / 2f
+    val textHalfH = textLineH / 2f
+
+    // Element positions relative to text center (origin = text center)
+    val lensTop = animatedLensCenter - lensHalfH
+    val lensBottom = animatedLensCenter + lensHalfH
+
+    // Box spans from topmost to bottommost element
+    val topEdge = minOf(lensTop, -textHalfH)
+    val bottomEdge = maxOf(lensBottom, textHalfH)
+    val boxHeightDp = (bottomEdge - topEdge).coerceAtLeast(1f)
+
+    // Offsets from box top (always >= 0)
+    val textTopOffset = -textHalfH - topEdge
+    val lensTopOffset = lensTop - topEdge
+
+    // SQUARE keeps the same corner radius as DEFAULT (system uses dialogCornerRadius for both).
+    val magShape = when (shape) {
+        2 -> CircleShape
+        else -> RoundedCornerShape(50)
+    }
+
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(Modifier.height(12.dp))
+
+            Text(
+                text = previewLabel,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(boxHeightDp.dp),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                // Source text line
+                Text(
+                    text = sampleText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = textTopOffset.dp)
+                )
+
+                // Magnifier lens (drawn on top)
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = lensTopOffset.dp)
+                        .size(magWDp.dp, magHDp.dp)
+                        .shadow(elevation = 6.dp, shape = magShape)
+                        .clip(magShape)
+                        .background(MaterialTheme.colorScheme.surface),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = sampleText,
+                        style = MaterialTheme.typography.bodyMedium,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        softWrap = false,
+                        modifier = Modifier.scale(animatedZoom)
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(16.dp))
+        }
     }
 }

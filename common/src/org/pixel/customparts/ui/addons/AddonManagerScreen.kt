@@ -488,37 +488,47 @@ private fun importAddonJar(context: Context, uri: Uri): Boolean {
             return false
         }
 
-        // --- Step 2: determine file name ---
-        var fileName = "addon_${System.currentTimeMillis()}.jar"
-        context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
-            if (cursor.moveToFirst() && nameIndex >= 0) {
-                val displayName = cursor.getString(nameIndex)
-                if (displayName.endsWith(".jar")) fileName = displayName
-            }
-        }
-
-        val target = File(dir, fileName)
-
-        // --- Step 3: copy file (system UID — direct I/O) ---
+        // --- Step 2: copy to a temp file so we can read addon.json before naming it ---
+        val tmp = File(dir, "import_tmp_${System.currentTimeMillis()}.jar")
         context.contentResolver.openInputStream(uri)?.use { input ->
-            FileOutputStream(target).use { output ->
+            FileOutputStream(tmp).use { output ->
                 input.copyTo(output)
             }
         }
-        if (!target.exists() || target.length() == 0L) {
+        if (!tmp.exists() || tmp.length() == 0L) {
+            tmp.delete()
             Log.e(TAG, "Copy failed: file empty or missing")
             return false
         }
-        target.setReadable(true, false)
 
-        // --- Step 4: validate addon.json ---
-        val desc = readDescriptor(target)
+        // --- Step 3: validate addon.json and extract id ---
+        val desc = readDescriptor(tmp)
         if (desc == null || !desc.has("entryClass")) {
-            target.delete()
+            tmp.delete()
             Log.e(TAG, "Imported JAR has no valid addon.json")
             return false
         }
+
+        val addonId = desc.optString("id").trim()
+        if (addonId.isEmpty()) {
+            tmp.delete()
+            Log.e(TAG, "addon.json is missing required 'id' field")
+            return false
+        }
+
+        // --- Step 4: rename temp file to {id}.jar, replacing any existing version ---
+        val target = File(dir, "${addonId}.jar")
+        if (target.exists()) target.delete()
+        if (!tmp.renameTo(target)) {
+            // renameTo can fail across filesystems — fall back to copy + delete
+            tmp.copyTo(target, overwrite = true)
+            tmp.delete()
+        }
+        if (!target.exists() || target.length() == 0L) {
+            Log.e(TAG, "Rename/copy to final path failed: ${target.absolutePath}")
+            return false
+        }
+        target.setReadable(true, false)
 
         // --- Step 5: register targets in whitelist ---
         val arr = desc.optJSONArray("targetPackages")
@@ -531,7 +541,7 @@ private fun importAddonJar(context: Context, uri: Uri): Boolean {
             }
         }
 
-        Log.d(TAG, "Imported addon: $fileName -> ${target.absolutePath}")
+        Log.d(TAG, "Imported addon '$addonId' -> ${target.absolutePath}")
         true
     } catch (t: Throwable) {
         Log.e(TAG, "Import failed", t)

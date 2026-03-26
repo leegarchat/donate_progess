@@ -8,6 +8,7 @@ import android.view.ViewParent;
 import android.view.View.OnAttachStateChangeListener;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -79,7 +80,11 @@ public class ShadeCompactMediaHook extends BaseHook {
 
 	// When SystemUI loads constraint sets, we pair the expanded ConstraintSet instance with
 	// the collapsed instance, then later swap expanded->collapsed at calculateViewState time.
-	private static final WeakHashMap<Object, Object> sExpandedToCollapsed = new WeakHashMap<>();
+	// MUST be wrapped in synchronizedMap: ConstraintSet.load() can be called from media worker
+	// threads (MediaDataManager) concurrently with calculateViewState on the Choreographer thread.
+	// Concurrent WeakHashMap access causes infinite loops during rehash -> Watchdog kills SystemUI.
+	private static final Map<Object, Object> sExpandedToCollapsed =
+			Collections.synchronizedMap(new WeakHashMap<>());
 	private static final ThreadLocal<Object> sLastCollapsedLoaded = new ThreadLocal<>();
 	private static final ThreadLocal<Long> sLastCollapsedLoadedAtMs = new ThreadLocal<>();
 
@@ -748,6 +753,15 @@ public class ShadeCompactMediaHook extends BaseHook {
 
 	private boolean isHiddenForLocation(Context context, int location) {
 		if (context == null) return false;
+		// In landscape the QS panel uses a dual-pane layout where TransitionLayout text views
+		// are recreated mid-rotation and may have null Layout objects. Applying hide logic in
+		// this state causes a NullPointerException in applyCurrentState(). Skip hiding entirely
+		// in landscape to avoid the crash.
+		try {
+			int orient = context.getResources().getConfiguration().orientation;
+			if (orient == android.content.res.Configuration.ORIENTATION_LANDSCAPE) return false;
+		} catch (Throwable ignored) {
+		}
 		boolean hideExpand = false;
 		boolean hideNotify = false;
 		boolean hideLock = false;
@@ -1079,7 +1093,7 @@ public class ShadeCompactMediaHook extends BaseHook {
 								if (mode == Mode.HEADER_ONLY) return;
 
 								Object mapped = sExpandedToCollapsed.get(constraintSet);
-								if (mapped != null) {
+								if (mapped != null && mapped != constraintSet) {
 									param.args[1] = mapped;
 									if (!sLoggedCalculateSwap) {
 										sLoggedCalculateSwap = true;
@@ -1142,7 +1156,7 @@ public class ShadeCompactMediaHook extends BaseHook {
 									if (mode == Mode.OFF) return;
 									if (mode == Mode.HEADER_ONLY) return;
 									Object mapped = sExpandedToCollapsed.get(constraintSet);
-									if (mapped != null) {
+									if (mapped != null && mapped != constraintSet) {
 										param.args[1] = mapped;
 										if (!sLoggedCalculateSwap) {
 											sLoggedCalculateSwap = true;
@@ -1227,7 +1241,7 @@ public class ShadeCompactMediaHook extends BaseHook {
 			if (headerIds.isEmpty()) return;
 
 			float minY = Float.MAX_VALUE;
-			float maxBottom = Float.MIN_VALUE;
+			float maxBottom = -Float.MAX_VALUE;
 			boolean foundAny = false;
 
 			// 1) Hide header elements and measure their vertical span.

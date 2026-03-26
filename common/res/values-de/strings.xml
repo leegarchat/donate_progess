@@ -40,6 +40,8 @@
     <string name="magnifier_offset_y_title">Vertikaler Versatz</string>
     <string name="magnifier_xposed_warning_title">Xposed-Modul erforderlich</string>
     <string name="magnifier_xposed_warning_desc">Die Textlupen-Modifikation funktioniert pro App. Aktivieren Sie das Xposed-Modul für jede App, in der die modifizierte Lupe erscheinen soll.</string>
+    <string name="magnifier_preview_label">Vorschau</string>
+    <string name="magnifier_sample_text">Beispieltext zum Testen der Lupe</string>
     <string name="overscroll_xposed_warning_title">Xposed-Modul erforderlich</string>
     <string name="overscroll_xposed_warning_desc">Die Overscroll-Modifikation funktioniert pro App. Aktivieren Sie das Xposed-Modul für jede App, in der der modifizierte Randeffekt erscheinen soll.</string>
 

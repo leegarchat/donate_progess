@@ -40,6 +40,8 @@
     <string name="magnifier_offset_y_title">Décalage vertical</string>
     <string name="magnifier_xposed_warning_title">Module Xposed requis</string>
     <string name="magnifier_xposed_warning_desc">La modification de la loupe fonctionne par application. Activez le module Xposed pour chaque application dans laquelle la loupe modifiée doit apparaître.</string>
+    <string name="magnifier_preview_label">Aperçu</string>
+    <string name="magnifier_sample_text">Exemple de texte pour tester la loupe</string>
     <string name="overscroll_xposed_warning_title">Module Xposed requis</string>
     <string name="overscroll_xposed_warning_desc">La modification du overscroll fonctionne par application. Activez le module Xposed pour chaque application dans laquelle l\'effet de bord modifié doit apparaître.</string>
 
