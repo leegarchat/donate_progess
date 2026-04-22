@@ -1,0 +1,30 @@
+{
+  "response": [
+    {
+      "maintainer": "LeeGarChat",
+      "currently_maintained": true,
+      "oem": "Google",
+      "device": "Poco F6 5G / Redmi Turbo 3",
+      "filename": "EvolutionX-16.0-20260422-peridot-11.6.3-Unofficial.zip",
+      "download": "https://cdekperehvat.mooo.com/ROM/EvolutionX-16.0-20260422-peridot-11.6.3-Unofficial.zip",
+      "timestamp": 1776830118,
+      "md5": "b550c3917f519c2755850369414b9afb",
+      "sha256": "446d15b00ceb037bbebcce64eb359fb3947af1e7d1bec6b849c2421c4f40599e",
+      "size": 4192402596,
+      "version": "11.6.3",
+      "buildtype": "user",
+      "forum": "https://t.me/EvoX_LeeGarChat",
+      "firmware": "",
+      "paypal": "https://boosty.to/leegar/",
+      "github": "leegarchat",
+      "initial_installation_images": [
+        "boot",
+        "dtbo",
+        "init_boot",
+        "recovery",
+        "vendor_boot"
+      ],
+      "extra_images": []
+    }
+  ]
+}
