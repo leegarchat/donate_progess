@@ -1,0 +1,218 @@
+wing: pixelextraparts
+palace_path: ~/.mempalace/palace
+rooms:
+  - name: build_soong
+    description: Android.bp, Soong modules, prebuilt runtime dependencies, proguard, init and privapp integration.
+    keywords:
+      - Android.bp
+      - soong
+      - android_app
+      - android_test
+      - java_library
+      - java_import
+      - cc_prebuilt
+      - proguard
+      - init.pixelparts
+      - privapp
+      - platform_apis
+      - system_ext
+      - command.txt
+
+  - name: compose_ui
+    description: Jetpack Compose screens, Material3 components, activities and UI helpers.
+    keywords:
+      - ui
+      - activities
+      - Composable
+      - MaterialTheme
+      - SettingsGroupCard
+      - RebootBubble
+      - dynamicStringResource
+      - TopBarBlurOverlay
+      - MainDashboard
+
+  - name: settings_storage
+    description: Settings.Global keys, runtime suffix compatibility, root permission helpers and setting utilities.
+    keywords:
+      - SettingsKeys
+      - SettingsCompat
+      - Settings.Global
+      - _pine
+      - _xposed
+      - RootUtils
+      - WRITE_SECURE_SETTINGS
+      - pixelparts
+
+  - name: hooks_core
+    description: Shared hook interfaces and base classes used by both Pine and Xposed runtimes.
+    keywords:
+      - core
+      - BaseHook
+      - IHookEnvironment
+      - IAddonHook
+      - hookId
+      - priority
+
+  - name: hooks_launcher
+    description: Pixel Launcher, Nexus Launcher and Launcher3 built-in hooks.
+    keywords:
+      - UnifiedLauncherHook
+      - GridSizeAppMenuHook
+      - launcher
+      - nexuslauncher
+      - pixel.launcher
+      - launcher3
+      - hotseat
+      - search widget
+      - clear all
+      - dt2s
+
+  - name: hooks_recents
+    description: Recents menu, task carousel and live tile hook code.
+    keywords:
+      - recents
+      - RecentsUnifiedHook
+      - RecentsState
+      - live tile
+      - carousel
+      - overview
+
+  - name: hooks_systemui
+    description: SystemUI, shade, doze, lockscreen, media and keyguard hooks.
+    keywords:
+      - systemui
+      - ShadeUnifiedSurfaceHook
+      - ShadeCompactMediaHook
+      - KeyguardBatteryPowerHook
+      - DozeTapDozeHook
+      - DozeTapShadeHook
+      - SystemUIRestartHook
+      - quick settings
+      - lockscreen
+
+  - name: hooks_global
+    description: Framework-level/global hooks for overscroll, magnifier, transitions and predictive back.
+    keywords:
+      - EdgeEffectHook
+      - EdgeEffectHookWrapper
+      - MagnifierHook
+      - ActivityTransitionHook
+      - PredictiveBackDisableHook
+      - overscroll
+      - activity transition
+      - predictive back
+
+  - name: pine_runtime
+    description: Pine injection runtime, entrypoints, environment and addon dispatch for injected packages.
+    keywords:
+      - HookEntry
+      - ModEntry
+      - PineEnvironment
+      - AddonLoader
+      - PineInject
+      - BUILTIN_WHITELIST
+      - manager/pine
+
+  - name: xposed_runtime
+    description: Xposed module entrypoint, module status hook and Xposed environment.
+    keywords:
+      - XposedInit
+      - XposedEnvironment
+      - IXposedHookLoadPackage
+      - xposed_init
+      - xposedmodule
+      - xposedminversion
+      - manager/xposed
+
+  - name: system_app
+    description: Privileged system APK manifest, AppConfig and boot/system integration.
+    keywords:
+      - PixelCustomPartsSystem
+      - sharedUserId
+      - privileged
+      - directBootAware
+      - BootCompletedReceiver
+      - system/AndroidManifest.xml
+
+  - name: resources_i18n
+    description: Android resources, animation XML, localized strings, dynamic language JSON and donation metadata.
+    keywords:
+      - res
+      - values
+      - strings.xml
+      - drawable
+      - anim
+      - lang
+      - strings_ru
+      - strings_en
+      - donate_page
+      - RemoteStringsManager
+
+  - name: aosp_patches
+    description: Modified AOSP framework and Settings source files kept as patch/reference material.
+    keywords:
+      - changebe
+      - ActivityThread
+      - ActivityOriginal
+      - EdgeEffectOriginal
+      - MagnifierOriginal
+      - WindowOnBackInvokedDispatcher
+      - packages/apps/Settings
+
+  - name: addon_examples
+    description: External addon hook sample projects, prebuilt SDK jars and addon build scripts.
+    keywords:
+      - example.addon.hook
+      - addon.json
+      - build_addon
+      - SimpleTestHook
+      - RVAnimationHook
+      - prebuild
+      - animscroll
+
+  - name: ota_metadata
+    description: Device OTA build JSON files, changelogs and generation script.
+    keywords:
+      - OTA
+      - builds
+      - changelogs
+      - gen.sh
+      - akita
+      - husky
+      - shiba
+
+  - name: overscroll_profiles
+    description: User-facing overscroll JSON presets and physics tuning profiles.
+    keywords:
+      - overscroll.configs
+      - Bouncy Ball
+      - Elastic Band
+      - iOS Rubber Band
+      - Jelly Physics
+      - Snap Back
+      - Wave Deform
+      - Zoom Pulse
+
+  - name: media_samples
+    description: Demo videos and visual samples used to document launcher, gesture and overscroll behavior.
+    keywords:
+      - VideoSample
+      - launcher_padding
+      - dt2s_hook
+      - dt2w_hook
+      - overscroll_pull
+      - search_fix
+
+  - name: mempalace_reference
+    description: Upstream MemPalace checkout stored under test.files for local reference only.
+    keywords:
+      - test.files
+      - mempalace
+      - mcp_server
+      - miner.py
+      - configuration.md
+      - CLAUDE.md
+
+  - name: general
+    description: Files that do not fit a more specific PixelExtraParts room.
+    keywords: []

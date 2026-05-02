@@ -1,0 +1,38 @@
+{
+  "people": [],
+  "projects": [
+    "PixelExtraParts",
+    "Pixel Custom Parts",
+    "PixelCustomPartsSystem",
+    "PixelCustomPartsXposed",
+    "PineInject",
+    "Pine",
+    "Xposed",
+    "SystemUI",
+    "Pixel Launcher",
+    "Launcher3",
+    "AOSP Settings"
+  ],
+  "topics": [
+    "Android Soong",
+    "Kotlin",
+    "Java",
+    "Jetpack Compose",
+    "Material3",
+    "Settings.Global",
+    "Privileged Android app",
+    "system_ext integration",
+    "Xposed hooks",
+    "Pine runtime",
+    "Pine injection",
+    "Addon hooks",
+    "Launcher hooks",
+    "SystemUI hooks",
+    "Recents hooks",
+    "Overscroll profiles",
+    "Animation overlays",
+    "AOSP framework patches",
+    "OTA metadata",
+    "Remote strings"
+  ]
+}
