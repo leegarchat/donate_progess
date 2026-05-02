@@ -82,20 +82,15 @@ public final class ActivityThread extends ClientTransactionHandler
                 // 2. Проверка динамических настроек (Settings.Global)
                 // Формируем ключ: pixel_extra_parts_inject_package_com.example.app
                 try {
-                    // чтобы не конфликтовать с существующей переменной AOSP.
-                    Context injectContext = ContextImpl.createAppContext(this, data.info);
-                    
-                    if (injectContext != null) {
-                        String key = PIXEL_PARTS_INJECT_PREFIX + pkgName;
-                        
-                        int override = android.provider.Settings.Global.getInt(
-                                injectContext.getContentResolver(), key, -1);
+                    String key = PIXEL_PARTS_INJECT_PREFIX + pkgName;
 
-                        if (override == 1) {
-                            shouldInject = true;
-                        } else if (override == 0) {
-                            shouldInject = false;
-                        }
+                    int override = android.provider.Settings.Global.getInt(
+                            app.getContentResolver(), key, -1);
+
+                    if (override == 1) {
+                        shouldInject = true;
+                    } else if (override == 0) {
+                        shouldInject = false;
                     }
                 } catch (Throwable t) {
                     android.util.Log.w("PixelParts", "Failed to check inject settings", t);
