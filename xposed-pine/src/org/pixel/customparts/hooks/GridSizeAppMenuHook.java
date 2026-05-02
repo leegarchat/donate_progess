@@ -147,8 +147,12 @@ public class GridSizeAppMenuHook extends BaseHook {
                     
                     int cols = getIntSetting(context, KEY_MENU_COLS, 0);
                     if (cols > 0) {
-                        XposedHelpers.setIntField(appsList, "mNumAppsPerRowAllApps", cols);
-                        log("AlphabeticalAppsList columns set to " + cols);
+                        try {
+                            XposedHelpers.setIntField(appsList, "mNumAppsPerRowAllApps", cols);
+                            log("AlphabeticalAppsList columns set to " + cols);
+                        } catch (Throwable e) {
+                            logError("Failed to update AlphabeticalAppsList columns", e);
+                        }
                     }
                 }
             });
@@ -212,9 +216,13 @@ public class GridSizeAppMenuHook extends BaseHook {
         if (!isSettingEnabled(context, KEY_MENU_ENABLE)) return;
         int menuCols = getIntSetting(context, KEY_MENU_COLS, 0);
         if (menuCols > 0) {
-            XposedHelpers.setIntField(idp, "numAllAppsColumns", menuCols);
-            XposedHelpers.setIntField(idp, "numDatabaseAllAppsColumns", menuCols);
-            log("AllApps columns in IDP set to " + menuCols);
+            try {
+                XposedHelpers.setIntField(idp, "numAllAppsColumns", menuCols);
+                XposedHelpers.setIntField(idp, "numDatabaseAllAppsColumns", menuCols);
+                log("AllApps columns in IDP set to " + menuCols);
+            } catch (Throwable e) {
+                logError("Failed to update AllApps columns in IDP", e);
+            }
         }
     }
 
@@ -225,7 +233,11 @@ public class GridSizeAppMenuHook extends BaseHook {
         int rowHeightRaw = getIntSetting(context, KEY_MENU_ROW_HEIGHT, 100);
         
         if (menuCols > 0) {
-            XposedHelpers.setIntField(deviceProfile, "numShownAllAppsColumns", menuCols);
+            try {
+                XposedHelpers.setIntField(deviceProfile, "numShownAllAppsColumns", menuCols);
+            } catch (Throwable e) {
+                logError("Failed to update DeviceProfile AllApps columns", e);
+            }
         }
         
         if (rowHeightRaw != 100 && rowHeightRaw > 0) {
@@ -369,6 +381,7 @@ public class GridSizeAppMenuHook extends BaseHook {
             }
             return null;
         } catch (Exception e) {
+            logError("Failed to get context from AlphabeticalAppsList", e);
             return null;
         }
     }

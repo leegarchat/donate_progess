@@ -196,21 +196,33 @@ public class UnifiedLauncherHook extends BaseHook {
                         int homeCols = getIntSetting(context, KEY_HOME_COLS, 0);
                         int homeRows = getIntSetting(context, KEY_HOME_ROWS, 0);
                         if (homeCols > 0) {
-                            XposedHelpers.setIntField(idp, "numColumns", homeCols);
-                            XposedHelpers.setIntField(idp, "numShownHotseatIcons", Math.max(homeCols, 4));
-                            try { XposedHelpers.setIntField(idp, "minColumns", Math.min(homeCols, 4)); } catch (Throwable e) {}
+                            try {
+                                XposedHelpers.setIntField(idp, "numColumns", homeCols);
+                                XposedHelpers.setIntField(idp, "numShownHotseatIcons", Math.max(homeCols, 4));
+                                try { XposedHelpers.setIntField(idp, "minColumns", Math.min(homeCols, 4)); } catch (Throwable e) {}
+                            } catch (Throwable e) {
+                                logError("Failed to apply home grid columns", e);
+                            }
                         }
                         if (homeRows > 0) {
-                            XposedHelpers.setIntField(idp, "numRows", homeRows);
-                            try { XposedHelpers.setIntField(idp, "minRows", Math.min(homeRows, 4)); } catch (Throwable e) {}
+                            try {
+                                XposedHelpers.setIntField(idp, "numRows", homeRows);
+                                try { XposedHelpers.setIntField(idp, "minRows", Math.min(homeRows, 4)); } catch (Throwable e) {}
+                            } catch (Throwable e) {
+                                logError("Failed to apply home grid rows", e);
+                            }
                         }
                     }
 
                     int hotseatIcons = getIntSetting(context, KEY_HOTSEAT_ICONS, 0);
                     if (hotseatIcons > 0) {
-                        XposedHelpers.setIntField(idp, "numShownHotseatIcons", hotseatIcons);
-                        XposedHelpers.setIntField(idp, "numDatabaseHotseatIcons", hotseatIcons);
-                        updateWindowProfiles(idp, hotseatIcons);
+                        try {
+                            XposedHelpers.setIntField(idp, "numShownHotseatIcons", hotseatIcons);
+                            XposedHelpers.setIntField(idp, "numDatabaseHotseatIcons", hotseatIcons);
+                            updateWindowProfiles(idp, hotseatIcons);
+                        } catch (Throwable e) {
+                            logError("Failed to apply hotseat icon count", e);
+                        }
                     }
                 }
             }
@@ -1099,17 +1111,6 @@ public class UnifiedLauncherHook extends BaseHook {
     }
 
 
-    private void hookModelWriterAndLoader(ClassLoader classLoader) {
-        try {
-             Class<?> modelWriterClass = XposedHelpers.findClass("com.android.launcher3.model.ModelWriter", classLoader);
-             Class<?> itemInfoClass = XposedHelpers.findClass("com.android.launcher3.model.data.ItemInfo", classLoader);
-             
-             XposedHelpers.findAndHookMethod(modelWriterClass, "addItemToDatabase", itemInfoClass, int.class, int.class, int.class, int.class, new XC_MethodHook() {
-                 @Override protected void afterHookedMethod(MethodHookParam param) { saveWorkspaceItem((Context) XposedHelpers.getObjectField(param.thisObject, "mContext"), param.args[0]); }
-             });
-        } catch (Throwable e) {}
-    }
-    
     private void saveWorkspaceItem(Context context, Object item) {
         try {
              if (getIntSetting(context, KEY_TOP_WIDGET_ENABLE, 0) != 1) return;
