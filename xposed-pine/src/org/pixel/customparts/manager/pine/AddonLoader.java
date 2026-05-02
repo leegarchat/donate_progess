@@ -385,13 +385,17 @@ public class AddonLoader {
         } catch (Throwable t) {
             Log.e(TAG, "Failed to delete addon files: " + addonId, t);
         }
-        try {
-            Settings.Global.putString(context.getContentResolver(), ADDON_PREFIX + addonId + "_enabled", null);
-            Settings.Global.putString(context.getContentResolver(), ADDON_PREFIX + addonId + "_packages", null);
-            Settings.Global.putString(context.getContentResolver(), ADDON_PREFIX + addonId + "_scope_mode", null);
-        } catch (Throwable ignored) {}
+        deleteGlobalSetting(context, ADDON_PREFIX + addonId + "_enabled");
+        deleteGlobalSetting(context, ADDON_PREFIX + addonId + "_packages");
+        deleteGlobalSetting(context, ADDON_PREFIX + addonId + "_scope_mode");
 
         return true;
+    }
+
+    private static void deleteGlobalSetting(Context context, String key) {
+        try {
+            context.getContentResolver().delete(Settings.Global.getUriFor(key), null, null);
+        } catch (Throwable ignored) {}
     }
 
 

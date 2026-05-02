@@ -10,11 +10,14 @@ public class PineEnvironment implements IHookEnvironment {
 
     private static final String TAG_PREFIX = "PineInject";
     private static final String SUFFIX = "_pine";
+    private static final String XPOSED_SUFFIX = "_xposed";
 
     private String resolveKey(String key) {
-        // Логика: очищаем от старых суффиксов, если они есть, и добавляем _pine
-        String baseKey = key.replace("_xposed", "").replace("_pine", "");
-        return baseKey + SUFFIX;
+        if (key.endsWith(SUFFIX)) return key;
+        if (key.endsWith(XPOSED_SUFFIX)) {
+            return key.substring(0, key.length() - XPOSED_SUFFIX.length()) + SUFFIX;
+        }
+        return key + SUFFIX;
     }
 
     @Override

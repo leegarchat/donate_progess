@@ -576,17 +576,20 @@ private fun deleteAddon(context: Context, addon: AddonUiModel, allAddons: List<A
             }
         }
 
-        // Clean settings
-        try {
-            Settings.Global.putString(context.contentResolver, "${ADDON_PREFIX}${addon.id}_enabled", null)
-            Settings.Global.putString(context.contentResolver, "${ADDON_PREFIX}${addon.id}_packages", null)
-            Settings.Global.putString(context.contentResolver, "${ADDON_PREFIX}${addon.id}_scope_mode", null)
-        } catch (_: Throwable) {}
+        deleteAddonSetting(context, "${ADDON_PREFIX}${addon.id}_enabled")
+        deleteAddonSetting(context, "${ADDON_PREFIX}${addon.id}_packages")
+        deleteAddonSetting(context, "${ADDON_PREFIX}${addon.id}_scope_mode")
 
         Log.d(TAG, "Deleted addon: ${addon.id}")
     } catch (t: Throwable) {
         Log.e(TAG, "Delete failed", t)
     }
+}
+
+private fun deleteAddonSetting(context: Context, key: String) {
+    try {
+        context.contentResolver.delete(Settings.Global.getUriFor(key), null, null)
+    } catch (_: Throwable) {}
 }
 
 // =====================================================================

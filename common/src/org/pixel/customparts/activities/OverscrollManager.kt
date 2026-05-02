@@ -354,9 +354,11 @@ object OverscrollManager {
      * Returns list of NetworkConfig with display name (filename without .json) and raw download URL.
      */
     suspend fun fetchNetworkConfigs(): Result<List<NetworkConfig>> = withContext(Dispatchers.IO) {
+        var conn: HttpURLConnection? = null
         try {
             val url = URL(GITHUB_API_URL)
-            val conn = url.openConnection() as HttpURLConnection
+            conn = url.openConnection() as? HttpURLConnection
+                ?: return@withContext Result.failure(Exception("Unsupported connection type"))
             conn.requestMethod = "GET"
             conn.setRequestProperty("Accept", "application/vnd.github.v3+json")
             conn.connectTimeout = 10_000
@@ -367,7 +369,6 @@ object OverscrollManager {
             }
 
             val body = conn.inputStream.bufferedReader().use { it.readText() }
-            conn.disconnect()
 
             val arr = JSONArray(body)
             val configs = mutableListOf<NetworkConfig>()
@@ -384,6 +385,8 @@ object OverscrollManager {
         } catch (e: Exception) {
             e.printStackTrace()
             Result.failure(e)
+        } finally {
+            conn?.disconnect()
         }
     }
 
@@ -391,14 +394,14 @@ object OverscrollManager {
      * Downloads a config JSON from URL, applies it, and saves as a profile.
      */
     suspend fun applyNetworkConfig(context: Context, config: NetworkConfig): Boolean = withContext(Dispatchers.IO) {
+        var conn: HttpURLConnection? = null
         try {
             val url = URL(config.downloadUrl)
-            val conn = url.openConnection() as HttpURLConnection
+            conn = url.openConnection() as? HttpURLConnection ?: return@withContext false
             conn.connectTimeout = 10_000
             conn.readTimeout = 10_000
 
             val body = conn.inputStream.bufferedReader().use { it.readText() }
-            conn.disconnect()
 
             val json = JSONObject(body)
             applySettingsFromJson(context, json)
@@ -413,6 +416,8 @@ object OverscrollManager {
         } catch (e: Exception) {
             e.printStackTrace()
             false
+        } finally {
+            conn?.disconnect()
         }
     }
 }

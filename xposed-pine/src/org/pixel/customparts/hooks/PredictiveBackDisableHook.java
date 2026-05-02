@@ -105,7 +105,6 @@ public class PredictiveBackDisableHook extends BaseHook {
                             try {
                                 Object[] pending = sPendingRestore.get();
                                 if (pending == null) return;
-                                sPendingRestore.remove();
 
                                 Object callback = pending[0];
                                 int originalPriority = (Integer) pending[1];
@@ -121,6 +120,8 @@ public class PredictiveBackDisableHook extends BaseHook {
                                 }
                             } catch (Throwable t) {
                                 logError("after hook failed", t);
+                            } finally {
+                                sPendingRestore.remove();
                             }
                         }
                     });

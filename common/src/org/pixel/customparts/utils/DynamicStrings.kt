@@ -107,7 +107,7 @@ object RemoteStringsManager {
     private suspend fun fetchJson(url: String): String? = withContext(Dispatchers.IO) {
         var conn: HttpURLConnection? = null
         try {
-            conn = URL(url).openConnection() as HttpURLConnection
+            conn = URL(url).openConnection() as? HttpURLConnection ?: return@withContext null
             conn.connectTimeout = 5000
             conn.readTimeout = 5000
             conn.requestMethod = "GET"
