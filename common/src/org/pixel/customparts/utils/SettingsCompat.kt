@@ -3,6 +3,7 @@ package org.pixel.customparts.utils
 import android.content.Context
 import android.provider.Settings
 import org.pixel.customparts.AppConfig
+import org.pixel.customparts.SettingsKeys
 
 
 
@@ -78,16 +79,23 @@ object SettingsCompat {
         "pixelparts_battery_info_average_mode"
     )
     private fun isSuffixedKey(key: String): Boolean {
-        val baseKey = key.removeSuffix(PINE_INJECT_SUFFIX).removeSuffix(XPOSED_SUFFIX)
-        return SUFFIXED_KEY_BASES.contains(baseKey)
+        return SUFFIXED_KEY_BASES.contains(stripRuntimeSuffix(key))
+    }
+
+    private fun stripRuntimeSuffix(key: String): String {
+        return key.removeSuffix(PINE_INJECT_SUFFIX).removeSuffix(XPOSED_SUFFIX)
+    }
+
+    private fun activeRuntimeSuffix(): String {
+        if (SettingsKeys.isPineOverride) return PINE_INJECT_SUFFIX
+        return if (AppConfig.IS_XPOSED) XPOSED_SUFFIX else PINE_INJECT_SUFFIX
     }
 
     @JvmStatic
     fun key(base: String): String {
-        if (base.endsWith(PINE_INJECT_SUFFIX) || base.endsWith(XPOSED_SUFFIX)) return base
-        val baseKey = base.removeSuffix(PINE_INJECT_SUFFIX).removeSuffix(XPOSED_SUFFIX)
+        val baseKey = stripRuntimeSuffix(base)
         return if (isSuffixedKey(baseKey)) {
-            if (AppConfig.IS_XPOSED) "$baseKey$XPOSED_SUFFIX" else "$baseKey$PINE_INJECT_SUFFIX"
+            "$baseKey${activeRuntimeSuffix()}"
         } else {
             base
         }
