@@ -5,13 +5,13 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8",
-      "filename": "EvolutionX-16.0-20260407-shiba-11.6.3-Unofficial.zip",
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/shiba/20260407/Build-GKI-stock/EvolutionX-16.0-20260407-shiba-11.6.3-Unofficial.zip/download",
-      "timestamp": 1775563200,
-      "md5": "1f56ecece841c3049bb5e6443462e600",
-      "sha256": "eb78db563726ab2eac798530ce2c8817ff6227928b3b411a3b288e3a0913068a",
-      "size": 3094521245,
-      "version": "11.6.3 Stock GKI",
+      "filename": "EvolutionX-16.0-20260503-shiba-11.7-Unofficial.zip",
+      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/shiba/20260503/Build-GKI-stock/EvolutionX-16.0-20260503-shiba-11.7-Unofficial.zip/download",
+      "timestamp": 1777777923,
+      "md5": "6d0254cc9d48ffd151d148cd4009cfc8",
+      "sha256": "633a61a7141647a6d949fccda18770204f116dad294c3266c2b2aa2ba60fed34",
+      "size": 3128661304,
+      "version": "11.7 Stock GKI",
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -23,22 +23,20 @@
         "vendor_kernel_boot",
         "vendor_boot"
       ],
-      "extra_images": [
-        "init_boot"
-      ]
+      "extra_images": []
     },
     {
       "maintainer": "LeeGarChat",
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8",
-      "filename": "EvolutionX-16.0-20260407-shiba-11.6.3-Unofficial.zip",
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/shiba/20260407/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260407-shiba-11.6.3-Unofficial.zip/download",
-      "timestamp": 1775563200,
-      "md5": "9491c3ba44d2107df386743150bb5d50",
-      "sha256": "6bc6a5abb06f6d69e9a9cbf3ba35217c8967c77fe13dde129d9e7b75a90b6a1f",
-      "size": 3094413037,
-      "version": "11.6.3 Sultan WildKSU",
+      "filename": "EvolutionX-16.0-20260503-shiba-11.7-Unofficial.zip",
+      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/shiba/20260503/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260503-shiba-11.7-Unofficial.zip/download",
+      "timestamp": 1777777923,
+      "md5": "d86417bf125254ff474333d43113eb2a",
+      "sha256": "a387f611b95385a416152e0c1915129bd5eca43ce60389f9d1bba8331d4f00e2",
+      "size": 3128560879,
+      "version": "11.7 Sultan WildKSU",
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -50,22 +48,20 @@
         "vendor_kernel_boot",
         "vendor_boot"
       ],
-      "extra_images": [
-        "init_boot"
-      ]
+      "extra_images": []
     },
     {
       "maintainer": "LeeGarChat",
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8",
-      "filename": "EvolutionX-16.0-20260407-shiba-11.6.3-Unofficial.zip",
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/shiba/20260407/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260407-shiba-11.6.3-Unofficial.zip/download",
-      "timestamp": 1775563200,
-      "md5": "9ca727faa26b610c17c34d953c7d255a",
-      "sha256": "cce6aab4b960826c3d42444ad6cb22604dd136522a3fd1a0a7e3fecba25bb858",
-      "size": 3095044076,
-      "version": "11.6.3 GKI WildKSU",
+      "filename": "EvolutionX-16.0-20260503-shiba-11.7-Unofficial.zip",
+      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/shiba/20260503/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260503-shiba-11.7-Unofficial.zip/download",
+      "timestamp": 1777777923,
+      "md5": "c44c88febf803fa7a0a85115a56388d6",
+      "sha256": "3ceb0fba890f29357265577880df31f97228cb0f6df6cdb8d6f23e54776ccb1d",
+      "size": 3129192445,
+      "version": "11.7 GKI WildKSU",
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -77,9 +73,7 @@
         "vendor_kernel_boot",
         "vendor_boot"
       ],
-      "extra_images": [
-        "init_boot"
-      ]
+      "extra_images": []
     }
   ]
 }

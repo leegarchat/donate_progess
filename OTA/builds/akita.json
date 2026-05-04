@@ -5,13 +5,13 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8a",
-      "filename": "EvolutionX-16.0-20260407-akita-11.6.3-Unofficial.zip",
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/akita/20260407/Build-GKI-stock/EvolutionX-16.0-20260407-akita-11.6.3-Unofficial.zip/download",
-      "timestamp": 1775563200,
-      "md5": "0bd117e7fdc261c7df8a3f0ea58ea6ed",
-      "sha256": "c3e34ec5004152c2c466cec2e27b3574bbdf6b0b83f1a70d8dce785dd15906e1",
-      "size": 3082207922,
-      "version": "11.6.3 Stock GKI",
+      "filename": "EvolutionX-16.0-20260503-akita-11.7-Unofficial.zip",
+      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/akita/20260503/Build-GKI-stock/EvolutionX-16.0-20260503-akita-11.7-Unofficial.zip/download",
+      "timestamp": 1777806506,
+      "md5": "b52fcf79f227a446b463f500cc6c42a0",
+      "sha256": "14a1e67c903ba7a1bca9fe1876b0ade1e94a57f63ffe76a70c82397f730286a1",
+      "size": 3117048708,
+      "version": "11.7 Stock GKI",
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -23,22 +23,20 @@
         "vendor_kernel_boot",
         "vendor_boot"
       ],
-      "extra_images": [
-        "init_boot"
-      ]
+      "extra_images": []
     },
     {
       "maintainer": "LeeGarChat",
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8a",
-      "filename": "EvolutionX-16.0-20260407-akita-11.6.3-Unofficial.zip",
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/akita/20260407/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260407-akita-11.6.3-Unofficial.zip/download",
-      "timestamp": 1775563200,
-      "md5": "af716c774fd29a007dfa04e6bc85cf32",
-      "sha256": "f37a27a80228ddec06299185f2086e63ea0fdeac05a0e767793db889781cba78",
-      "size": 3082728919,
-      "version": "11.6.3 GKI WildKSU",
+      "filename": "EvolutionX-16.0-20260503-akita-11.7-Unofficial.zip",
+      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/akita/20260503/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260503-akita-11.7-Unofficial.zip/download",
+      "timestamp": 1777806506,
+      "md5": "73b05b23a0a3b63ad828223c4c4bb548",
+      "sha256": "9322aee243ac656bb0541a04abcbe98f8a52c0305ad68c189e3a9fff43d24e7a",
+      "size": 3117570566,
+      "version": "11.7 GKI WildKSU",
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -50,9 +48,7 @@
         "vendor_kernel_boot",
         "vendor_boot"
       ],
-      "extra_images": [
-        "init_boot"
-      ]
+      "extra_images": []
     }
   ]
 }

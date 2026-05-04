@@ -5,13 +5,13 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8 Pro",
-      "filename": "EvolutionX-16.0-20260407-husky-11.6.3-Unofficial.zip",
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/husky/20260407/Build-GKI-stock/EvolutionX-16.0-20260407-husky-11.6.3-Unofficial.zip/download",
-      "timestamp": 1775563200,
-      "md5": "37f306d80d8630ebe0b46580d464538f",
-      "sha256": "0c70ebdd18650be392c2ad664210117cfaffa9ff7acc240ad2908feb3a8cec0d",
-      "size": 3101787359,
-      "version": "11.6.3 Stock GKI",
+      "filename": "EvolutionX-16.0-20260503-husky-11.7-Unofficial.zip",
+      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/husky/20260503/Build-GKI-stock/EvolutionX-16.0-20260503-husky-11.7-Unofficial.zip/download",
+      "timestamp": 1777801668,
+      "md5": "6d8e39770f93ceb4e671152ffeac488a",
+      "sha256": "07a5b97b71375015a6353b28d5a2a95bb42b35ce1b4a3a89e4ec6b5838d2425c",
+      "size": 3137390139,
+      "version": "11.7 Stock GKI",
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -23,22 +23,20 @@
         "vendor_kernel_boot",
         "vendor_boot"
       ],
-      "extra_images": [
-        "init_boot"
-      ]
+      "extra_images": []
     },
     {
       "maintainer": "LeeGarChat",
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8 Pro",
-      "filename": "EvolutionX-16.0-20260407-husky-11.6.3-Unofficial.zip",
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/husky/20260407/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260407-husky-11.6.3-Unofficial.zip/download",
-      "timestamp": 1775563200,
-      "md5": "08e0b5ceac26e58d577004bb88e9cf21",
-      "sha256": "875a0c46b065661997d2a3f39ad0a81100465f25ead6f228517d08e3b1fb3d4d",
-      "size": 3101677058,
-      "version": "11.6.3 Sultan WildKSU",
+      "filename": "EvolutionX-16.0-20260503-husky-11.7-Unofficial.zip",
+      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/husky/20260503/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260503-husky-11.7-Unofficial.zip/download",
+      "timestamp": 1777801668,
+      "md5": "92d13716f51a5d8913ba9806d58df6e4",
+      "sha256": "f05098cb63ba1649c437527489a992753f33a58c49164339dd4d5d695a6c3fdc",
+      "size": 3137282776,
+      "version": "11.7 Sultan WildKSU",
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -50,22 +48,20 @@
         "vendor_kernel_boot",
         "vendor_boot"
       ],
-      "extra_images": [
-        "init_boot"
-      ]
+      "extra_images": []
     },
     {
       "maintainer": "LeeGarChat",
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8 Pro",
-      "filename": "EvolutionX-16.0-20260407-husky-11.6.3-Unofficial.zip",
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/husky/20260407/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260407-husky-11.6.3-Unofficial.zip/download",
-      "timestamp": 1775563200,
-      "md5": "28ba829c18572468de62b2d9ff321915",
-      "sha256": "16a5d685bf627aed3dc3be5642f3c0ce6f700f4d808069db15ff634877c7d5c6",
-      "size": 3102309458,
-      "version": "11.6.3 GKI WildKSU",
+      "filename": "EvolutionX-16.0-20260503-husky-11.7-Unofficial.zip",
+      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/husky/20260503/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260503-husky-11.7-Unofficial.zip/download",
+      "timestamp": 1777801668,
+      "md5": "98d72097e852b6b23cc2844ee72d5149",
+      "sha256": "4f888458130c27e296be033b78f101b4b512e56591194413528e514a1e5a5956",
+      "size": 3137910515,
+      "version": "11.7 GKI WildKSU",
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -77,9 +73,7 @@
         "vendor_kernel_boot",
         "vendor_boot"
       ],
-      "extra_images": [
-        "init_boot"
-      ]
+      "extra_images": []
     }
   ]
 }
