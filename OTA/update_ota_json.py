@@ -16,8 +16,15 @@ class VariantRule:
     sourceforge_dir: str
 
 
+@dataclass(frozen=True)
+class SourceRule:
+    order: int
+    version_suffix: str
+
+
 SUPPORTED_DEVICES = ("shiba", "husky", "akita")
 SOURCEFORGE_PROJECT = "evolutionx-unofficial-leegar"
+GDRIVE_BASE_URL = "https://leegarchat.mooo.com:8060/files"
 VARIANT_RULES = {
     "stock": VariantRule(
         order=0,
@@ -35,6 +42,10 @@ VARIANT_RULES = {
         sourceforge_dir="Build-GKI-WKSU-SUSFS-r19",
     ),
 }
+SOURCE_RULES = (
+    SourceRule(order=0, version_suffix="SF"),
+    SourceRule(order=1, version_suffix="GDrive"),
+)
 REQUIRED_SOURCE_KEYS = (
     "maintainer",
     "currently_maintained",
@@ -166,45 +177,41 @@ def variant_key_for_dir(variant_dir: Path, device_code: str) -> str:
 
 
 def build_download_url(
+    source_rule: SourceRule,
     device_code: str,
     release_date: str,
     sourceforge_dir: str,
     filename: str,
 ) -> str:
-    return (
-        f"https://sourceforge.net/projects/{SOURCEFORGE_PROJECT}/files/"
-        f"{device_code}/{release_date}/{sourceforge_dir}/{filename}/download"
-    )
+    if source_rule.version_suffix == "SF":
+        return (
+            f"https://sourceforge.net/projects/{SOURCEFORGE_PROJECT}/files/"
+            f"{device_code}/{release_date}/{sourceforge_dir}/{filename}/download"
+        )
+
+    return f"{GDRIVE_BASE_URL}/{device_code}/{release_date}/{sourceforge_dir}/{filename}"
 
 
-def normalize_entry(
+def normalize_entries(
     source_entry: dict[str, Any],
     device_code: str,
     release_date: str,
     variant_rule: VariantRule,
     timestamp: int,
-) -> dict[str, Any]:
+) -> list[dict[str, Any]]:
     filename = str(source_entry["filename"])
     base_version = parse_filename(filename, device_code, release_date)
-    version = f"{base_version} {variant_rule.version_label}".strip()
-
-    return {
+    version_base = f"{base_version} {variant_rule.version_label}".strip()
+    entry_base = {
         "maintainer": source_entry["maintainer"],
         "currently_maintained": source_entry["currently_maintained"],
         "oem": source_entry["oem"],
         "device": source_entry["device"],
         "filename": filename,
-        "download": build_download_url(
-            device_code,
-            release_date,
-            variant_rule.sourceforge_dir,
-            filename,
-        ),
         "timestamp": timestamp,
         "md5": source_entry["md5"],
         "sha256": source_entry["sha256"],
         "size": source_entry["size"],
-        "version": version,
         "buildtype": source_entry["buildtype"],
         "forum": source_entry["forum"],
         "firmware": source_entry["firmware"],
@@ -213,6 +220,21 @@ def normalize_entry(
         "initial_installation_images": source_entry["initial_installation_images"],
         "extra_images": source_entry["extra_images"],
     }
+
+    entries = []
+    for source_rule in sorted(SOURCE_RULES, key=lambda item: item.order):
+        entry = dict(entry_base)
+        entry["download"] = build_download_url(
+            source_rule,
+            device_code,
+            release_date,
+            variant_rule.sourceforge_dir,
+            filename,
+        )
+        entry["version"] = f"{version_base} {source_rule.version_suffix}".strip()
+        entries.append(entry)
+
+    return entries
 
 
 def collect_device_entries(release_dir: Path, device_code: str) -> list[dict[str, Any]]:
@@ -249,10 +271,11 @@ def collect_device_entries(release_dir: Path, device_code: str) -> list[dict[str
 
     timestamp = min(int(entry["timestamp"]) for _, entry in collected)
     release_date = release_dir.name
-    normalized = [
-        normalize_entry(source_entry, device_code, release_date, rule, timestamp)
-        for rule, source_entry in sorted(collected, key=lambda item: item[0].order)
-    ]
+    normalized = []
+    for rule, source_entry in sorted(collected, key=lambda item: item[0].order):
+        normalized.extend(
+            normalize_entries(source_entry, device_code, release_date, rule, timestamp)
+        )
     return normalized
 
 
