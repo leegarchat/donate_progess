@@ -5,11 +5,11 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8 Pro",
-      "filename": "EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
-      "timestamp": 1777999999,
-      "md5": "9833dc538335b632a378100bf1df3fdb",
-      "sha256": "571f5f1b7e116c3f5dd87871c3a14f80ee7901657f8d50d1ed8a524c2a602e97",
-      "size": 3123089455,
+      "filename": "EvolutionX-16.0-20260506-husky-11.7-Unofficial.zip",
+      "timestamp": 1778088183,
+      "md5": "3b667f5cf184ca777d0cb9b5809cfe76",
+      "sha256": "a8285e321f4492471e029e19d6c458da883ff255fa6556feee10a8b8d61ead39",
+      "size": 3241351431,
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -22,7 +22,7 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://leegarchat.mooo.com/files/husky/20260505/Build-GKI-stock/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
+      "download": "https://leegarchat.mooo.com/files/husky/20260506/Build-GKI-stock/EvolutionX-16.0-20260506-husky-11.7-Unofficial.zip",
       "version": "11.7 Stock GKI"
     },
     {
@@ -30,11 +30,11 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8 Pro",
-      "filename": "EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
-      "timestamp": 1777999999,
-      "md5": "748a169d26f09998d392f514e6bec14b",
-      "sha256": "575937390ac623e087e86da41b767cce764cdf62ddf61d1dc58e69af46794bca",
-      "size": 3122982663,
+      "filename": "EvolutionX-16.0-20260506-husky-11.7-Unofficial.zip",
+      "timestamp": 1778088183,
+      "md5": "a451b9c889892c2cf12db860e429fc16",
+      "sha256": "33c78bed44f0f617bed502269064bf783e07e4c36e04fb671669d0992c8ca3c9",
+      "size": 3241241110,
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -47,7 +47,7 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://leegarchat.mooo.com/files/husky/20260505/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
+      "download": "https://leegarchat.mooo.com/files/husky/20260506/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260506-husky-11.7-Unofficial.zip",
       "version": "11.7 Sultan WildKSU"
     },
     {
@@ -55,11 +55,11 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8 Pro",
-      "filename": "EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
-      "timestamp": 1777999999,
-      "md5": "2cbc566eb72dca8de8b39f08a9a52609",
-      "sha256": "18d930bb88d025065a3a6881d0bd4f8f48e26f929a3724abc9f1d66e722b7ea9",
-      "size": 3123613704,
+      "filename": "EvolutionX-16.0-20260506-husky-11.7-Unofficial.zip",
+      "timestamp": 1778088183,
+      "md5": "a062de742f99bc93d853cae640175bb4",
+      "sha256": "2d0c889554a0dce35007cccbf35934752eced7057502fc9090d567e500835379",
+      "size": 3241874435,
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -72,7 +72,7 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://leegarchat.mooo.com/files/husky/20260505/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
+      "download": "https://leegarchat.mooo.com/files/husky/20260506/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260506-husky-11.7-Unofficial.zip",
       "version": "11.7 GKI WildKSU"
     }
   ]

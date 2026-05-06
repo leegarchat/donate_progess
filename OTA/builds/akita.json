@@ -5,11 +5,11 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8a",
-      "filename": "EvolutionX-16.0-20260505-akita-11.7-Unofficial.zip",
-      "timestamp": 1778004277,
-      "md5": "ba9b0fec99d23a088df91d4b7206e70d",
-      "sha256": "94e550efd5d2077405b661774ca2f009071fc8bc94c1c9dbdd825f0dfd816bcb",
-      "size": 3102762216,
+      "filename": "EvolutionX-16.0-20260506-akita-11.7-Unofficial.zip",
+      "timestamp": 1778093643,
+      "md5": "5acf2554166cde04738cbf34ffeb0b20",
+      "sha256": "1ea0837c5837b21619155c0763e37a54bfec93cbc15013db67c7cee9397d4772",
+      "size": 3221314978,
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -22,7 +22,7 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://leegarchat.mooo.com/files/akita/20260505/Build-GKI-stock/EvolutionX-16.0-20260505-akita-11.7-Unofficial.zip",
+      "download": "https://leegarchat.mooo.com/files/akita/20260506/Build-GKI-stock/EvolutionX-16.0-20260506-akita-11.7-Unofficial.zip",
       "version": "11.7 Stock GKI"
     },
     {
@@ -30,11 +30,11 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8a",
-      "filename": "EvolutionX-16.0-20260505-akita-11.7-Unofficial.zip",
-      "timestamp": 1778004277,
-      "md5": "a848a59307767ec904fe34dacf506805",
-      "sha256": "778fb08ab6bc0cdd92463c5986782df0d5b667f4bd059ac0b98683d430e2118d",
-      "size": 3103285122,
+      "filename": "EvolutionX-16.0-20260506-akita-11.7-Unofficial.zip",
+      "timestamp": 1778093643,
+      "md5": "fb9614652c45c700df48935c869b85a5",
+      "sha256": "18eb95023101ab1b3d1aa0b764d43a33152a77d6a78c7a0de5a4601aab8e9354",
+      "size": 3221843293,
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -47,7 +47,7 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://leegarchat.mooo.com/files/akita/20260505/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260505-akita-11.7-Unofficial.zip",
+      "download": "https://leegarchat.mooo.com/files/akita/20260506/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260506-akita-11.7-Unofficial.zip",
       "version": "11.7 GKI WildKSU"
     }
   ]
