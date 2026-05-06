@@ -24,7 +24,7 @@ class SourceRule:
 
 SUPPORTED_DEVICES = ("shiba", "husky", "akita")
 SOURCEFORGE_PROJECT = "evolutionx-unofficial-leegar"
-GDRIVE_BASE_URL = "https://leegarchat.mooo.com:8060/files"
+GDRIVE_BASE_URL = "https://leegarchat.mooo.com/files"
 VARIANT_RULES = {
     "stock": VariantRule(
         order=0,
@@ -43,8 +43,8 @@ VARIANT_RULES = {
     ),
 }
 SOURCE_RULES = (
-    SourceRule(order=0, version_suffix="SF"),
-    SourceRule(order=1, version_suffix="GDrive"),
+    # SourceRule(order=0, version_suffix="SF"),
+    SourceRule(order=1, version_suffix=""),
 )
 REQUIRED_SOURCE_KEYS = (
     "maintainer",

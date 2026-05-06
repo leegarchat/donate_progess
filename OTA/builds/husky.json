@@ -22,33 +22,8 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/husky/20260505/Build-GKI-stock/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip/download",
-      "version": "11.7 Stock GKI SF"
-    },
-    {
-      "maintainer": "LeeGarChat",
-      "currently_maintained": true,
-      "oem": "Google",
-      "device": "Pixel 8 Pro",
-      "filename": "EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
-      "timestamp": 1777999999,
-      "md5": "9833dc538335b632a378100bf1df3fdb",
-      "sha256": "571f5f1b7e116c3f5dd87871c3a14f80ee7901657f8d50d1ed8a524c2a602e97",
-      "size": 3123089455,
-      "buildtype": "user",
-      "forum": "https://t.me/EvoX_LeeGarChat",
-      "firmware": "",
-      "paypal": "https://boosty.to/leegar/",
-      "github": "leegarchat",
-      "initial_installation_images": [
-        "boot",
-        "dtbo",
-        "vendor_kernel_boot",
-        "vendor_boot"
-      ],
-      "extra_images": [],
-      "download": "https://leegarchat.mooo.com:8060/files/husky/20260505/Build-GKI-stock/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
-      "version": "11.7 Stock GKI GDrive"
+      "download": "https://leegarchat.mooo.com/files/husky/20260505/Build-GKI-stock/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
+      "version": "11.7 Stock GKI"
     },
     {
       "maintainer": "LeeGarChat",
@@ -72,33 +47,8 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/husky/20260505/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip/download",
-      "version": "11.7 Sultan WildKSU SF"
-    },
-    {
-      "maintainer": "LeeGarChat",
-      "currently_maintained": true,
-      "oem": "Google",
-      "device": "Pixel 8 Pro",
-      "filename": "EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
-      "timestamp": 1777999999,
-      "md5": "748a169d26f09998d392f514e6bec14b",
-      "sha256": "575937390ac623e087e86da41b767cce764cdf62ddf61d1dc58e69af46794bca",
-      "size": 3122982663,
-      "buildtype": "user",
-      "forum": "https://t.me/EvoX_LeeGarChat",
-      "firmware": "",
-      "paypal": "https://boosty.to/leegar/",
-      "github": "leegarchat",
-      "initial_installation_images": [
-        "boot",
-        "dtbo",
-        "vendor_kernel_boot",
-        "vendor_boot"
-      ],
-      "extra_images": [],
-      "download": "https://leegarchat.mooo.com:8060/files/husky/20260505/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
-      "version": "11.7 Sultan WildKSU GDrive"
+      "download": "https://leegarchat.mooo.com/files/husky/20260505/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
+      "version": "11.7 Sultan WildKSU"
     },
     {
       "maintainer": "LeeGarChat",
@@ -122,33 +72,8 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/husky/20260505/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip/download",
-      "version": "11.7 GKI WildKSU SF"
-    },
-    {
-      "maintainer": "LeeGarChat",
-      "currently_maintained": true,
-      "oem": "Google",
-      "device": "Pixel 8 Pro",
-      "filename": "EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
-      "timestamp": 1777999999,
-      "md5": "2cbc566eb72dca8de8b39f08a9a52609",
-      "sha256": "18d930bb88d025065a3a6881d0bd4f8f48e26f929a3724abc9f1d66e722b7ea9",
-      "size": 3123613704,
-      "buildtype": "user",
-      "forum": "https://t.me/EvoX_LeeGarChat",
-      "firmware": "",
-      "paypal": "https://boosty.to/leegar/",
-      "github": "leegarchat",
-      "initial_installation_images": [
-        "boot",
-        "dtbo",
-        "vendor_kernel_boot",
-        "vendor_boot"
-      ],
-      "extra_images": [],
-      "download": "https://leegarchat.mooo.com:8060/files/husky/20260505/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
-      "version": "11.7 GKI WildKSU GDrive"
+      "download": "https://leegarchat.mooo.com/files/husky/20260505/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260505-husky-11.7-Unofficial.zip",
+      "version": "11.7 GKI WildKSU"
     }
   ]
 }

@@ -22,33 +22,8 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/shiba/20260505/Build-GKI-stock/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip/download",
-      "version": "11.7 Stock GKI SF"
-    },
-    {
-      "maintainer": "LeeGarChat",
-      "currently_maintained": true,
-      "oem": "Google",
-      "device": "Pixel 8",
-      "filename": "EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
-      "timestamp": 1777991929,
-      "md5": "cc342ba795c1e73f035d73f8ae9d36dd",
-      "sha256": "384d32fd54c6ac2c97f22b9798706ce5ce224bf93d1fa91b957a3f6f25646bd8",
-      "size": 3115146239,
-      "buildtype": "user",
-      "forum": "https://t.me/EvoX_LeeGarChat",
-      "firmware": "",
-      "paypal": "https://boosty.to/leegar/",
-      "github": "leegarchat",
-      "initial_installation_images": [
-        "boot",
-        "dtbo",
-        "vendor_kernel_boot",
-        "vendor_boot"
-      ],
-      "extra_images": [],
       "download": "https://leegarchat.mooo.com/files/shiba/20260505/Build-GKI-stock/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
-      "version": "11.7 Stock GKI GDrive"
+      "version": "11.7 Stock GKI"
     },
     {
       "maintainer": "LeeGarChat",
@@ -73,32 +48,7 @@
       ],
       "extra_images": [],
       "download": "https://leegarchat.mooo.com/files/shiba/20260505/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
-      "version": "11.7 Sultan WildKSU GDrive"
-    },
-    {
-      "maintainer": "LeeGarChat",
-      "currently_maintained": true,
-      "oem": "Google",
-      "device": "Pixel 8",
-      "filename": "EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
-      "timestamp": 1777991929,
-      "md5": "602371eb9a95936a0536eb746a5684ee",
-      "sha256": "6280dc86313dd5dc8c48fe98a67e7d30e1ff36b63719e1cc2e80a09fcd9bf31b",
-      "size": 3115633034,
-      "buildtype": "user",
-      "forum": "https://t.me/EvoX_LeeGarChat",
-      "firmware": "",
-      "paypal": "https://boosty.to/leegar/",
-      "github": "leegarchat",
-      "initial_installation_images": [
-        "boot",
-        "dtbo",
-        "vendor_kernel_boot",
-        "vendor_boot"
-      ],
-      "extra_images": [],
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/shiba/20260505/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip/download",
-      "version": "11.7 GKI WildKSU SF"
+      "version": "11.7 Sultan WildKSU"
     },
     {
       "maintainer": "LeeGarChat",
@@ -123,7 +73,7 @@
       ],
       "extra_images": [],
       "download": "https://leegarchat.mooo.com/files/shiba/20260505/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
-      "version": "11.7 GKI WildKSU GDrive"
+      "version": "11.7 GKI WildKSU"
     }
   ]
 }
