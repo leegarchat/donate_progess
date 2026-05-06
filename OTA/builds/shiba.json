@@ -72,31 +72,6 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://sourceforge.net/projects/evolutionx-unofficial-leegar/files/shiba/20260505/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip/download",
-      "version": "11.7 Sultan WildKSU SF"
-    },
-    {
-      "maintainer": "LeeGarChat",
-      "currently_maintained": true,
-      "oem": "Google",
-      "device": "Pixel 8",
-      "filename": "EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
-      "timestamp": 1777991929,
-      "md5": "8c70d2ca7ceeda1ee1d5649b0cea9856",
-      "sha256": "104bf7be36e5dd9cfa576d48ebd7ab295f88c575f82eccdfaf01e4d43faf7cd8",
-      "size": 3115004928,
-      "buildtype": "user",
-      "forum": "https://t.me/EvoX_LeeGarChat",
-      "firmware": "",
-      "paypal": "https://boosty.to/leegar/",
-      "github": "leegarchat",
-      "initial_installation_images": [
-        "boot",
-        "dtbo",
-        "vendor_kernel_boot",
-        "vendor_boot"
-      ],
-      "extra_images": [],
       "download": "https://leegarchat.mooo.com:8060/files/shiba/20260505/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
       "version": "11.7 Sultan WildKSU GDrive"
     },
