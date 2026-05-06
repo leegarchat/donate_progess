@@ -5,11 +5,11 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8",
-      "filename": "EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
-      "timestamp": 1777991929,
-      "md5": "cc342ba795c1e73f035d73f8ae9d36dd",
-      "sha256": "384d32fd54c6ac2c97f22b9798706ce5ce224bf93d1fa91b957a3f6f25646bd8",
-      "size": 3115146239,
+      "filename": "EvolutionX-16.0-20260506-shiba-11.7-Unofficial.zip",
+      "timestamp": 1778078659,
+      "md5": "d5d3c6d5c800826b8f73ef9065eef5c4",
+      "sha256": "5c3efa7651d900a03f50c5f5bc28e4e1a839f0079c96cb5fd3e6262dd35d080e",
+      "size": 3233065023,
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -22,7 +22,7 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://leegarchat.mooo.com/files/shiba/20260505/Build-GKI-stock/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
+      "download": "https://leegarchat.mooo.com/files/shiba/20260506/Build-GKI-stock/EvolutionX-16.0-20260506-shiba-11.7-Unofficial.zip",
       "version": "11.7 Stock GKI"
     },
     {
@@ -30,11 +30,11 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8",
-      "filename": "EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
-      "timestamp": 1777991929,
-      "md5": "8c70d2ca7ceeda1ee1d5649b0cea9856",
-      "sha256": "104bf7be36e5dd9cfa576d48ebd7ab295f88c575f82eccdfaf01e4d43faf7cd8",
-      "size": 3115004928,
+      "filename": "EvolutionX-16.0-20260506-shiba-11.7-Unofficial.zip",
+      "timestamp": 1778078659,
+      "md5": "6aab072492d02cc2d8e2af7e828359a3",
+      "sha256": "9b773cd3bf120d11d43655bad435fbd18ecc98e5717d19156aceb7348a626828",
+      "size": 3232965294,
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -47,7 +47,7 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://leegarchat.mooo.com/files/shiba/20260505/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
+      "download": "https://leegarchat.mooo.com/files/shiba/20260506/Build-Sultan-WKSU-SUSFS-r6/EvolutionX-16.0-20260506-shiba-11.7-Unofficial.zip",
       "version": "11.7 Sultan WildKSU"
     },
     {
@@ -55,11 +55,11 @@
       "currently_maintained": true,
       "oem": "Google",
       "device": "Pixel 8",
-      "filename": "EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
-      "timestamp": 1777991929,
-      "md5": "602371eb9a95936a0536eb746a5684ee",
-      "sha256": "6280dc86313dd5dc8c48fe98a67e7d30e1ff36b63719e1cc2e80a09fcd9bf31b",
-      "size": 3115633034,
+      "filename": "EvolutionX-16.0-20260506-shiba-11.7-Unofficial.zip",
+      "timestamp": 1778078659,
+      "md5": "86f8ce5d706e76a5cd0631155c4f7785",
+      "sha256": "73ecf4934166874ed300e6a075cdb582010b78062e3b1007dd50489f44644aae",
+      "size": 3233586268,
       "buildtype": "user",
       "forum": "https://t.me/EvoX_LeeGarChat",
       "firmware": "",
@@ -72,7 +72,7 @@
         "vendor_boot"
       ],
       "extra_images": [],
-      "download": "https://leegarchat.mooo.com/files/shiba/20260505/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260505-shiba-11.7-Unofficial.zip",
+      "download": "https://leegarchat.mooo.com/files/shiba/20260506/Build-GKI-WKSU-SUSFS-r19/EvolutionX-16.0-20260506-shiba-11.7-Unofficial.zip",
       "version": "11.7 GKI WildKSU"
     }
   ]
